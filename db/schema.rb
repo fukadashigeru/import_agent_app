@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_131116) do
     t.string "title"
     t.string "postal"
     t.string "address"
+    t.string "name"
     t.string "phone"
     t.string "color_size"
     t.integer "status"

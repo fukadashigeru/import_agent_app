@@ -5,6 +5,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.string :title
       t.string :postal
       t.string :address
+      t.string :name
       t.string :phone
       t.string :color_size
       t.integer :status
