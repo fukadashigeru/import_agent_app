@@ -1,4 +1,4 @@
-module Oeder
+module Orders
   class OrderingOrgSidesController < ApplicationController
     def index
     end
