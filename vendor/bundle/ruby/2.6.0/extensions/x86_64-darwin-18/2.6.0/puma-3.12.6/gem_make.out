@@ -1,0 +1,35 @@
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/2.6.0/gems/puma-3.12.6/ext/puma_http11
+/Users/fukadashigeru/.rbenv/versions/2.6.3/bin/ruby -I /Users/fukadashigeru/.rbenv/versions/2.6.3/lib/ruby/2.6.0 -r ./siteconf20200922-39173-k9my2r.rb extconf.rb --with-opt-dir\=/usr/local/opt/openssl@1.1/bin/openssl
+checking for BIO_read() in -lcrypto... yes
+checking for SSL_CTX_new() in -lssl... yes
+checking for openssl/bio.h... yes
+creating Makefile
+
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/2.6.0/gems/puma-3.12.6/ext/puma_http11
+make "DESTDIR=" clean
+
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/2.6.0/gems/puma-3.12.6/ext/puma_http11
+make "DESTDIR="
+compiling http11_parser.c
+compiling io_buffer.c
+compiling mini_ssl.c
+mini_ssl.c:220:27: warning: 'DTLSv1_method' is deprecated [-Wdeprecated-declarations]
+  conn->ctx = SSL_CTX_new(DTLSv1_method());
+                          ^
+/Users/fukadashigeru/.rbenv/versions/2.6.3/openssl/include/openssl/ssl.h:1895:1: note: 'DTLSv1_method' has been explicitly marked deprecated here
+DEPRECATEDIN_1_1_0(__owur const SSL_METHOD *DTLSv1_method(void)) /* DTLSv1.0 */
+^
+/Users/fukadashigeru/.rbenv/versions/2.6.3/openssl/include/openssl/opensslconf.h:158:34: note: expanded from macro 'DEPRECATEDIN_1_1_0'
+# define DEPRECATEDIN_1_1_0(f)   DECLARE_DEPRECATED(f)
+                                 ^
+/Users/fukadashigeru/.rbenv/versions/2.6.3/openssl/include/openssl/opensslconf.h:121:55: note: expanded from macro 'DECLARE_DEPRECATED'
+#   define DECLARE_DEPRECATED(f)    f __attribute__ ((deprecated));
+                                                      ^
+1 warning generated.
+compiling puma_http11.c
+linking shared-object puma/puma_http11.bundle
+ld: warning: directory not found for option '-L/usr/local/opt/openssl@1.1/bin/openssl/lib'
+
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/2.6.0/gems/puma-3.12.6/ext/puma_http11
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 puma_http11.bundle ./.gem.20200922-39173-svknhi/puma
