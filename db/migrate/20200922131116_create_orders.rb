@@ -8,6 +8,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :phone
       t.string :color_size
+      t.integer :quantity
       t.integer :status
 
       t.timestamps

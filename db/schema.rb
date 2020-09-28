@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_131116) do
     t.string "name"
     t.string "phone"
     t.string "color_size"
+    t.integer "quantity"
     t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
