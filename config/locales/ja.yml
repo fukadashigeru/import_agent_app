@@ -29,5 +29,11 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-  hello: "Hello world"
+ja:
+  enum:
+    orders:
+      status:
+        before_order: 1.発注前
+        ordered: 2.発注済
+        buying: 3.買付中
+        shipped: 4.発送済

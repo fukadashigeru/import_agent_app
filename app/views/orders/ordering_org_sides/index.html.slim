@@ -1,4 +1,4 @@
-.flex.flex-col.py-5
+.py-5
   .-my-2.overflow-x-auto(class="sm:-mx-6 lg:-mx-8")
   .py-2.align-middle.inline-block.min-w-full(class="sm:px-6 lg:px-8")
     .shadow.overflow-hidden.border-b.border-gray-200(class="sm:rounded-lg")
@@ -47,6 +47,7 @@
               td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                 | $100
               td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
-                = order.status
+                = order.status_i18n
               td.px-6.py-4.whitespace-no-wrap.text-right.text-sm.leading-5.font-medium
-                a.text-indigo-600.hover:text-indigo-900 href="#"  Edit
+                a.text-indigo-600.hover:text-indigo-900 href="#"
+                  i.fas.fa-edit
