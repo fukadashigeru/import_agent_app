@@ -1,0 +1,15 @@
+.bg-white.shadow.m-auto.sm:rounded-md.mt-5(class="w-2/4")
+  ul
+    - @orgs.each do |org|
+      / TODO:Sassで場合分けできるようにする
+      - border_t = org == @orgs.first ? '' : 'border-t border-gray-200'
+      li.(class=border_t)
+        = link_to [org], class: 'block hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out' do
+          .flex.items-center.px-4.py-4.sm:px-6
+            .min-w-0.flex-1.flex.items-center
+              .min-w-0.flex-1.px-4.md:grid.md:grid-cols-2.md:gap-4
+                div
+                  .text-sm.leading-5.font-medium.text-indigo-600.truncate
+                    = org.name
+              div
+                i.fas.fa-sign-in-alt.fa-lg.bg-gray-50.text-gray-500
