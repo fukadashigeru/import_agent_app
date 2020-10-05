@@ -23,3 +23,11 @@ orders = Order.create(
     {trade_no: '79330602', title: '◯◯◯◯◯◯◯◯◯◯', postal: 'XXX-XXXX', address: '◯◯県◯◯市◯◯区◯丁目◯◯-◯◯', name: 'YYYYYY', phone: 'XXX-XXXX-XXXX', color_size: '△△△', quantity: 1, status: 1},
   ]
 )
+
+orgs = Org.create(
+  [
+    {name: '会社_a', org_type: 0},
+    {name: '会社_b', org_type: 1},
+    {name: '会社_c', org_type: 0}
+  ]
+)
