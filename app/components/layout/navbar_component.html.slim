@@ -3,6 +3,7 @@ nav.bg-white.shadow-sm
     .flex.justify-between.h-16
       .flex
         .flex-shrink-0.flex.items-center
+          = image_tag 'svg/sample.svg', class: 'hidden lg:block h-8 w-auto'
         .hidden.sm:ml-6.space-x-8.sm:flex
           a.inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out[href="#"]
             | Sample_1
@@ -19,7 +20,7 @@ nav.bg-white.shadow-sm
         .ml-3.relative
           div
             button#user-menu.flex.text-sm.border-2.border-transparent.rounded-full.focus:outline-none.focus:border-gray-300.transition.duration-150.ease-in-out[aria-label="User menu" aria-haspopup="true"]
-              i.fas.fa-user-circle.fa-2x.text-gray-700
+              i.fas.fa-user-circle.fa-2x.text-gray-500
           .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg
             .py-1.rounded-md.bg-white.shadow-xs
               = link_to [:orgs], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
