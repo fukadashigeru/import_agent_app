@@ -5,14 +5,16 @@ nav.bg-white.shadow-sm
         .flex-shrink-0.flex.items-center
           = image_tag 'svg/sample.svg', class: 'hidden lg:block h-8 w-auto'
         .hidden.sm:ml-6.space-x-8.sm:flex
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out[href="#"]
-            | Sample_1
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
-            | Sample_2
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
-            | Sample_3
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
-            | Sample_4
+          / TODO:タブの表示・非表示はあとで修正予定
+          - if @tab
+            a.inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out[href="#"]
+              | Sample_1
+            a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
+              | Sample_2
+            a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
+              | Sample_3
+            a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
+              | Sample_4
       .hidden.sm:ml-6.sm:flex.sm:items-center
         button.p-1.border-2.border-transparent.text-gray-400.rounded-full.hover:text-gray-500.focus:outline-none.focus:text-gray-500.focus:bg-gray-100.transition.duration-150.ease-in-out[aria-label="Notifications"]
           svg.h-6.w-6[stroke="currentColor" fill="none" viewbox="0 0 24 24"]

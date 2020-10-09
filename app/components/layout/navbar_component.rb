@@ -1,5 +1,6 @@
 class Layout::NavbarComponent < ViewComponent::Base
-  def initialize(org:)
+  def initialize(org:, tab:)
     @org = org
+    @tab = tab
   end
 end
