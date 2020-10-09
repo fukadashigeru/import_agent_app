@@ -1,20 +1,26 @@
 = render(::Layout::NavbarComponent.new(org: @org, tab: true))
-.bg-white.shadow.m-auto.mt-5.overflow-hidden.sm:rounded-lg(class="w-1/2")
+.bg-white.shadow.overflow-hidden.m-auto.mt-16.sm:rounded-lg(class="w-1/2")
   .px-4.py-5.border-b.border-gray-200.sm:px-6
     h3.text-lg.leading-6.font-medium.text-gray-900
       |  会社詳細
     p.mt-1.max-w-2xl.text-sm.leading-5.text-gray-500
-      |  会社詳細を説明します。
-  div
+      |  会社の詳細を説明します
+  .px-4.py-5.sm:p-0
     dl
-      .bg-gray-100.px-4.py-5.sm:grid.sm:grid-cols-3.sm:gap-4.sm:px-6
-        dt.text-sm.leading-5.font-medium.text-gray-500
-          |  会社名
-        dd.mt-1.text-sm.leading-5.text-gray-900.sm:mt-0.sm:col-span-2
-          = @org.name
-      .bg-white.px-4.py-5.sm:grid.sm:grid-cols-3.sm:gap-4.sm:px-6
-        dt.text-sm.leading-5.font-medium.text-gray-500
-          |  会社タイプ
-        dd.mt-1.text-sm.leading-5.text-gray-900.sm:mt-0.sm:col-span-2
-          / TODO:enum化する
-          = @org.org_type
+    .sm:grid.sm:grid-cols-3.sm:gap-4.sm:px-6.sm:py-5
+      dt.text-sm.leading-5.font-medium.text-gray-500
+        |  会社名
+      dd.mt-1.text-sm.leading-5.text-gray-900.sm:mt-0.sm:col-span-2
+        = @org.name
+    .mt-8.sm:mt-0.sm:grid.sm:grid-cols-3.sm:gap-4.sm:border-t.sm:border-gray-200.sm:px-6.sm:py-5
+      dt.text-sm.leading-5.font-medium.text-gray-500
+        | 会社タイプ
+      dd.mt-1.text-sm.leading-5.text-gray-900.sm:mt-0.sm:col-span-2
+        / TODO:enum化する
+        | 買付会社
+    .mt-8.sm:mt-0.sm:grid.sm:grid-cols-3.sm:gap-4.sm:border-t.sm:border-gray-200.sm:px-6.sm:py-5
+      dt.text-sm.leading-5.font-medium.text-gray-500
+        | オーナー
+      dd.mt-1.text-sm.leading-5.text-gray-900.sm:mt-0.sm:col-span-2
+        | 山田太郎
+
