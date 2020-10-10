@@ -3,15 +3,16 @@ nav.bg-white.shadow-sm
     .flex.justify-between.h-16
       .flex
         .flex-shrink-0.flex.items-center
+          = image_tag 'svg/sample.svg', class: 'hidden lg:block h-8 w-auto'
         .hidden.sm:ml-6.space-x-8.sm:flex
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out[href="#"]
-            | Sample_1
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
-            | Sample_2
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
-            | Sample_3
-          a.inline-flex.items-center.px-1.pt-1.border-b-2.border-transparent.text-sm.font-medium.leading-5.text-gray-500.hover:text-gray-700.hover:border-gray-300.focus:outline-none.focus:text-gray-700.focus:border-gray-300.transition.duration-150.ease-in-out[href="#"]
-            | Sample_4
+          / TODO:タブの表示・非表示はあとで修正予定
+          - if @tab
+            - if @active == :order_ordering_org_sides
+              .inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out
+                | 注文一覧
+            - else
+              = link_to orders_ordering_org_sides_path, class: 'inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out' do
+                | 注文一覧
       .hidden.sm:ml-6.sm:flex.sm:items-center
         button.p-1.border-2.border-transparent.text-gray-400.rounded-full.hover:text-gray-500.focus:outline-none.focus:text-gray-500.focus:bg-gray-100.transition.duration-150.ease-in-out[aria-label="Notifications"]
           svg.h-6.w-6[stroke="currentColor" fill="none" viewbox="0 0 24 24"]
@@ -19,11 +20,11 @@ nav.bg-white.shadow-sm
         .ml-3.relative
           div
             button#user-menu.flex.text-sm.border-2.border-transparent.rounded-full.focus:outline-none.focus:border-gray-300.transition.duration-150.ease-in-out[aria-label="User menu" aria-haspopup="true"]
-              i.fas.fa-user-circle.fa-2x.text-gray-700
+              i.fas.fa-user-circle.fa-2x.text-gray-500
           .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg
             .py-1.rounded-md.bg-white.shadow-xs
               = link_to [:orgs], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
                 | 会社切替
               / TODO:リンクを@orgに書き換える
-              = link_to '/', class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
+              = link_to [@org], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
                 | 会社詳細
