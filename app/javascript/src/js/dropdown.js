@@ -20,14 +20,6 @@ function init () {
     appendTo: () => document.body,
     animation: 'perspective',
     duration: 100,
-    placement: 'bottom-end',
-    offset: [0, 4],
-    onMount(instance) {
-      const autoFocusElement = instance.popper.querySelector('[autofocus]')
-      if (autoFocusElement) autoFocusElement.focus()
-
-      const event = new CustomEvent('dropdown:mount', { detail: { element: instance.popper } })
-      document.dispatchEvent(event)
-    }
+    placement: 'bottom-end'
   })
 }
