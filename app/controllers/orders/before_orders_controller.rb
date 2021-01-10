@@ -1,5 +1,5 @@
 module Orders
-  class OrderingOrgSidesController < ApplicationController
+  class BeforeOrdersController < ApplicationController
     def index
       @orders = Order.order(created_at: :desc)
     end
