@@ -10,8 +10,6 @@
           table.min-w-full.divide-y.divide-gray-200
             thead
               tr
-                th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
-                  input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded name="remember_me" type="checkbox"
                 th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
                   | 注文No
                 th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
@@ -29,12 +27,12 @@
                 th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
                   | 買付費用
                 th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+                    | ステータス
+                th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
                   | 編集
             tbody.bg-white.divide-y.divide-gray-200
               - @orders.each do |order|
                 tr
-                  td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
-                   input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded name="remember_me" type="checkbox"
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                     = order.trade_no
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
@@ -53,6 +51,8 @@
                     = order.address
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                     | $100
+                  td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
+                      = order.status_i18n
                   td.px-6.py-4.whitespace-no-wrap.text-right.text-sm.leading-5.font-medium
                     a.text-indigo-600.hover:text-indigo-900 href="#"
                       i.fas.fa-edit
