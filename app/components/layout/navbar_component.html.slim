@@ -1,24 +1,31 @@
-nav.bg-white.shadow-sm
+nav.bg-gray-800.shadow-sm
   .max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8
-    .flex.justify-between.h-16
-      .flex
-        .flex-shrink-0.flex.items-center
+    .flex.items-center.justify-between.h-16
+      .flex.items-center
+        .flex-shrink-0
           = image_tag 'svg/sample.svg', class: 'hidden lg:block h-8 w-auto'
-        .hidden.sm:ml-6.space-x-8.sm:flex
-          / TODO:タブの表示・非表示はあとで修正予定
-          - if @tab
-            - if @active == :order_ordering_org_sides
-              .inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out
-                | 注文一覧
-            - else
-              = link_to orders_ordering_org_sides_path, class: 'inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out' do
-                | 注文一覧
+        .hidden.md:block
+          .ml-10.flex.items-baseline.space-x-4
+            / TODO:タブの表示・非表示はあとで修正予定
+            - if @tab
+              - if @active == :ordered
+                .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
+                  | 注文一覧
+              - else
+                = link_to [@org, :orders, :before_orders], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                  | 注文一覧
+              - if @active == :ordering
+                .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
+                  | 発注
+              - else
+                = link_to root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                  | 発注
       .hidden.sm:ml-6.sm:flex.sm:items-center
         button.p-1.border-2.border-transparent.text-gray-400.rounded-full.hover:text-gray-500.focus:outline-none.focus:text-gray-500.focus:bg-gray-100.transition.duration-150.ease-in-out[aria-label="Notifications"]
           svg.h-6.w-6[stroke="currentColor" fill="none" viewbox="0 0 24 24"]
             path[stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"]
         .ml-3.relative
-          button.flex.text-sm.border-2.border-transparent.rounded-full.focus:outline-none.focus:border-gray-300.transition.duration-150.ease-in-out(
+          button.flex.text-sm.border-2.border-transparent.rounded-full.focus:outline-none.transition.duration-150.ease-in-out(
             type="button"
             class="group h-full flex items-center px-4 text-left focus:outline-none focus:rounded-md"
             data-dropdown="navbar-dropdown"
@@ -27,8 +34,12 @@ nav.bg-white.shadow-sm
           #navbar-dropdown.hidden
             .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg
               .py-1.rounded-md.bg-white.shadow-xs
-                = link_to [:orgs], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
+                = link_to [:orgs], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out #{'opacity-50 cursor-not-allowed pointer-events-none' if @switch_company}" do
                   | 会社切替
                 / TODO:リンクを@orgに書き換える
-                = link_to [@org], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
-                  | 会社詳細
+                - if @org
+                  = link_to [@org], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" do
+                    | 会社詳細
+                - else
+                  .block.px-4.py-2.text-sm.leading-5.text-gray-700.hover:bg-gray-100.focus:outline-none.focus:bg-gray-100.transition.duration-150.ease-in-out.opacity-50.cursor-not-allowed.pointer-events-none
+                    | 会社詳細
