@@ -8,15 +8,18 @@ nav.bg-gray-800.shadow-sm
           .ml-10.flex.items-baseline.space-x-4
             / TODO:タブの表示・非表示はあとで修正予定
             - if @tab
-              - if @active == :order_ordering_org_sides
-                / .bg-indigo-700.px-3.py-2.rounded-md.text-sm.font-medium
+              - if @active == :ordered
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
                   | 注文一覧
               - else
                 = link_to orders_before_orders_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
                   | 注文一覧
-            .text-gray-300.hover:bg-gray-700.hover:text-white.px-3.py-2.rounded-md.text-sm.font-medium
-              | 発注
+              - if @active == :ordering
+                .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
+                  | 発注
+              - else
+                = link_to root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                  | 発注
       .hidden.sm:ml-6.sm:flex.sm:items-center
         button.p-1.border-2.border-transparent.text-gray-400.rounded-full.hover:text-gray-500.focus:outline-none.focus:text-gray-500.focus:bg-gray-100.transition.duration-150.ease-in-out[aria-label="Notifications"]
           svg.h-6.w-6[stroke="currentColor" fill="none" viewbox="0 0 24 24"]
