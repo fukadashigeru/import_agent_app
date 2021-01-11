@@ -4,9 +4,11 @@ nav.bg-white.shadow-sm
       .flex
         .hidden.sm:ml-6.space-x-8.sm:flex
           / TODO:タブの表示・非表示はあとで修正予定
-          .inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out
+          / .inline-flex.items-center.px-1.pt-1.border-b-2.border-indigo-500.text-sm.font-medium.leading-5.text-gray-900.focus:outline-none.focus:border-indigo-700.transition.duration-150.ease-in-out
+          /   | 発注前
+          = link_to [@org, :orders, :before_orders], class: @active == :before_orders ? active_class : inactive_class do
             | 発注前
-          .border-transparent.text-gray-500.hover:border-gray-300.hover:text-gray-700.inline-flex.items-center.px-1.pt-1.border-b-2.text-sm.font-medium
+          = link_to [@org, :orders, :after_orders], class: @active == :after_orders ? active_class : inactive_class do
             | 発注済
-          .border-transparent.text-gray-500.hover:border-gray-300.hover:text-gray-700.inline-flex.items-center.px-1.pt-1.border-b-2.text-sm.font-medium
+          = link_to root_path, class: @active == :shipped ? active_class : inactive_class do
             | 発送済

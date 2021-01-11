@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :orgs, only: %i[index show] do
     namespace :orders do
       resources :before_orders, only: %i[index]
+      resources :after_orders, only: %i[index]
     end
   end
 end

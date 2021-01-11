@@ -1,6 +1,6 @@
 = render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :ordered))
 .border-t-2.border-gray-100
-= render(::Orders::NavbarComponent.new(org: @org, active: :before_orders))
+= render(::Orders::NavbarComponent.new(org: @org, active: :after_orders))
 .py-10
   .max-w-7xl.mx-auto.sm:px-6.lg:px-8
     .py-5
