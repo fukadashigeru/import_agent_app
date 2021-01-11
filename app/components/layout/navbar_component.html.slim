@@ -12,7 +12,7 @@ nav.bg-gray-800.shadow-sm
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
                   | 注文一覧
               - else
-                = link_to orders_before_orders_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                = link_to [@org, :orders, :before_orders], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
                   | 注文一覧
               - if @active == :ordering
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
@@ -34,8 +34,12 @@ nav.bg-gray-800.shadow-sm
           #navbar-dropdown.hidden
             .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg
               .py-1.rounded-md.bg-white.shadow-xs
-                = link_to [:orgs], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
+                = link_to [:orgs], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out #{'opacity-50 cursor-not-allowed pointer-events-none' if @switch_company}" do
                   | 会社切替
                 / TODO:リンクを@orgに書き換える
-                = link_to [@org], class: 'block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
-                  | 会社詳細
+                - if @org
+                  = link_to [@org], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" do
+                    | 会社詳細
+                - else
+                  .block.px-4.py-2.text-sm.leading-5.text-gray-700.hover:bg-gray-100.focus:outline-none.focus:bg-gray-100.transition.duration-150.ease-in-out.opacity-50.cursor-not-allowed.pointer-events-none
+                    | 会社詳細
