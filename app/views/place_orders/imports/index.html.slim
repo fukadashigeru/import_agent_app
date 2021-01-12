@@ -1,0 +1,24 @@
+= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :place_orders))
+.border-t-2.border-gray-100
+= render(::PlaceOrders::NavbarComponent.new(org: @org, active: :imports))
+.bg-white.shadow.overflow-hidden.m-auto.mt-16.sm:rounded-lg(class="w-1/2")
+  .px-4.py-5.border-b.border-gray-200.sm:px-6
+    form.space-y-8.divide-y.divide-gray-200
+      .space-y-8.divide-y.divide-gray-200.sm:space-y-5
+        div
+          div
+            h3.text-lg.leading-6.font-medium.text-gray-900
+              | インポート
+            p.mt-1.max-w-2xl.text-sm.text-gray-500
+              | 注文案件をCSVファイルでインポートすることができます。
+          .mt-6.sm:mt-5.space-y-6.sm:space-y-5
+            .sm:grid.sm:grid-cols-3.sm:gap-4.sm:items-start.sm:border-t.sm:border-gray-200.sm:pt-5
+              label.block.text-sm.font-medium.text-gray-700.sm:mt-px.sm:pt-2 for="country" 
+                | ファイルタイプ
+              .mt-1.sm:mt-0.sm:col-span-2
+                select#country.max-w-lg.block.focus:ring-indigo-500.focus:border-indigo-500.w-full.shadow-sm.sm:max-w-xs.sm:text-sm.border-gray-300.rounded-md autocomplete="country" name="country" 
+                  option ImportAgent専用
+                  option Amazon
+                  option BUYMA
+
+

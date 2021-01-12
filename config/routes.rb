@@ -6,5 +6,8 @@ Rails.application.routes.draw do
       resources :before_orders, only: %i[index]
       resources :after_orders, only: %i[index]
     end
+    namespace :place_orders do
+      resources :imports, only: %i[index]
+    end
   end
 end

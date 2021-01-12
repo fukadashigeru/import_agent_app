@@ -1,0 +1,9 @@
+nav.bg-white.shadow-sm
+  .max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8
+    .flex.justify-between.h-16
+      .flex
+        .hidden.sm:ml-6.space-x-8.sm:flex
+          = link_to [@org, :place_orders, :imports], class: @active == :imports ? active_class : inactive_class do
+            | インポート
+          = link_to root_path, class: @active == :direct_inputs ? active_class : inactive_class do
+            | 直接入力
