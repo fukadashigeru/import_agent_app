@@ -10,7 +10,7 @@ module PlaceOrders
     end
 
     def inactive_class
-      'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium opacity-50 cursor-not-allowed'
+      'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
     end
   end
 end
