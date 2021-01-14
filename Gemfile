@@ -45,6 +45,9 @@ gem 'pry-rails'
 
 gem 'rails-i18n'
 
+gem 'dry-struct'
+gem 'dry-types'
+
 gem 'view_component', require: 'view_component/engine'
 
 group :development, :test do
