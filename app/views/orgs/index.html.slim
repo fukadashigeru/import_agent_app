@@ -7,7 +7,7 @@
       | 会社にログインしてください。
     .mt-6
       - @orgs.each do |org|
-        .relative.mb-6.rounded-lg.border.border-gray-300.bg-white.px-6.py-5.shadow-sm.flex.items-center.space-x-3.hover:border-gray-400.focus-within:ring-2.focus-within:ring-offset-2.focus-within:ring-indigo-500
+        .company.relative.mb-6.rounded-lg.border.border-gray-300.bg-white.px-6.py-5.shadow-sm.flex.items-center.space-x-3.hover:border-gray-400.focus-within:ring-2.focus-within:ring-offset-2.focus-within:ring-indigo-500
           .flex-1
             = link_to [org, :orders, :before_orders], class: 'focus:outline-none'
               p.font-medium.text-gray-900
@@ -19,4 +19,5 @@
                 / TODO: Userモデルの紐付けをしたら、呼び出すようにすする
                 | オーナー：山田太郎
           .justify-end
-            i.fas.fa-sign-in-alt.fa-2x.text-gray-300
+            i.fas.fa-sign-in-alt.fa-2x.text-gray-300.company-sign-in
+
