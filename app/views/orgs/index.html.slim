@@ -1,37 +1,22 @@
 = render(::Layout::NavbarComponent.new(org: @org, tab: false, switch_company: true))
-.py-10.px-8
-  header
-    .mx-auto.px-4.sm:px-6.lg:px-8
-      h1.text-3xl.font-bold.leading-tight.text-gray-900
-        | 所属会社一覧
-  main
-    .mx-auto.sm:px-6.lg:px-8
-      .px-4.py-8.sm:px-0
-        .border-4.border-dashed.border-gray-400.rounded-lg.h-96
-          .bg-white.shadow.sm:rounded-md.my-16.m-auto(class="w-3/4")
-            ul
-              - @orgs.each do |org|
-                / TODO:Sassで場合分けできるようにする
-                - border_t = org == @orgs.first ? '' : 'border-t border-gray-200'
-                li(class=border_t)
-                  = link_to [org, :orders, :before_orders], class: 'block hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out' do
-                    .flex.items-baseline.px-4.py-4.sm:px-6
-                      .min-w-0.flex-1.flex.items-baseline
-                        .min-w-0.flex-1.px-4.md:grid.md:grid-cols-3.md:gap-4
-                          div.align-middle
-                            .text-xl.font-medium.text-indigo-600.truncate.leading-10
-                              = org.name
-                          div
-                            .text-xs.text-gray-500
-                              | 会社タイプ
-                            .text-lg.leading-5.font-medium.text-gray-900.truncate
-                              / TODO: ENUM化する
-                              | 買付会社
-                          div
-                            .text-xs.text-gray-500
-                              | オーナー
-                            .text-lg.leading-5.font-medium.text-gray-900.truncate
-                              / TODO: Userモデルの紐付けをしたら、呼び出すようにすする
-                              | 山田　太郎
-                      div
-                        i.fas.fa-sign-in-alt.fa-lg.text-gray-600
+.mt-16
+  .mx-auto.w-5/12.sm:px-6.lg:px-8
+    .text-xl.font-bold.text-gray-900
+      | 所属会社一覧
+    .mt-1.max-w-2xl.text-sm.leading-5.text-gray-500
+      | 会社にログインしてください。
+    .mt-6
+      - @orgs.each do |org|
+        .relative.mb-6.rounded-lg.border.border-gray-300.bg-white.px-6.py-5.shadow-sm.flex.items-center.space-x-3.hover:border-gray-400.focus-within:ring-2.focus-within:ring-offset-2.focus-within:ring-indigo-500
+          .flex-1
+            = link_to [org, :orders, :before_orders], class: 'focus:outline-none'
+              p.font-medium.text-gray-900
+                = org.name
+              p.text-sm.text-gray-500.truncate.mt-1
+                / TODO: ENUM化する
+                | 会社タイプ：買付会社
+              p.text-sm.text-gray-500.truncate.mt-1
+                / TODO: Userモデルの紐付けをしたら、呼び出すようにすする
+                | オーナー：山田太郎
+          .justify-end
+            i.fas.fa-sign-in-alt.fa-2x.text-gray-300
