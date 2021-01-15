@@ -1,7 +1,21 @@
 module PlaceOrders
   class Importer < ApplicationStruct
     attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
-    
+    # attribute :order, Types.Instance(Order)
+
+    BATCH_SIZE = 300
+
+    module HeaderColumns
+      TRADE_NO = '商品ID'.freeze
+      TITLE = '商品名'.freeze
+      POSTAL = '郵便番号'.freeze
+      ADDRESS = '住所'.freeze
+      NAME = '名前（本名）'.freeze
+      PHONE = '電話番号'.freeze
+      COLOR_SIZE = '色・サイズ'.freeze
+      QUANTITY = '受注数'.freeze
+    end
+
     def call
       ApplicationRecord.transaction do
         import_orders!
@@ -11,7 +25,35 @@ module PlaceOrders
     private
 
     def import_orders!
-      
+      Order.import orders
+    end
+
+    def csv_string
+      @csv_string ||= NKF.nkf('-xw', io.read)
+    end
+
+    def read_csv
+      @read_csv ||= CSV.parse(csv_string, headers: true)
+    end
+
+    def orders
+      read_csv.map do |row|
+        build_order(row)
+      end
+    end
+
+    def build_order(row)
+      Order.new(
+        trade_no: row[HeaderColumns::TRADE_NO],
+        title: row[HeaderColumns::TITLE],
+        postal: row[HeaderColumns::POSTAL],
+        address: row[HeaderColumns::ADDRESS],
+        name: row[HeaderColumns::NAME],
+        phone: row[HeaderColumns::PHONE],
+        color_size: row[HeaderColumns::COLOR_SIZE],
+        quantity: row[HeaderColumns::QUANTITY].to_i,
+        status: :before_order
+      )
     end
   end
 end
