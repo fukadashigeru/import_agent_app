@@ -14,6 +14,9 @@ module PlaceOrders
       PHONE = '電話番号'.freeze
       COLOR_SIZE = '色・サイズ'.freeze
       QUANTITY = '受注数'.freeze
+      SELLING_UNIT_PRICE = '価格'.freeze
+      INFORMATION = '連絡事項'.freeze
+      MEMO = '受注メモ'.freeze
     end
 
     def call
@@ -48,10 +51,13 @@ module PlaceOrders
         title: row[HeaderColumns::TITLE],
         postal: row[HeaderColumns::POSTAL],
         address: row[HeaderColumns::ADDRESS],
-        name: row[HeaderColumns::NAME],
+        addressee: row[HeaderColumns::NAME],
         phone: row[HeaderColumns::PHONE],
         color_size: row[HeaderColumns::COLOR_SIZE],
         quantity: row[HeaderColumns::QUANTITY].to_i,
+        selling_unit_price: row[HeaderColumns::SELLING_UNIT_PRICE].to_i,
+        information: row[HeaderColumns::INFORMATION].to_i,
+        memo: row[HeaderColumns::MEMO].to_i, 
         status: :before_order
       )
     end
