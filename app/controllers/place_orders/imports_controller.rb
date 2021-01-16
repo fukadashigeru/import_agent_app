@@ -2,7 +2,8 @@ module PlaceOrders
   class ImportsController < ApplicationController
     before_action :set_org
 
-    def index; end
+    def index
+    end
 
     private
 

@@ -1,2 +1,0 @@
-module PlaceOrders::ImportsHelper
-end

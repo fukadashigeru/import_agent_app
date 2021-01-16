@@ -1,0 +1,75 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 2.7.1
+  NewCops: enable
+  Exclude:
+    - vendor/**/*
+    - tmp/**/*
+    - public/**/*
+    - bin/**/*
+    - node_modules/**/*
+    - db/schema.rb
+    - db/seeds/**/*
+    - .pryrc
+
+Rails:
+  Enabled: true
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/HelperInstanceVariable:
+  Exclude:
+    - 'app/helpers/sessions_helper.rb'
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 110
+  IgnoredPatterns: ['(\A|\s)#'] # コメント行は無視する
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/ModuleLength:
+  Max: 200
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb'
+    - 'config/environments/*.rb'
+    - 'db/migrate/*.rb'
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - 'db/migrate/*.rb'
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/Not:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false

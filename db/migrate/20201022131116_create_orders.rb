@@ -1,4 +1,5 @@
 class CreateOrders < ActiveRecord::Migration[6.0]
+  # rubocop:disable Metrics/AbcSize
   def change
     create_table :orders do |t|
       t.integer :shop_type
@@ -20,4 +21,5 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.timestamps
     end
   end
+  # rubocop:enable Metrics/AbcSize
 end
