@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       resources :after_orders, only: %i[index]
     end
     namespace :place_orders do
-      resources :imports, only: %i[index]
+      resources :imports, only: %i[index create]
     end
   end
 end
