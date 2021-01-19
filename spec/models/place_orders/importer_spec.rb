@@ -14,7 +14,6 @@ RSpec.describe PlaceOrders::Importer do
     context 'Orderの生成数' do
       it 'Orderレコードが10個生成されているはず' do
         expect { subject }.to change { Order.count }.by(10)
-        binding.pry
       end
     end
   end

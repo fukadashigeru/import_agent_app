@@ -36,7 +36,7 @@ module PlaceOrders
     end
 
     def read_csv
-      @read_csv ||= CSV.parse(csv_string, headers: true)
+      @read_csv ||= CSV.parse(csv_string, headers: true, liberal_parsing: true)
     end
 
     def orders

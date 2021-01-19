@@ -37,7 +37,6 @@ RSpec.describe PlaceOrders::Form do
     let(:importer) { form.send :importer }
     # before { allow(importer).to receive(:call) }
     it do
-      binding.pry
       expect(importer).to receive(:call).once
       subject
     end
