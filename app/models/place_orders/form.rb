@@ -10,13 +10,13 @@ module PlaceOrders
       importer.call
     end
 
-    private
-
     def importer
       @importer ||= PlaceOrders::Importer.new(
         io: csv_file.tempfile
       )
     end
+
+    private
 
     def csv_string
       @csv_string ||= NKF.nkf('-xw', csv_file.read)

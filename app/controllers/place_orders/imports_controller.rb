@@ -7,9 +7,12 @@ module PlaceOrders
     end
 
     def create
-      @form = PlaceOrders::Form.new(org: @org, **form_params)
-      @form.import!
-      flash[:success] = 'インポート処理が完了しました。'
+      @importer = PlaceOrders::Form.new(org: @org, **form_params).importer
+      if @importer.call
+        flash[:success] = 'インポート処理が完了しました。'
+      else
+        flash[:danger] = @importer.errors.full_messages
+      end
       redirect_to [@org, :orders, :before_orders]
     end
 

@@ -1,7 +1,11 @@
 module PlaceOrders
   class Importer < ApplicationStruct
+    include ActiveModel::Validations
+
     attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
     # attribute :order, Types.Instance(Order)
+
+    validate :orders_empty
 
     BATCH_SIZE = 300
 
@@ -21,6 +25,8 @@ module PlaceOrders
     end
 
     def call
+      return false if invalid?
+
       ApplicationRecord.transaction do
         import_orders!
       end
@@ -66,6 +72,10 @@ module PlaceOrders
 
     def order_trade_no_hash
       @order_trade_no_hash ||= Order.all.index_by(&:trade_no)
+    end
+
+    def orders_empty
+      errors.add(:base, '新しくインポートできる注文はありません。') if orders.empty?
     end
   end
 end
