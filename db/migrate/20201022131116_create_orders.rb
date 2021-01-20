@@ -3,7 +3,8 @@ class CreateOrders < ActiveRecord::Migration[6.0]
   def change
     create_table :orders do |t|
       t.integer :shop_type
-      t.string :trade_no
+      t.string :item_no, comment: '商品ID'
+      t.string :trade_no, comment: '取引ID'
       t.string :title
       t.string :postal
       t.string :address

@@ -6,7 +6,8 @@ module PlaceOrders
     BATCH_SIZE = 300
 
     module HeaderColumns
-      TRADE_NO = '商品ID'.freeze
+      ITEM_NO = '商品ID'.freeze
+      TRADE_NO = '取引ID'.freeze
       TITLE = '商品名'.freeze
       POSTAL = '郵便番号'.freeze
       ADDRESS = '住所'.freeze
@@ -40,13 +41,14 @@ module PlaceOrders
     end
 
     def orders
-      read_csv.map do |row|
-        build_order(row)
-      end
+      @orders ||= read_csv.map do |row|
+        build_order(row) if !order_trade_no_hash.key?(row[HeaderColumns::TRADE_NO])
+      end.compact
     end
 
     def build_order(row)
       Order.new(
+        item_no: row[HeaderColumns::ITEM_NO],
         trade_no: row[HeaderColumns::TRADE_NO],
         title: row[HeaderColumns::TITLE],
         postal: row[HeaderColumns::POSTAL],
@@ -60,6 +62,10 @@ module PlaceOrders
         memo: row[HeaderColumns::MEMO].to_i,
         status: :before_order
       )
+    end
+
+    def order_trade_no_hash
+      @order_trade_no_hash ||=Order.all.index_by(&:trade_no)
     end
   end
 end

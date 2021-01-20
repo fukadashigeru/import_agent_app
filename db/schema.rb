@@ -17,7 +17,8 @@ ActiveRecord::Schema.define(version: 2020_10_22_131116) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "shop_type"
-    t.string "trade_no"
+    t.string "item_no", comment: "商品ID"
+    t.string "trade_no", comment: "取引ID"
     t.string "title"
     t.string "postal"
     t.string "address"

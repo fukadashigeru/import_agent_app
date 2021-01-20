@@ -20,7 +20,8 @@ org_b = Org.find_by(name: '会社_b')
 Order.create(
   [
     {
-      trade_no: '59466918',
+      item_no: '21942661',
+      trade_no: '97547563',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
       address: '◯◯県◯◯市◯◯区◯丁目◯◯-◯◯',
@@ -36,6 +37,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '43042644',
       trade_no: '56654093',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -52,6 +54,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '81366219',
       trade_no: '46263602',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -68,6 +71,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '60941267',
       trade_no: '76537895',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -84,6 +88,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '57200273',
       trade_no: '56939175',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -100,6 +105,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '56913758',
       trade_no: '83265169',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -116,6 +122,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '39821252',
       trade_no: '68545632',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -132,6 +139,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '15498805',
       trade_no: '86154160',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -148,6 +156,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '72699536',
       trade_no: '73779350',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -164,6 +173,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '39959859',
       trade_no: '16022030',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -180,6 +190,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '83715346',
       trade_no: '48758961',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -196,6 +207,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '42550477',
       trade_no: '94813841',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
@@ -212,6 +224,7 @@ Order.create(
       buying_org_id: org_b.id
     },
     {
+      item_no: '56606457',
       trade_no: '79330602',
       title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
