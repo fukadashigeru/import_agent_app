@@ -65,7 +65,7 @@ module PlaceOrders
     end
 
     def order_trade_no_hash
-      @order_trade_no_hash ||=Order.all.index_by(&:trade_no)
+      @order_trade_no_hash ||= Order.all.index_by(&:trade_no)
     end
   end
 end

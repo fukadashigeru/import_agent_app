@@ -10,7 +10,7 @@ RSpec.describe PlaceOrders::Form do
         csv_file: csv_file
       )
     end
-    let(:org) { create :org}
+    let(:org) { create :org }
     let(:csv_file) do
       ActionDispatch::Http::UploadedFile.new(
         filename: 'foo.csv',
