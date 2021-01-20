@@ -3,14 +3,13 @@ module PlaceOrders
     before_action :set_org
 
     def index
-      flash[:info] = 'インポート処理が完了しました。'
       @form = PlaceOrders::Form.new(org: @org)
     end
 
     def create
       @form = PlaceOrders::Form.new(org: @org, **form_params)
       @form.import!
-      flash[:info] = 'インポート処理が完了しました。'
+      flash[:success] = 'インポート処理が完了しました。'
       redirect_to [@org, :orders, :before_orders]
     end
 
