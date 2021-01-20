@@ -2,7 +2,7 @@ module PlaceOrders
   class ImportsController < ApplicationController
     before_action :set_org
 
-    def index
+    def show
       @form = PlaceOrders::Form.new(org: @org)
     end
 
