@@ -37,3 +37,8 @@ ja:
         ordered: 2.発注済
         buying: 3.買付中
         shipped: 4.発送済
+    shop_type:
+      default: ImportAgent専用
+      amazon: Amazon
+      buyma: BUYMA
+

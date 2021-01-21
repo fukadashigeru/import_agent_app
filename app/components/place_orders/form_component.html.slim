@@ -11,7 +11,7 @@
           | ファイルタイプ
         .mt-1.sm:mt-0
           = f.select :org,
-            options_for_select([['ImportAgent専用', 0], ['Amazon', 1], ['BUYMA', 2]]),
+            options_for_select(shop_type_select_options),
             { prompt: true },
             { class: 'max-w-sm block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md' }
         div.ml-3.mt-1

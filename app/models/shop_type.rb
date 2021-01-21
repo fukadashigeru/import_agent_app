@@ -6,7 +6,7 @@ class ShopType < ApplicationEnum
   end
 end
 
-# 当サイト専用
+# ImportAgent専用
 ShopType.register ShopType::EnumItem.new(
   id: 1,
   key: :default
