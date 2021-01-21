@@ -41,4 +41,9 @@ ja:
       default: ImportAgent専用
       amazon: Amazon
       buyma: BUYMA
+  activemodel:
+    attributes:
+      place_orders/form:
+        shop_type: ショップタイプ
+        csv_file: CSVファイル
 

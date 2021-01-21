@@ -7,13 +7,19 @@ module PlaceOrders
     end
 
     def create
-      @importer = PlaceOrders::Form.new(org: @org, **form_params).importer
-      if @importer.call
-        flash[:success] = 'インポート処理が完了しました。'
+      @form = PlaceOrders::Form.new(org: @org, **form_params)
+      if @form.valid?
+        @importer = @form.importer
+        if @importer.call
+          flash[:success] = 'インポート処理が完了しました。'
+        else
+          flash[:danger] = @importer.errors.full_messages
+        end
+        redirect_to [@org, :orders, :before_orders]
       else
-        flash[:danger] = @importer.errors.full_messages
+        flash[:danger] = @form.errors.full_messages
+        render 'show'
       end
-      redirect_to [@org, :orders, :before_orders]
     end
 
     private
@@ -24,7 +30,10 @@ module PlaceOrders
 
     def form_params
       normalize_params(
-        params.required(:place_orders_form).permit(:csv_file)
+        params.required(:place_orders_form).permit(
+          :shop_type,
+          :csv_file
+        )
       )
     end
 
