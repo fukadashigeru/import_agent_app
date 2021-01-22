@@ -46,4 +46,12 @@ ja:
       place_orders/form:
         shop_type: ショップタイプ
         csv_file: CSVファイル
+    errors:
+      models:
+        place_orders/form:
+          attributes:
+            base:
+              shop_type_required: ショップタイプを選択してください。
+              csv_file_required: CSVファイルをアップロードしてください。
+              csv_header_lack: ファイルのヘッダー項目に不足があります。
 

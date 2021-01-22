@@ -7,8 +7,10 @@ module PlaceOrders
     attribute :shop_type, Types::Params::Integer.optional.default(nil)
     attribute :csv_file, Types::Instance(ActionDispatch::Http::UploadedFile).optional.default(nil)
 
-    validates :shop_type, presence: true
-    validates :csv_file, presence: true
+    # validates :shop_type, presence: true
+    # validates :csv_file, presence: true
+    validate :validate_shop_type_presence
+    validate :validate_csv_file_presence
 
     # こんなコードでいい？？
     validate :vaildate_csv_header, if: :shop_type && :csv_file
@@ -49,11 +51,19 @@ module PlaceOrders
       @header_row ||= CSV.parse(csv_string, headers: false).first
     end
 
+    def validate_shop_type_presence
+      errors.add(:base, :shop_type_required) if !shop_type
+    end
+
+    def validate_csv_file_presence
+      errors.add(:base, :csv_file_required) if !csv_file
+    end
+
     def vaildate_csv_header
       case ShopType.find_by_id(shop_type).key
       when :buyma
         if !BUYMA_HEADERS_ELE_REQUIRED.to_set.subset?(header_row.to_set)
-          errors.add(:base, 'ファイルのヘッダー項目に不足があります。')
+          errors.add(:base, :csv_header_lack)
         end
       end
     end
