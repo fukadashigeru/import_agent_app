@@ -37,7 +37,7 @@ module PlaceOrders
 
     def importer
       @importer ||= PlaceOrders::Importer.new(
-        io: csv_file.tempfile
+        io: io
       )
     end
 
@@ -47,8 +47,20 @@ module PlaceOrders
       @csv_string ||= NKF.nkf('-xw', csv_file.read)
     end
 
-    def header_row
-      @header_row ||= CSV.parse(csv_string, headers: false).first
+    def csv
+      @csv ||= CSV.parse(csv_string, headers: true)
+    end
+
+    def csv_headers
+      @csv_headers ||= csv.headers
+    end
+
+    # def csv_headers
+    #   @csv_headers ||= CSV.parse(csv_string, headers: false, liberal_parsing: true).first
+    # end
+
+    def io
+      StringIO.new(csv_string)
     end
 
     def validate_shop_type_presence
@@ -62,7 +74,7 @@ module PlaceOrders
     def vaildate_csv_header
       case ShopType.find_by_id(shop_type).key
       when :buyma
-        if !BUYMA_HEADERS_ELE_REQUIRED.to_set.subset?(header_row.to_set)
+        if !BUYMA_HEADERS_ELE_REQUIRED.to_set.subset?(csv_headers.to_set)
           errors.add(:base, :csv_header_lack)
         end
       end
