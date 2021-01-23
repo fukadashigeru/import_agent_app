@@ -2,18 +2,34 @@ module PlaceOrders
   class ImportsController < ApplicationController
     before_action :set_org
 
+    # rescue_from ActiveRecord::RecordInvalid do |e|
+    #   ErrorUtil.log_and_notify(e)
+    #   flash[:danger] = <<~MSG
+    #     インポート処理を完了できませんでした。
+    #   MSG
+    #   redirect_to [@org, :orders, :before_orders]
+    # end
+
     def show
       @form = PlaceOrders::Form.new(ordering_org: @org)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def create
       @form = PlaceOrders::Form.new(ordering_org: @org, **form_params)
       if @form.valid?
         @importer = @form.importer
-        if @importer.call
-          flash[:success] = 'インポート処理が完了しました。'
-        else
-          flash[:danger] = @importer.errors.full_messages
+        begin
+          if @importer.call
+            flash[:success] = 'インポート処理が完了しました。'
+          else
+            flash[:danger] = @importer.errors.full_messages
+          end
+        rescue ActiveRecord::RecordInvalid => e
+          ErrorUtil.log_and_notify(e)
+          flash[:danger] = <<~MSG
+            インポート処理を完了できませんでした。
+          MSG
         end
         redirect_to [@org, :orders, :before_orders]
       else
@@ -21,6 +37,7 @@ module PlaceOrders
         render 'show'
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     private
 
