@@ -4,6 +4,7 @@ module PlaceOrders
 
     attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
     attribute :ordering_org, Types.Instance(Org)
+    attribute :shop_type, Types::Params::Integer
 
     validate :orders_empty
 
@@ -48,31 +49,47 @@ module PlaceOrders
 
     def orders
       @orders ||= read_csv.map do |row|
-        build_order(row) if !order_trade_no_hash.key?(row[HeaderColumns::TRADE_NO])
+        build_order(row)
       end.compact
     end
 
+    # rubocop:disable Metrics/AbcSize
     def build_order(row)
-      Order.new(
-        item_no: row[HeaderColumns::ITEM_NO],
-        trade_no: row[HeaderColumns::TRADE_NO],
-        title: row[HeaderColumns::TITLE],
-        postal: row[HeaderColumns::POSTAL],
-        address: row[HeaderColumns::ADDRESS],
-        addressee: row[HeaderColumns::NAME],
-        phone: row[HeaderColumns::PHONE],
-        color_size: row[HeaderColumns::COLOR_SIZE],
-        quantity: row[HeaderColumns::QUANTITY].to_i,
-        selling_unit_price: row[HeaderColumns::SELLING_UNIT_PRICE].to_i,
-        information: row[HeaderColumns::INFORMATION],
-        memo: row[HeaderColumns::MEMO],
-        status: :before_order,
-        ordering_org: ordering_org
-      )
+      if check_imported_yet(row)
+        Order.new(
+          shop_type: shop_type,
+          item_no: row[HeaderColumns::ITEM_NO],
+          trade_no: row[HeaderColumns::TRADE_NO],
+          title: row[HeaderColumns::TITLE],
+          postal: row[HeaderColumns::POSTAL],
+          address: row[HeaderColumns::ADDRESS],
+          addressee: row[HeaderColumns::NAME],
+          phone: row[HeaderColumns::PHONE],
+          color_size: row[HeaderColumns::COLOR_SIZE],
+          quantity: row[HeaderColumns::QUANTITY].to_i,
+          selling_unit_price: row[HeaderColumns::SELLING_UNIT_PRICE].to_i,
+          information: row[HeaderColumns::INFORMATION],
+          memo: row[HeaderColumns::MEMO],
+          status: :before_order,
+          ordering_org: ordering_org
+        )
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    def check_imported_yet(row)
+      case shop_type_key
+      when :buyma
+        !buyma_trade_no_hash.key?(row[HeaderColumns::TRADE_NO])
+      end
     end
 
-    def order_trade_no_hash
-      @order_trade_no_hash ||= Order.all.index_by(&:trade_no)
+    def shop_type_key
+      @shop_type_key ||= ShopType.find_by_id(shop_type).key
+    end
+
+    def buyma_trade_no_hash
+      @buyma_trade_no_hash ||= ordering_org.orders_to_order.where(shop_type: :buyma).index_by(&:trade_no)
     end
 
     def orders_empty

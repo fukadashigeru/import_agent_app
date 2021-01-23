@@ -32,10 +32,10 @@ RSpec.describe PlaceOrders::Form do
         let(:shop_type) { 3 }
         it { is_expected.to be_blank }
       end
-      # context 'shop_typeがない場合' do
-      #   let(:shop_type) { nil }
-      #   it { is_expected.to include 'ショップタイプを選択してください。' }
-      # end
+      context 'shop_typeがない場合' do
+        let(:shop_type) { nil }
+        it { is_expected.to include 'ショップタイプを選択してください。' }
+      end
     end
     describe 'validate :validate_csv_file_presence' do
       context 'csv_fileがある場合' do

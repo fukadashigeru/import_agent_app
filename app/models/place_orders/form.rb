@@ -13,10 +13,10 @@ module PlaceOrders
     validate :validate_csv_file_presence
 
     # shop_typeをすべて対応するまでのvalidate
-    validate :validate_shop_type
+    validate :validate_shop_type, if: :shop_type
 
     # こんなコードでいい？？
-    validate :vaildate_csv_header, if: :shop_type && :csv_file
+    validate :vaildate_csv_header, if: :csv_file
 
     # BUYMAの場合のヘッダーの必須項目
     BUYMA_HEADERS_ELE_REQUIRED = %w[
@@ -41,7 +41,8 @@ module PlaceOrders
     def importer
       @importer ||= PlaceOrders::Importer.new(
         io: io,
-        ordering_org: ordering_org
+        ordering_org: ordering_org,
+        shop_type: shop_type
       )
     end
 
@@ -76,18 +77,24 @@ module PlaceOrders
     end
 
     def validate_shop_type
-      return if ShopType.find_by_id(shop_type).key == :buyma
+      return if shop_type_key == :buyma
 
       errors.add(:base, :invalid_shop_type)
     end
 
     def vaildate_csv_header
-      case ShopType.find_by_id(shop_type).key
-      when :buyma
-        if !BUYMA_HEADERS_ELE_REQUIRED.to_set.subset?(csv_headers.to_set)
-          errors.add(:base, :csv_header_lack)
+      if shop_type
+        case shop_type_key
+        when :buyma
+          if !BUYMA_HEADERS_ELE_REQUIRED.to_set.subset?(csv_headers.to_set)
+            errors.add(:base, :csv_header_lack)
+          end
         end
       end
+    end
+
+    def shop_type_key
+      @shop_type_key ||= ShopType.find_by_id(shop_type).key
     end
   end
 end
