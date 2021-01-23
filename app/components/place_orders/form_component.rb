@@ -13,5 +13,11 @@ module PlaceOrders
         [(I18n.t key, scope: %i[enum shop_type]), value]
       end
     end
+
+    def disabled_shop_type
+      ShopType.to_activerecord_enum.map do |key, value|
+        value if key.in? %i[default amazon]
+      end
+    end
   end
 end
