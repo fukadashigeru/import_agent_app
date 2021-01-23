@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  belongs_to :ordering_org, class_name: 'Org'
+  belongs_to :buying_org, class_name: 'Org'
   enum status: {
     before_order: 1,
     ordered: 2,
