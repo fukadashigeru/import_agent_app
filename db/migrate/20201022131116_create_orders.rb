@@ -16,7 +16,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.string :information, comment: '連絡事項'
       t.string :memo, comment: '受注メモ'
       t.integer :status
-      t.references :ordering_org, foreign_key: { to_table: :orgs }
+      t.references :ordering_org, null: false, foreign_key: { to_table: :orgs }
       t.references :buying_org, foreign_key: { to_table: :orgs }
 
       t.timestamps

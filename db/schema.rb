@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_131116) do
     t.string "information", comment: "連絡事項"
     t.string "memo", comment: "受注メモ"
     t.integer "status"
-    t.bigint "ordering_org_id"
+    t.bigint "ordering_org_id", null: false
     t.bigint "buying_org_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
