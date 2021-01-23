@@ -8,9 +8,9 @@
 
 Org.create(
   [
-    { name: '会社_a', org_type: 0 },
-    { name: '会社_b', org_type: 1 },
-    { name: '会社_c', org_type: 0 }
+    { name: '会社_a', org_type: :ordering_org },
+    { name: '会社_b', org_type: :buying_org },
+    { name: '会社_c', org_type: :ordering_org }
   ]
 )
 

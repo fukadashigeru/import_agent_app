@@ -35,7 +35,7 @@ module PlaceOrders
     private
 
     def import_orders!
-      Order.import orders
+      Order.import! orders
     end
 
     def csv_string
@@ -64,8 +64,8 @@ module PlaceOrders
         color_size: row[HeaderColumns::COLOR_SIZE],
         quantity: row[HeaderColumns::QUANTITY].to_i,
         selling_unit_price: row[HeaderColumns::SELLING_UNIT_PRICE].to_i,
-        information: row[HeaderColumns::INFORMATION].to_i,
-        memo: row[HeaderColumns::MEMO].to_i,
+        information: row[HeaderColumns::INFORMATION],
+        memo: row[HeaderColumns::MEMO],
         status: :before_order,
         ordering_org: ordering_org
       )

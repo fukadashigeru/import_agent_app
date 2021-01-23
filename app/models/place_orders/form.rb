@@ -49,7 +49,7 @@ module PlaceOrders
     end
 
     def csv
-      @csv ||= CSV.parse(csv_string, headers: true)
+      @csv ||= CSV.parse(csv_string, headers: true, liberal_parsing: true)
     end
 
     def csv_headers
