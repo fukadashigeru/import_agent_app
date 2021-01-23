@@ -10,6 +10,7 @@ RSpec.describe PlaceOrders::Form do
   end
   let(:importer) { form.importer }
   let(:ordering_org) { create :org }
+  let(:shop_type) { 3 }
   let(:csv_file) do
     ActionDispatch::Http::UploadedFile.new(
       filename: 'foo.csv',
@@ -20,11 +21,42 @@ RSpec.describe PlaceOrders::Form do
   let(:io) { StringIO.new(csv_text) }
   let(:csv_text) do
     <<~CSV
+      商品ID,商品名,価格,受注数,取引ID,ニックネーム,名前（本名）,郵便番号,住所,電話番号,発送方法,色・サイズ,連絡事項,名前（ローマ字）,住所(ローマ字),受注メモ
+      19373386,XXXXXXXXXXXXXXXXXXXXXX,10000,1,54905167,XXXXXXXXXX,XXXXXXXXXX,XXX-XXX,XXXXXXXXXXXXXXXXXXX,XXX-XXXX-XXXX,XXXXXXXXXXXX,XXXXXX,,XXXXXX XXXXXX,XXXXXXXXXXXXXXXXXXX,
     CSV
   end
   describe 'Validations' do
+    subject { form.tap(&:valid?).errors[:base] }
+    describe 'validate :validate_shop_type_presence' do
+      context 'shop_typeがある場合' do
+        let(:shop_type) { 3 }
+        it { is_expected.to be_blank }
+      end
+      # context 'shop_typeがない場合' do
+      #   let(:shop_type) { nil }
+      #   it { is_expected.to include 'ショップタイプを選択してください。' }
+      # end
+    end
+    describe 'validate :validate_csv_file_presence' do
+      context 'csv_fileがある場合' do
+        it { is_expected.to be_blank }
+      end
+      context 'csv_fileがない場合' do
+        let(:csv_file) { nil }
+        it { is_expected.to include 'CSVファイルをアップロードしてください。' }
+      end
+    end
+    describe 'validate :validate_shop_type' do
+      context 'shop_typeがbuymaのとき' do
+        let(:shop_type) { 3 }
+        it { is_expected.to be_blank }
+      end
+      context 'shop_typeがbuymaではないとき' do
+        let(:shop_type) { 1 }
+        it { is_expected.to include '未対応のショップタイプです。' }
+      end
+    end
     describe 'validate :vaildate_csv_header' do
-      subject { form.tap(&:valid?).errors[:base] }
       context 'shop_typeが3のとき' do
         let(:shop_type) { 3 }
         context 'ヘッダーの必須項目が全てあるとき' do

@@ -12,6 +12,9 @@ module PlaceOrders
     validate :validate_shop_type_presence
     validate :validate_csv_file_presence
 
+    # shop_typeをすべて対応するまでのvalidate
+    validate :validate_shop_type
+
     # こんなコードでいい？？
     validate :vaildate_csv_header, if: :shop_type && :csv_file
 
@@ -70,6 +73,12 @@ module PlaceOrders
 
     def validate_csv_file_presence
       errors.add(:base, :csv_file_required) if !csv_file
+    end
+
+    def validate_shop_type
+      return if ShopType.find_by_id(shop_type).key == :buyma
+
+      errors.add(:base, :invalid_shop_type)
     end
 
     def vaildate_csv_header
