@@ -3,7 +3,7 @@ module PlaceOrders
     extend ActiveModel::Naming
     include ActiveModel::Validations
 
-    attribute :org, Types.Instance(Org)
+    attribute :ordering_org, Types.Instance(Org)
     attribute :shop_type, Types::Params::Integer.optional.default(nil)
     attribute :csv_file, Types::Instance(ActionDispatch::Http::UploadedFile).optional.default(nil)
 
@@ -37,7 +37,8 @@ module PlaceOrders
 
     def importer
       @importer ||= PlaceOrders::Importer.new(
-        io: io
+        io: io,
+        ordering_org: ordering_org
       )
     end
 

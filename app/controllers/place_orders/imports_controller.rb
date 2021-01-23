@@ -3,11 +3,11 @@ module PlaceOrders
     before_action :set_org
 
     def show
-      @form = PlaceOrders::Form.new(org: @org)
+      @form = PlaceOrders::Form.new(ordering_org: @org)
     end
 
     def create
-      @form = PlaceOrders::Form.new(org: @org, **form_params)
+      @form = PlaceOrders::Form.new(ordering_org: @org, **form_params)
       if @form.valid?
         @importer = @form.importer
         if @importer.call

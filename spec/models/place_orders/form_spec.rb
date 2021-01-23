@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe PlaceOrders::Form do
   let(:form) do
     described_class.new(
-      org: org,
+      ordering_org: ordering_org,
       shop_type: shop_type,
       csv_file: csv_file
     )
   end
   let(:importer) { form.importer }
-  let(:org) { create :org }
+  let(:ordering_org) { create :org }
   let(:csv_file) do
     ActionDispatch::Http::UploadedFile.new(
       filename: 'foo.csv',

@@ -5,11 +5,13 @@ RSpec.describe PlaceOrders::Importer do
     subject { importer.call }
     let(:importer) do
       described_class.new(
-        io: io
+        io: io,
+        ordering_org: ordering_org
       )
     end
-    let(:io) { File.open('spec/fixtures/models/place_orders/order_template.csv') }
+    # let(:io) { File.open('spec/fixtures/models/place_orders/order_template.csv') }
     let(:io) { StringIO.new(csv_text) }
+    let(:ordering_org) { create :org }
 
     describe 'Orderの生成数で確認' do
       let(:csv_text) do
@@ -26,7 +28,7 @@ RSpec.describe PlaceOrders::Importer do
         end
       end
       context 'CSV内が一部が新規登録の場合' do
-        before { create :order, trade_no: '54905167' }
+        before { create :order, trade_no: '54905167', ordering_org: ordering_org }
         it 'Orderレコードが2個生成されるはず/エラー文がない' do
           expect { subject }.to change { Order.count }.by(1)
           expect(importer.errors[:base]).to be_blank
@@ -34,8 +36,8 @@ RSpec.describe PlaceOrders::Importer do
       end
       context 'CSV内が一部が新規登録の場合' do
         before do
-          create :order, trade_no: '54905167'
-          create :order, trade_no: '51219194'
+          create :order, trade_no: '54905167', ordering_org: ordering_org
+          create :order, trade_no: '51219194', ordering_org: ordering_org
         end
         it 'Orderレコードがされない/エラー文がない' do
           expect { subject }.to change { Order.count }.by(0)

@@ -54,4 +54,8 @@ ja:
               shop_type_required: ショップタイプを選択してください。
               csv_file_required: CSVファイルをアップロードしてください。
               csv_header_lack: ファイルのヘッダー項目に不足があります。
-
+  # activerecord:
+  #   attributes:
+  #     order:
+  #       ordering_org: 依頼元
+  #       buying_org: 依頼先

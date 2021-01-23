@@ -3,7 +3,7 @@ module PlaceOrders
     include ActiveModel::Validations
 
     attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
-    # attribute :order, Types.Instance(Order)
+    attribute :ordering_org, Types.Instance(Org)
 
     validate :orders_empty
 
@@ -66,7 +66,8 @@ module PlaceOrders
         selling_unit_price: row[HeaderColumns::SELLING_UNIT_PRICE].to_i,
         information: row[HeaderColumns::INFORMATION].to_i,
         memo: row[HeaderColumns::MEMO].to_i,
-        status: :before_order
+        status: :before_order,
+        ordering_org: ordering_org
       )
     end
 
