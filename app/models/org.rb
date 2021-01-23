@@ -5,4 +5,8 @@ class Org < ApplicationRecord
     ordering_org: 1,
     buying_org: 2
   }
+
+  def org_type_i18n
+    I18n.t org_type, scope: %i[enum orgs org_type]
+  end
 end

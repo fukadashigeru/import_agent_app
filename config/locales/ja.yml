@@ -37,6 +37,10 @@ ja:
         ordered: 2.発注済
         buying: 3.買付中
         shipped: 4.発送済
+    orgs:
+      org_type:
+        ordering_org: 発注会社
+        buying_org: 買付会社
     shop_type:
       default: ImportAgent専用
       amazon: Amazon
