@@ -36,3 +36,5 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+spec/fixtures/models/place_orders/gitignore

@@ -3,7 +3,7 @@ module Orders
     before_action :set_org
 
     def index
-      @orders = Order.where(status: [:ordered, :buying]).order(created_at: :desc)
+      @orders = @org.orders_to_order.where(status: %i[ordered buying]).order(created_at: :desc)
     end
 
     private

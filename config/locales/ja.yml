@@ -37,3 +37,37 @@ ja:
         ordered: 2.発注済
         buying: 3.買付中
         shipped: 4.発送済
+    orgs:
+      org_type:
+        ordering_org: 発注会社
+        buying_org: 買付会社
+    shop_type:
+      default: ImportAgent専用
+      amazon: Amazon
+      buyma: BUYMA
+  activemodel:
+    attributes:
+      place_orders/form:
+        shop_type: ショップタイプ
+        csv_file: CSVファイル
+    errors:
+      models:
+        place_orders/form:
+          attributes:
+            base:
+              shop_type_required: ショップタイプを選択してください。
+              csv_file_required: CSVファイルをアップロードしてください。
+              invalid_shop_type: 未対応のショップタイプです。
+              csv_header_lack: ファイルのヘッダー項目に不足があります。
+  activerecord:
+    # attributes:
+    #   order:
+    #     ordering_org: 発注会社
+    #     buying_org: 買付会社
+    errors:
+      models:
+        order:
+          attributes:
+            base:
+              not_ordering_org: '発注できない会社です。'
+              not_buying_org: '買付できない会社です。'

@@ -14,4 +14,3 @@ class OrgsController < ApplicationController
     @org = Org.find(params[:id])
   end
 end
-

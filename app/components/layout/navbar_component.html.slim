@@ -1,5 +1,5 @@
 nav.bg-gray-800.shadow-sm
-  .max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8
+  .mx-auto.px-4.sm:px-6.lg:px-8
     .flex.items-center.justify-between.h-16
       .flex.items-center
         .flex-shrink-0
@@ -14,11 +14,11 @@ nav.bg-gray-800.shadow-sm
               - else
                 = link_to [@org, :orders, :before_orders], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
                   | 注文一覧
-              - if @active == :ordering
+              - if @active == :place_orders
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
                   | 発注
               - else
-                = link_to root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                = link_to [@org, :place_orders, :import], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
                   | 発注
       .hidden.sm:ml-6.sm:flex.sm:items-center
         button.p-1.border-2.border-transparent.text-gray-400.rounded-full.hover:text-gray-500.focus:outline-none.focus:text-gray-500.focus:bg-gray-100.transition.duration-150.ease-in-out[aria-label="Notifications"]

@@ -10,23 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_05_000653) do
+ActiveRecord::Schema.define(version: 2020_10_22_131116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "orders", force: :cascade do |t|
-    t.string "trade_no"
+    t.integer "shop_type"
+    t.string "item_no", comment: "商品ID"
+    t.string "trade_no", comment: "取引ID"
     t.string "title"
     t.string "postal"
     t.string "address"
-    t.string "name"
+    t.string "addressee"
     t.string "phone"
     t.string "color_size"
     t.integer "quantity"
+    t.integer "selling_unit_price"
+    t.string "information", comment: "連絡事項"
+    t.string "memo", comment: "受注メモ"
     t.integer "status"
+    t.bigint "ordering_org_id", null: false
+    t.bigint "buying_org_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["buying_org_id"], name: "index_orders_on_buying_org_id"
+    t.index ["ordering_org_id", "shop_type", "trade_no"], name: "index_orders_on_ordering_org_id_and_shop_type_and_trade_no", unique: true
+    t.index ["ordering_org_id"], name: "index_orders_on_ordering_org_id"
   end
 
   create_table "orgs", force: :cascade do |t|
@@ -36,4 +46,6 @@ ActiveRecord::Schema.define(version: 2020_10_05_000653) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "orders", "orgs", column: "buying_org_id"
+  add_foreign_key "orders", "orgs", column: "ordering_org_id"
 end

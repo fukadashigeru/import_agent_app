@@ -1,0 +1,49 @@
+.notification-container {
+  @apply fixed inset-0 flex flex-col pointer-events-none p-6 items-center justify-start z-50;
+}
+.notification {
+  @apply w-full bg-white shadow-lg rounded-lg pointer-events-auto;
+  &-inner {
+    @apply rounded-lg shadow-sm overflow-hidden;
+  }
+  &-icon {
+    @apply block h-6 w-6;
+  }
+  &-close {
+    @apply inline-flex text-gray-400 transition ease-in-out duration-150;
+    &:focus {
+      @apply outline-none text-gray-500;
+    }
+    &-icon {
+      @apply block h-5 w-5;
+    }
+  }
+
+  &-green {
+    @apply bg-green-50;
+    .notification-icon {
+      @apply text-green-400;
+    }
+    .notification-text {
+      @apply text-green-800;
+    }
+  }
+  &-red {
+    @apply bg-red-100;
+    .notification-icon {
+      @apply text-red-800;
+    }
+    .notification-text {
+      @apply text-red-800;
+    }
+  }
+  &-blue {
+    @apply bg-blue-50;
+    .notification-icon {
+      @apply text-blue-400;
+    }
+    .notification-text {
+      @apply text-blue-700;
+    }
+  }
+}

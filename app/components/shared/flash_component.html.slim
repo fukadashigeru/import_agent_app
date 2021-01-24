@@ -1,0 +1,22 @@
+.notification-container
+  - flash.each_with_index do |(key, val), i|
+    .notification.max-w-2xl.mb-4(
+      id="#{get_id(i)}"
+      class="#{notification_style_class(key)}"
+    )
+      .notification-inner
+        .p-4
+          .flex.items-start
+            .flex-shrink-0
+              i.notification-icon.fa(class="#{fa_icon_class(key)}")
+            .ml-3.w-0.flex-1(class="pt-0.5")
+              .text-sm.leading-5.font-medium.notification-text
+                - if val.is_a?(Array)
+                  - val.each do |msg|
+                    = simple_format(msg)
+                - else
+                  = simple_format(val)
+            .ml-4.flex-shrink-0.flex(class="pt-0.5")
+              button.notification-close(data-dismiss="##{get_id(i)}")
+                i.notification-close-icon.fa.fa-times
+
