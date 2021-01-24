@@ -48,9 +48,17 @@ module PlaceOrders
     end
 
     def orders
-      @orders ||= read_csv.map do |row|
-        build_order(row)
-      end.compact
+      @orders ||=
+        case shop_type_key
+        when :buyma
+          read_csv.map do |row|
+            build_order(row)
+          end.compact.reverse
+        else
+          read_csv.map do |row|
+            build_order(row)
+          end.compact
+        end
     end
 
     # rubocop:disable Metrics/AbcSize
