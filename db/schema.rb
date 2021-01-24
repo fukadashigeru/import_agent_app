@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_131116) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["buying_org_id"], name: "index_orders_on_buying_org_id"
+    t.index ["ordering_org_id", "shop_type", "trade_no"], name: "index_orders_on_ordering_org_id_and_shop_type_and_trade_no", unique: true
     t.index ["ordering_org_id"], name: "index_orders_on_ordering_org_id"
   end
 

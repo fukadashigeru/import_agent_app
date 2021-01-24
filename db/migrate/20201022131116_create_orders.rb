@@ -20,6 +20,8 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.references :buying_org, foreign_key: { to_table: :orgs }
 
       t.timestamps
+
+      t.index %i[ordering_org_id shop_type trade_no], unique: true
     end
   end
   # rubocop:enable Metrics/AbcSize
