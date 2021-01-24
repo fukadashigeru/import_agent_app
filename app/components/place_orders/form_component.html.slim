@@ -7,8 +7,8 @@
         | 注文案件をCSVファイルでインポートすることができます。
     .mt-6.sm:mt-5.space-y-6.sm:space-y-5
       .sm:grid.sm:grid-cols-3.sm:gap-4.sm:items-start.sm:border-t.sm:border-gray-200.sm:pt-5
-        label.block.text-sm.font-medium.text-gray-700.sm:mt-px.sm:pt-2 
-          | ショップタイプ
+        = render(Ui::LabelComponent.new(form: f, name: :shop_type)) do
+          = form.class.human_attribute_name :shop_type
         .mt-1.sm:mt-0
           = render( \
             Ui::SelectComponent.new( \
@@ -26,8 +26,8 @@
             | 初期設定
     .mt-6.sm:mt-5.space-y-6.sm:space-y-5
       .sm:grid.sm:grid-cols-3.sm:gap-4.sm:items-start.sm:border-t.sm:border-gray-200.sm:pt-5
-        label.block.text-sm.font-medium.text-gray-700.sm:mt-px.sm:pt-2 
-          | ファイル
+        = render(Ui::LabelComponent.new(form: f, name: :csv_file)) do
+          = form.class.human_attribute_name :csv_file
         .mt-1.sm:mt-0.sm:col-span-2
           = f.file_field :csv_file,
             class: 'py-2 text-sm leading-5'
