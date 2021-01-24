@@ -10,10 +10,17 @@
         label.block.text-sm.font-medium.text-gray-700.sm:mt-px.sm:pt-2 
           | ショップタイプ
         .mt-1.sm:mt-0
-          = f.select :shop_type,
-            options_for_select(shop_type_select_options, disabled: disabled_shop_type),
-            { prompt: true },
-            { class: 'max-w-sm block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md' }
+          = render( \
+            Ui::SelectComponent.new( \
+              options_for_select( \
+                shop_type_select_options, \
+                disabled: disabled_shop_type \
+              ), \
+              { prompt: true }, \
+              form: f, \
+              name: :shop_type \
+            ) \
+          )
         div.ml-3.mt-1
           button.inline-flex.items-center.px-3.py-2.border.border-gray-300.shadow-sm.text-sm.leading-4.font-medium.rounded-md.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.opacity-50.cursor-not-allowed(disabled)
             | 初期設定
