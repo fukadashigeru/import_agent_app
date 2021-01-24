@@ -13,7 +13,9 @@
                 th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
                   input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded name="remember_me" type="checkbox"
                 th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
-                  | 注文No
+                  | 取引ID
+                th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+                  | 商品ID
                 th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
                   | 商品画像
                 th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
@@ -37,6 +39,8 @@
                    input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded name="remember_me" type="checkbox"
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                     = order.trade_no
+                  td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
+                    = order.item_no
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                     | 商品画像
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
