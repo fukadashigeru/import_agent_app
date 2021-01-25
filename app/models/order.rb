@@ -1,6 +1,7 @@
 class Order < ApplicationRecord
   belongs_to :ordering_org, class_name: 'Org', inverse_of: :orders_to_order
   belongs_to :buying_org, class_name: 'Org', inverse_of: :orders_to_buy, optional: true
+  has_one :actual_unit, dependent: :destroy
   enum shop_type: ShopType.to_activerecord_enum
   enum status: {
     before_order: 1,

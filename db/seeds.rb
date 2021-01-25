@@ -17,7 +17,7 @@ Org.create(
 org_a = Org.find_by(name: '会社_a')
 org_b = Org.find_by(name: '会社_b')
 
-Order.create(
+orders = Order.create(
   [
     {
       item_no: '21942661',
@@ -242,3 +242,12 @@ Order.create(
     }
   ]
 )
+
+supplier_url = org_a.supplier_urls.create(url:'https://www.google.com/')
+
+orders.each do |order|
+  actual_unit = order.create_actual_unit
+  actual_unit.tap do |unit|
+    unit.actual_unit_urls.create(supplier_url: supplier_url)
+  end
+end
