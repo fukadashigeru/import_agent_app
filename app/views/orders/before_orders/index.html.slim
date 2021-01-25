@@ -46,7 +46,10 @@
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                     a.text-indigo-600.hover:text-indigo-900 href="#"  販売元ページ
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
-                    a.text-indigo-600.hover:text-indigo-900 href="#"  買付先ページ
+                     - actual_unit_urls = order.actual_unit.actual_unit_urls
+                     - actual_unit_urls.each do |actual_unit_url|
+                      = link_to actual_unit_url.supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900', target: :_blank do
+                        | 買付先ページ
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
                     = order.color_size
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500
