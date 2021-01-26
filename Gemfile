@@ -50,6 +50,8 @@ gem 'dry-types'
 
 gem 'activerecord-import'
 
+gem 'kaminari'
+
 gem 'view_component', require: 'view_component/engine'
 
 group :development, :test do

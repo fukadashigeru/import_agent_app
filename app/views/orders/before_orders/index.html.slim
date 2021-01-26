@@ -33,7 +33,7 @@
                 th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
                   | 編集
             tbody.bg-white.divide-y.divide-gray-200
-              - @order_repository.orders.each do |order|
+              - @orders.each do |order|
                 tr
                   td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                    input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded name="remember_me" type="checkbox"
