@@ -12,7 +12,7 @@ RSpec.describe PlaceOrders::Importer do
     end
     # let(:io) { File.open('spec/fixtures/models/place_orders/order_template.csv') }
     let(:io) { StringIO.new(csv_text) }
-    let(:ordering_org) { create :org }
+    let(:ordering_org) { create :org, org_type: :ordering_org }
     let(:shop_type) { 3 }
 
     describe 'Orderの生成数で確認' do
