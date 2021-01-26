@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :actual_unit do
-    order { nil }
+    association :org
   end
 end

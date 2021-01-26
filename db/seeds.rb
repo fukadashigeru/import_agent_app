@@ -243,7 +243,7 @@ orders = Order.create(
   ]
 )
 
-supplier_url = org_a.supplier_urls.create(url:'https://www.google.com/')
+supplier_url = org_a.supplier_urls.create(url: 'https://www.google.com/')
 
 orders.each do |order|
   actual_unit = order.create_actual_unit
