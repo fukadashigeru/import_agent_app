@@ -1,0 +1,75 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@0.1.2 
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.7.1-node-browsers
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: 127.0.0.1
+          PGUSER: root
+          RAILS_ENV: test
+      - image: circleci/postgres:12.2
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: import_agent_test
+          POSTGRES_PASSWORD: ""
+          POSTGRES_HOST_AUTH_METHOD: trust
+    executor: ruby/default
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: |
+            gem install bundler
+      - ruby/bundle-install
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - mb-v2-{{ checksum "Gemfile.lock" }}
+            - mb-v2-
+
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+
+      # Store bundle cache
+      - save_cache:
+          key: mb-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Yarn install
+          command: yarn install
+
+      - run:
+          name: Webpacker
+          command: bundle exec rails webpacker:compile
+
+      - run:
+          name: Database setup
+          command: bin/rails db:schema:load --trace
+
+      - run:
+          name: Run Rubocop
+          command: bundle exec rubocop
+      
+
+      # Run rspec in parallel
+      - run:
+          name: Run rspec in parallel
+          command: |
+            bundle exec rspec
+      # Save test results for timing analysis
+      - store_test_results:
+          path: test_results
