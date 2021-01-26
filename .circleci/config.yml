@@ -6,6 +6,7 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.7.1-node-browsers
+      - image: circleci/postgres:12.2
     executor: ruby/default
     steps:
       - checkout
@@ -31,9 +32,9 @@ jobs:
           paths:
             - vendor/bundle
 
-      # - run:
-      #     name: Wait for DB
-      #     command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
           name: Yarn install
