@@ -9,10 +9,7 @@ module Orders
         status: [:before_order],
         order_by: :desc
       )
-      # @orders = @order_repository.orders.page(params[:page]).per(2)
-      binding.pry
-      @orders = Order.all.page(1).per(2)
-      # @orders = Kaminari.paginate_array(Order.all).page(1).per(2)
+      @orders = @order_repository.orders.page(params[:page]).per(30)
     end
 
     private
