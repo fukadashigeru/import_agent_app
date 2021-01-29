@@ -58,45 +58,6 @@ module PlaceOrders
         end.compact
       end
 
-      # def suppliers
-      #   @suppliers ||=
-      #     item_no_map.map do |item_no|
-      #       build_supplier(item_no)
-      #     end.compact
-      # end
-
-      # def build_supplier(item_no)
-      #   return if suppliers_map_before_import.key?(item_no)
-
-      #   ordering_org.suppliers.build(
-      #     shop_type: shop_type,
-      #     item_no: item_no
-      #   )
-      # end
-
-      # def suppliers_map_before_import
-      #   @suppliers_map_before_import ||= ordering_org
-      #                                    .suppliers
-      #                                    .where(shop_type: shop_type)
-      #                                    .index_by(&:item_no)
-      # end
-
-      # def orders_importing_from_now
-      #   @orders_importing_from_now ||=
-      #     read_csv.map do |row|
-      #       if check_imported_yet(row)
-      #         row[HeaderColumns::ITEM_NO]
-      #       end
-      #     end.compact.reverse
-      # end
-
-      # def orders
-      #   @orders ||=
-      #     read_csv.group_by{|row| row[HeaderColumns::ITEM_NO]}map do |row|
-      #       build_order(row)
-      #     end.compact.reverse
-      # end
-
       def find_or_create_supplier(item_no)
         indexed_suppliers_by_item_no[item_no] || ordering_org.suppliers.create(shop_type: shop_type, item_no: item_no)
       end
@@ -137,10 +98,6 @@ module PlaceOrders
       def indexed_orders_by_trade_no
         @indexed_orders_by_trade_no ||= ordering_org.orders_to_order.where(shop_type: :buyma).index_by(&:trade_no)
       end
-
-      # def supplires_map_after_import
-      #   @supplires_map_after_import ||= ordering_org.suppliers.where(shop_type: shop_type).index_by(&:item_no)
-      # end
 
       def orders_empty
         errors.add(:base, '新しくインポートできる注文はありません。') if orders.empty?
