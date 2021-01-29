@@ -34,16 +34,16 @@ module PlaceOrders
       受注メモ
     ].freeze
 
-    def import!
-      importer.call
-    end
+    # def import!
+    #   build_importer.call
+    # end
 
-    def importer
-      @importer ||= PlaceOrders::Importer.new(
+    def build_importer
+      @build_importer ||= PlaceOrders::BuildImporter.new(
         io: io,
         ordering_org: ordering_org,
         shop_type: shop_type
-      )
+      ).importer
     end
 
     private

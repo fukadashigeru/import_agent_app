@@ -18,7 +18,7 @@ module PlaceOrders
     def create
       @form = PlaceOrders::Form.new(ordering_org: @org, **form_params)
       if @form.valid?
-        @importer = @form.importer
+        @importer = @form.build_importer
         begin
           if @importer.call
             flash[:success] = 'インポート処理が完了しました。'

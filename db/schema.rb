@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_231816) do
+ActiveRecord::Schema.define(version: 2021_01_28_114747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,9 +66,11 @@ ActiveRecord::Schema.define(version: 2021_01_27_231816) do
     t.bigint "buying_org_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "supplier_id"
     t.index ["buying_org_id"], name: "index_orders_on_buying_org_id"
     t.index ["ordering_org_id", "shop_type", "trade_no"], name: "index_orders_on_ordering_org_id_and_shop_type_and_trade_no", unique: true
     t.index ["ordering_org_id"], name: "index_orders_on_ordering_org_id"
+    t.index ["supplier_id"], name: "index_orders_on_supplier_id"
   end
 
   create_table "orgs", force: :cascade do |t|
@@ -89,6 +91,8 @@ ActiveRecord::Schema.define(version: 2021_01_27_231816) do
 
   create_table "suppliers", force: :cascade do |t|
     t.bigint "org_id", null: false
+    t.integer "shop_type"
+    t.string "item_no", comment: "商品ID"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "first_priority_unit_id"
@@ -104,6 +108,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_231816) do
   add_foreign_key "optional_units", "suppliers"
   add_foreign_key "orders", "orgs", column: "buying_org_id"
   add_foreign_key "orders", "orgs", column: "ordering_org_id"
+  add_foreign_key "orders", "suppliers"
   add_foreign_key "supplier_urls", "orgs"
   add_foreign_key "suppliers", "optional_units", column: "first_priority_unit_id"
   add_foreign_key "suppliers", "orgs"
