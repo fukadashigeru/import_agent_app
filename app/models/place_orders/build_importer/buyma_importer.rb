@@ -7,7 +7,8 @@ module PlaceOrders
       attribute :ordering_org, Types.Instance(Org)
       attribute :shop_type, Types::Params::Integer
 
-      validate :required_to_import_present
+      validate :new_order_present
+      validate :check_trade_no_duplication
 
       BATCH_SIZE = 300
 
@@ -24,7 +25,7 @@ module PlaceOrders
 
       def import_suppliers!
         SupplierImporter.new(
-          io: io,
+          io: StringIO.new(csv_string),
           ordering_org: ordering_org,
           shop_type: shop_type
         ).call
@@ -32,7 +33,7 @@ module PlaceOrders
 
       def import_orders!
         OrderImporter.new(
-          io: io,
+          io: StringIO.new(csv_string),
           ordering_org: ordering_org,
           shop_type: shop_type
         ).call
@@ -56,20 +57,28 @@ module PlaceOrders
         @csv_string ||= NKF.nkf('-xw', io.read)
       end
 
-      def rows_trade_no_array
-        @rows_trade_no_array ||= rows.map(&:trade_no)
+      def csv_trade_no_array
+        @csv_trade_no_array ||= rows.map(&:trade_no)
       end
 
       def orders_trade_no_array
         @orders_trade_no_array ||= ordering_org.orders_to_order.send(shop_type_key).map(&:trade_no)
       end
 
-      def required_to_import
-        @required_to_import ||= rows_trade_no_array - orders_trade_no_array
+      def new_order
+        @new_order ||= csv_trade_no_array - orders_trade_no_array
       end
 
-      def required_to_import_present
-        errors.add(:base, '新しくインポートできる注文はありません。') if required_to_import.empty?
+      def new_order_present
+        errors.add(:base, '新しくインポートできる注文はありません。') if new_order.empty?
+      end
+
+      def duplication_presence
+        (csv_trade_no_array.count - csv_trade_no_array.uniq.count).positive?
+      end
+
+      def check_trade_no_duplication
+        errors.add(:base, 'ファイル内に同じお取引IDが2件以上ありインポートできません。') if duplication_presence
       end
     end
   end

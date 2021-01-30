@@ -7,6 +7,7 @@ module PlaceOrders
         attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
         attribute :ordering_org, Types.Instance(Org)
         attribute :shop_type, Types::Params::Integer
+        # attribute :rows, Types::Array.of(Types.Instance(CsvRow))
 
         def call
           import_orders!
