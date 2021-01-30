@@ -33,7 +33,10 @@ RSpec.describe PlaceOrders::BuildImporter::BuymaImporter do
         context 'CSV内が一部が新規登録の場合' do
           context '同じshop_typeで同じ取引IDのレコードがある場合' do
             before do
-              create :order, trade_no: '10', ordering_org: ordering_org, shop_type: shop_type, supplier: supplier
+              create :order, trade_no: '10',
+                             ordering_org: ordering_org,
+                             shop_type: shop_type,
+                             supplier: supplier
             end
             let(:supplier) { create :supplier, org: ordering_org, shop_type: shop_type, item_no: '1' }
             it 'Orderレコードが2個生成されるはず/エラー文がない' do
@@ -43,7 +46,10 @@ RSpec.describe PlaceOrders::BuildImporter::BuymaImporter do
           end
           context '違うshop_typeで同じ取引IDのレコードがある場合' do
             before do
-              create :order, trade_no: '10',ordering_org: ordering_org, shop_type: :default, supplier: supplier
+              create :order, trade_no: '10',
+                             ordering_org: ordering_org,
+                             shop_type: :default,
+                             supplier: supplier
             end
             let(:supplier) { create :supplier, org: ordering_org, shop_type: :default, item_no: '1' }
             it 'Orderレコードが2個生成されるはず/エラー文がない' do
@@ -54,8 +60,14 @@ RSpec.describe PlaceOrders::BuildImporter::BuymaImporter do
         end
         context 'CSV内がすべて登録済の場合' do
           before do
-            create :order, trade_no: '10', ordering_org: ordering_org, shop_type: shop_type, supplier: supplier
-            create :order, trade_no: '20', ordering_org: ordering_org, shop_type: shop_type, supplier: supplier
+            create :order, trade_no: '10',
+                           ordering_org: ordering_org,
+                           shop_type: shop_type,
+                           supplier: supplier
+            create :order, trade_no: '20',
+                           ordering_org: ordering_org,
+                           shop_type: shop_type,
+                           supplier: supplier
           end
           let(:supplier) { create :supplier, org: ordering_org, shop_type: shop_type, item_no: '1' }
           it 'Orderレコードがされない/エラー文がない' do

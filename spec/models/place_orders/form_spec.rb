@@ -8,7 +8,7 @@ RSpec.describe PlaceOrders::Form do
       csv_file: csv_file
     )
   end
-  let(:importer) { form.importer }
+  let(:importer) { form.build_importer }
   let(:ordering_org) { create :org }
   let(:shop_type) { 3 }
   let(:csv_file) do
@@ -81,8 +81,8 @@ RSpec.describe PlaceOrders::Form do
     end
   end
   describe 'Methods' do
-    describe '#import!' do
-      subject { form.import! }
+    describe '#build_importer' do
+      subject { form.build_importer }
       let(:shop_type) { 3 }
       let(:io) { StringIO.new(csv_text) }
       let(:csv_text) do
@@ -101,8 +101,11 @@ RSpec.describe PlaceOrders::Form do
         CSV
       end
       it 'callが一度呼ばれるはず' do
-        expect(importer).to receive(:call).once
-        subject
+        # is_expected.to have_attributes(
+        #   ordering_org: ordering_org,
+        #   shop_type: 3
+        # )
+        is_expected.to be_an_instance_of(PlaceOrders::BuildImporter::BuymaImporter)
       end
     end
   end

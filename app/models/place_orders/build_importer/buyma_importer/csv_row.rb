@@ -38,7 +38,7 @@ module PlaceOrders
         def address
           row[HeaderColumns::ADDRESS]
         end
-  
+
         def addressee
           row[HeaderColumns::NAME]
         end

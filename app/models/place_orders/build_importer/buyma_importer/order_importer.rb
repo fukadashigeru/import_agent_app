@@ -52,7 +52,10 @@ module PlaceOrders
         end
 
         def indexed_orders_by_trade_no
-          @indexed_orders_by_trade_no ||= ordering_org.orders_to_order.send(shop_type_key).index_by(&:trade_no)
+          @indexed_orders_by_trade_no ||= ordering_org
+                                          .orders_to_order
+                                          .send(shop_type_key)
+                                          .index_by(&:trade_no)
         end
 
         def shop_type_key
