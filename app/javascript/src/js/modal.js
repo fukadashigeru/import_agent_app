@@ -1,9 +1,7 @@
 import { enter, leave } from './transitions'
 
 document.addEventListener('click', (e) => {
-    console.log(e)
     const clicked = e.target.closest('[data-modal-open]')
-    console.log(clicked)
     if (clicked) {
         const targetSelector = clicked.getAttribute('data-modal-open')
         const target = document.querySelector(targetSelector)
