@@ -5,6 +5,7 @@ class Supplier
 
     attribute :ordering_org, Types.Instance(Org)
     attribute :supplier, Types.Instance(Supplier)
+    attribute :order, Types.Instance(Order)
     attribute :optional_unit_forms_attrs, (
       Types::Array.of(
         Types::Hash.schema(
@@ -15,15 +16,20 @@ class Supplier
       ).optional.default { {} }
     )
 
-    def call!
+    def save_optional_units!
       ApplicationRecord.transaction do
-        create_optional_units!
+        optional_unit_forms.each(&:save_optional_unit!)
       end
     end
 
     def optional_unit_forms(count: 5)
       optional_unit_forms = optional_unit_forms_attrs.map do |optional_unit_forms_attr|
-        OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier, **optional_unit_forms_attr)
+        OptionalUnitForm.new(
+          ordering_org: ordering_org,
+          supplier: supplier,
+          order: order,
+          **optional_unit_forms_attr
+        )
       end
 
       @optional_unit_forms ||= optional_unit_forms.tap do |this_map|
@@ -35,10 +41,19 @@ class Supplier
       end
     end
 
-    private
+    def actual_unit_forms
+      @actual_unit_forms ||=
+        actual_unit_forms_attrs.map do |actual_unit_forms_attr|
+          ActualUnitForm.new(
+            ordering_org: ordering_org, supplier: supplier, **actual_unit_forms_attr
+          )
+        end
+    end
 
-    def create_optional_units!
-      optional_unit_forms.each(&:call!)
+    def actual_unit_forms_attrs
+      @actual_unit_forms_attrs ||= optional_unit_forms_attrs.map do |optional_unit_forms_attr|
+        optional_unit_forms_attr.reject{ |k, v| k == first_priority }
+      end
     end
   end
 end

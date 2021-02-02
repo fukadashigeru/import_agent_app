@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :actual_unit do
-    association :org, factory: buying_org
+    association :order
   end
 end
