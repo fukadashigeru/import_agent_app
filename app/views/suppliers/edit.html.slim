@@ -1,0 +1,26 @@
+= form_with url: [@org, @supplier], model: @form, method: :put, local: true do |f|
+  = render(Ui::FieldsetComponent.new) do |fieldset|
+    - fieldset.with(:title)
+      | 買付先登録
+    - fieldset.with(:subtext)
+      | 商品IDが同じ注文は次回からこれらの買付先が設定されます。
+  .mt-8.border-t.border-gray-200.pt-5
+  .shadow.overflow-hidden.border-b.border-gray-200(class="sm:rounded-lg")
+    table.min-w-full.divide-y.divide-gray-200
+      thead
+        tr
+          th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-12
+          th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
+            | 買付先URL
+      tbody.bg-white.divide-y.divide-gray-200
+        - @form.optional_unit_forms.each do |optional_unit_form|
+          = f.fields :optional_units, model: optional_unit_form do |ff|
+            tr
+              td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                = ff.radio_button :first_priority, true, name: 'optional_unit_forms[][first_priority]'
+              td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                = ff.text_field :url, name: 'optional_unit_forms[][url]',class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+  = render(Ui::ActionsComponent.new) do
+    .btn-wrapper
+      button.inline-flex.items-center.px-4.py-2.border.border-transparent.text-sm.font-medium.rounded-md.shadow-sm.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(type="submit")
+        | 登録
