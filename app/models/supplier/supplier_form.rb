@@ -11,17 +11,19 @@ class Supplier
         Types::Hash.schema(
           first_priority: Types::Params::Bool.default(false),
           optional_unit_url_id: Types::Params::Integer.optional.default(nil),
-          url: Types::String
+          url: Types::String.default(''.freeze)
         )
       ).optional.default { {} }
     )
 
-    def save_optional_units!
+    def save_units!
       ApplicationRecord.transaction do
         optional_unit_forms.each(&:save_optional_unit!)
+        actual_unit_form.save_actual_unit!
       end
     end
 
+    # デフォルトのoptional_unit_formsを生成
     def optional_unit_forms(count: 5)
       optional_unit_forms = optional_unit_forms_attrs.map do |optional_unit_forms_attr|
         OptionalUnitForm.new(
@@ -36,24 +38,29 @@ class Supplier
         this_map if this_map.count >= count
 
         (count - this_map.count).times do |_|
-          this_map << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier)
+          this_map << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier, order: order)
         end
       end
     end
 
-    def actual_unit_forms
-      @actual_unit_forms ||=
-        actual_unit_forms_attrs.map do |actual_unit_forms_attr|
+    # optional_unit_forms_attrsからactual_unit_formsも生成する
+    def actual_unit_form
+      @actual_unit_form ||=
           ActualUnitForm.new(
-            ordering_org: ordering_org, supplier: supplier, **actual_unit_forms_attr
+            ordering_org: ordering_org, supplier: supplier, order: order, **actual_unit_form_attr
           )
-        end
     end
 
-    def actual_unit_forms_attrs
-      @actual_unit_forms_attrs ||= optional_unit_forms_attrs.map do |optional_unit_forms_attr|
-        optional_unit_forms_attr.reject{ |k, v| k == first_priority }
-      end
+    private
+
+    def actual_unit_form_attr
+      @actual_unit_form_attr ||= {}.tap do |actual_unit_forms_attr|
+        optional_unit_forms_attrs.each do |optional_unit_forms_attr|
+          actual_unit_forms_attr.merge!(
+            optional_unit_forms_attr
+          ) if optional_unit_forms_attr[:first_priority]
+        end
+      end.reject{ |k, v| k == :first_priority }
     end
   end
 end

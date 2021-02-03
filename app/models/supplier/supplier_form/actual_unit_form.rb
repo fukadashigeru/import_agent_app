@@ -10,7 +10,7 @@ class Supplier
       # attribute :first_priority, Types::Bool.optional.default(false)
       attribute :optional_unit_url_id, Types::Integer.optional.default(nil)
       attribute :actual_unit_url_id, Types::Integer.optional.default(nil)
-      attribute :url, Types::String.optional.default(nil)
+      attribute :url, Types::String.optional.default(''.freeze)
 
       def save_actual_unit!
         return if url.empty?

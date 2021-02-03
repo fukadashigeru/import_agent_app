@@ -9,7 +9,7 @@ class Supplier
       attribute :order, Types.Instance(Order)
       attribute :first_priority, Types::Bool.optional.default(false)
       attribute :optional_unit_url_id, Types::Integer.optional.default(nil)
-      attribute :url, Types::String.optional.default(nil)
+      attribute :url, Types::String.optional.default(''.freeze)
 
       def save_optional_unit!
         return if url.empty?
