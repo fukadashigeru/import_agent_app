@@ -63,11 +63,13 @@ RSpec.describe Supplier::SupplierForm do
     context 'optional_unit_forms_attrsの中身がからのとき' do
       let(:optional_unit_forms_attrs) { [] }
       it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 3
-        expect(subject.first).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.second).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.third).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.fourth).to be nil
+        expect(subject.count).to eq 5
+        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[5]).to be nil
       end
     end
     context 'optional_unit_forms_attrsの中身が2個あるとき' do
@@ -78,10 +80,13 @@ RSpec.describe Supplier::SupplierForm do
         ]
       end
       it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 3
-        expect(subject.first).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.second).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.third).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject.count).to eq 5
+        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[5]).to be nil
       end
     end
     context 'optional_unit_forms_attrsの中身が3個あるとき' do
@@ -93,10 +98,13 @@ RSpec.describe Supplier::SupplierForm do
         ]
       end
       it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 3
-        expect(subject.first).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.second).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.third).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject.count).to eq 5
+        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[5]).to be nil
       end
     end
     context 'optional_unit_forms_attrsの中身が4個あるとき' do
@@ -105,15 +113,20 @@ RSpec.describe Supplier::SupplierForm do
           { first_priority: true, optional_unit_url_id: nil, url: 'https://example_1.com/' },
           { first_priority: false, optional_unit_url_id: nil, url: 'https://example_2.com/' },
           { first_priority: false, optional_unit_url_id: nil, url: 'https://example_3.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_4.com/' }
+          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_4.com/' },
+          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_5.com/' },
+          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_6.com/' }
         ]
       end
       it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 4
-        expect(subject.first).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.second).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.third).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject.fourth).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject.count).to eq 6
+        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[5]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
+        expect(subject[6]).to be nil
       end
     end
   end
