@@ -6,17 +6,19 @@ RSpec.describe Supplier::SupplierForm do
       ordering_org: org,
       supplier: supplier,
       order: order,
+      first_priority_attr: first_priority_attr,
       optional_unit_forms_attrs: optional_unit_forms_attrs
     )
   end
   let(:org) { create :org, org_type: :ordering_org }
   let(:supplier) { create :supplier, org: org }
   let(:order) { create :order, ordering_org: org, supplier: supplier }
+  let(:first_priority_attr) { '0' }
   let(:optional_unit_forms_attrs) do
     [
-      { first_priority: true, optional_unit_url_id: nil, url: 'https://example_1.com/' },
-      { first_priority: false, optional_unit_url_id: nil, url: 'https://example_2.com/' },
-      { first_priority: false, optional_unit_url_id: nil, url: 'https://example_3.com/' }
+      { optional_unit_url_id: nil, url: 'https://example_1.com/' },
+      { optional_unit_url_id: nil, url: 'https://example_2.com/' },
+      { optional_unit_url_id: nil, url: 'https://example_3.com/' }
     ]
   end
 
@@ -61,6 +63,7 @@ RSpec.describe Supplier::SupplierForm do
   describe 'optional_unit_forms' do
     subject { form.optional_unit_forms }
     context 'optional_unit_forms_attrsの中身がからのとき' do
+      let(:first_priority_attr) { nil }
       let(:optional_unit_forms_attrs) { [] }
       it 'OptionalUnitFormが3個つくられる' do
         expect(subject.count).to eq 5
@@ -73,10 +76,11 @@ RSpec.describe Supplier::SupplierForm do
       end
     end
     context 'optional_unit_forms_attrsの中身が2個あるとき' do
+      let(:first_priority_attr) { '1' }
       let(:optional_unit_forms_attrs) do
         [
-          { first_priority: true, optional_unit_url_id: nil, url: 'https://example_1.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_2.com/' }
+          { optional_unit_url_id: nil, url: 'https://example_1.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_2.com/' }
         ]
       end
       it 'OptionalUnitFormが3個つくられる' do
@@ -90,11 +94,12 @@ RSpec.describe Supplier::SupplierForm do
       end
     end
     context 'optional_unit_forms_attrsの中身が3個あるとき' do
+      let(:first_priority_attr) { '2' }
       let(:optional_unit_forms_attrs) do
         [
-          { first_priority: true, optional_unit_url_id: nil, url: 'https://example_1.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_2.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_3.com/' }
+          { optional_unit_url_id: nil, url: 'https://example_1.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_2.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_3.com/' }
         ]
       end
       it 'OptionalUnitFormが3個つくられる' do
@@ -108,14 +113,15 @@ RSpec.describe Supplier::SupplierForm do
       end
     end
     context 'optional_unit_forms_attrsの中身が4個あるとき' do
+      let(:first_priority_attr) { '3' }
       let(:optional_unit_forms_attrs) do
         [
           { first_priority: true, optional_unit_url_id: nil, url: 'https://example_1.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_2.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_3.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_4.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_5.com/' },
-          { first_priority: false, optional_unit_url_id: nil, url: 'https://example_6.com/' }
+          { optional_unit_url_id: nil, url: 'https://example_2.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_3.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_4.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_5.com/' },
+          { optional_unit_url_id: nil, url: 'https://example_6.com/' }
         ]
       end
       it 'OptionalUnitFormが3個つくられる' do

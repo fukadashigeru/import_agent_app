@@ -18,8 +18,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
   let(:url) { 'https://example_1.com/' }
 
 
-  describe 'call' do
-    subject { form.call }
+  describe 'save_optional_unit!' do
+    subject { form.save_optional_unit! }
     context 'optional_unitの生成数を確認する' do
       context 'optional_unit_url_idがある場合' do
         let(:optional_unit_url_id) { optional_unit_url.id }

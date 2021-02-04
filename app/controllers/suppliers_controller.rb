@@ -1,9 +1,14 @@
 class SuppliersController < ApplicationController
   before_action :set_org
   before_action :set_supplier
+  before_action :set_order
 
   def edit
-    @form = Supplier::SupplierForm.new(ordering_org: @org, supplier: @supplier)
+    @form = Supplier::SupplierForm.new(
+      ordering_org: @org,
+      supplier: @supplier,
+      order: @order 
+    )
     @optional_unit_forms = @form.optional_unit_forms
   end
 
@@ -11,13 +16,15 @@ class SuppliersController < ApplicationController
     @form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
+      order: @order,
+      first_priority_attr: first_priority_attr,
       optional_unit_forms_attrs: optional_unit_forms_attrs
     )
-    @form.call!
+    @form.save_units!
     redirect_to [@org, :orders, :before_orders]
   end
 
-  private
+  # private
 
   def set_org
     @org = Org.find(params[:org_id])
@@ -27,21 +34,47 @@ class SuppliersController < ApplicationController
     @supplier = @org.suppliers.find(params[:id])
   end
 
+  def set_order
+    @order = @supplier.orders.find(params[:order_id])
+  end
+
+  # def optional_unit_forms_attrs
+  #   params.require(:optional_unit_forms).values.map{|a| a.first}
+  # end
+
+  def first_priority_attr
+    normalize_params(
+      params
+      .permit(
+        :first_priority
+      )
+    ).fetch(:first_priority, {})
+  end
+
   def optional_unit_forms_attrs
     normalize_params(
       params
       .permit(
-        **ATTRIBUTE_NAMES
+        optional_unit_forms: %i[url optional_unit_url_id]
       )
-    ).fetch(:optional_unit_forms)
+    ).fetch(:optional_unit_forms, {})
   end
 
-  ATTRIBUTE_NAMES = {
-    optional_unit_forms: %i[
-      first_priority
-      url
-    ]
-  }.freeze
+  # def optional_unit_forms_attrs
+  #   normalize_params(
+  #     params
+  #     .permit(
+  #       **ATTRIBUTE_NAMES
+  #     )
+  #   ).fetch(:optional_unit_forms)
+  # end
+
+  # ATTRIBUTE_NAMES = {
+  #   optional_unit_forms: %i[
+  #     first_priority
+  #     url
+  #   ]
+  # }.freeze
 
   def normalize_params(permitted_params)
     p =
