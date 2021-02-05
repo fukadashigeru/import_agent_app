@@ -7,9 +7,9 @@ class SuppliersController < ApplicationController
     @form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
-      order: @order 
+      order: @order
     )
-    @optional_unit_forms = @form.optional_unit_forms
+    @optional_unit_forms = @form.optional_unit_forms_for_form
   end
 
   def update

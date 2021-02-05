@@ -8,17 +8,17 @@ class Supplier
       attribute :supplier, Types.Instance(Supplier)
       # attribute :order, Types.Instance(Order)
       attribute :first_priority, Types::Bool.optional.default(false)
-      attribute :optional_unit_url_id, Types::Integer.optional.default(nil)
+      attribute :optional_unit_url_id, (Types::Optional::Integer | Types::Optional::String).optional.default(nil)
       attribute :url, Types::String.optional.default(''.freeze)
 
       def save_optional_unit!
         return if url.empty?
 
         optional_unit =
-          if optional_unit_url_id
-            update_optional_unit!
-          else
+          if optional_unit_url_id.blank?
             create_optional_unit!
+          else
+            update_optional_unit!
           end
 
         assign_first_priority(optional_unit) if first_priority
@@ -36,7 +36,7 @@ class Supplier
 
       def update_optional_unit!
         supplier_url = ordering_org.supplier_urls.find_or_create_by(url: url)
-        optional_unit_url = indexed_optional_unit_urls_by_id[optional_unit_url_id]
+        optional_unit_url = indexed_optional_unit_urls_by_id[optional_unit_url_id.to_i]
         optional_unit_url.update(supplier_url: supplier_url)
         optional_unit_url.optional_unit
       end

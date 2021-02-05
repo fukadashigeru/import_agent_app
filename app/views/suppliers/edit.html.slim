@@ -13,7 +13,7 @@
           th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
             | 買付先URL
       tbody.bg-white.divide-y.divide-gray-200
-        - @form.optional_unit_forms.each_with_index do |optional_unit_form, i|
+        - @optional_unit_forms.each_with_index do |optional_unit_form, i|
           = f.fields :optional_units, model: optional_unit_form do |ff|
             tr
               td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
@@ -21,7 +21,7 @@
                 / = ff.radio_butÚton :first_priority, true, name: 'optional_unit_forms[][first_priority]'
               td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                 = ff.text_field :url, name: "optional_unit_forms[][url]",class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                / = ff.hidden_field :optional_unit_form_id, value: i, name: "optional_unit_forms[][optional_unit_url_id]"
+                = ff.hidden_field :optional_unit_url_id, value: optional_unit_form.optional_unit_url_id, name: "optional_unit_forms[][optional_unit_url_id]"
   = render(Ui::ActionsComponent.new) do
     .btn-wrapper
       button.inline-flex.items-center.px-4.py-2.border.border-transparent.text-sm.font-medium.rounded-md.shadow-sm.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(type="submit")

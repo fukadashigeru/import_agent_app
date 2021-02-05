@@ -8,14 +8,14 @@ class Supplier
       attribute :supplier, Types.Instance(Supplier)
       attribute :order, Types.Instance(Order)
       # attribute :first_priority, Types::Bool.optional.default(false)
-      attribute :optional_unit_url_id, Types::Integer.optional.default(nil)
-      attribute :actual_unit_url_id, Types::Integer.optional.default(nil)
+      attribute :optional_unit_url_id, (Types::Optional::Integer | Types::Optional::String).optional.default(nil)
+      # attribute :actual_unit_url_id, Types::Integer.optional.default(nil)
       attribute :url, Types::String.optional.default(''.freeze)
 
       def save_actual_unit!
         return if url.empty?
 
-        if actual_unit_url_id
+        if order.actual_unit
           update_actual_unit!
         else
           create_actual_unit!
@@ -34,17 +34,13 @@ class Supplier
 
       def update_actual_unit!
         supplier_url = ordering_org.supplier_urls.find_or_create_by(url: url)
-        actual_unit_url = indexed_actual_unit_urls_by_id[actual_unit_url_id]
+        actual_unit_url = actual_unit.actual_unit_urls.first
         actual_unit_url.update(supplier_url: supplier_url)
         actual_unit_url.actual_unit
       end
 
       def actual_unit
         @actual_unit ||= order.actual_unit
-      end
-
-      def indexed_actual_unit_urls_by_id
-        @indexed_actual_unit_urls_by_id ||= actual_unit.actual_unit_urls.index_by(&:id)
       end
     end
   end
