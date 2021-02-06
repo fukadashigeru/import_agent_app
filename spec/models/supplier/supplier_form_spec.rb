@@ -376,117 +376,183 @@ RSpec.describe Supplier::SupplierForm do
       end
     end
 
-    context '不正なパラメーター' do
-      context 'optional_unitを確認する' do
-        it 'optional_unitで3個生成される' do
-          expect { subject }.to change { supplier.optional_units.count }.by(3)
-        end
-      end
-      context 'optional_unit_urlを確認する' do
-        it 'optional_unit_urlが3個生成される' do
-          expect { subject }.to change { supplier.optional_units.map(&:optional_unit_urls).flatten.count }.by(3)
-        end
-      end
-      context 'actual_unitを確認する' do
-        it 'actual_unitが(1個)生成される' do
-          subject
-          expect(order.actual_unit).to be_present
-        end
-      end
-      context 'actual_unit_urlを確認する' do
-        it 'actual_unit_urlが1個生成される' do
-          subject
-          expect(order.actual_unit.actual_unit_urls.count).to eq 1
-        end
-      end
-      context 'supplier_urlsを確認する' do
-        it 'supplier関連するsupplier_urlsが3個生成される' do
-          subject
-          expect(order.actual_unit.actual_unit_urls.map(&:supplier_url).first.url).to eq 'https://example_1.com/'
-        end
-        it 'orderに関連するsupplier_urlsが1個生成される' do
-          expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(1)
-        end
-        it 'orgに紐付いたsupplier_urlsが3個生成される' do
-          expect { subject }.to change { org.supplier_urls.count }.by(3)
-        end
-      end
-    end
+    # context '不正なパラメーター' do
+    #   context 'optional_unitを確認する' do
+    #     it 'optional_unitで3個生成される' do
+    #       expect { subject }.to change { supplier.optional_units.count }.by(3)
+    #     end
+    #   end
+    #   context 'optional_unit_urlを確認する' do
+    #     it 'optional_unit_urlが3個生成される' do
+    #       expect { subject }.to change { supplier.optional_units.map(&:optional_unit_urls).flatten.count }.by(3)
+    #     end
+    #   end
+    #   context 'actual_unitを確認する' do
+    #     it 'actual_unitが(1個)生成される' do
+    #       subject
+    #       expect(order.actual_unit).to be_present
+    #     end
+    #   end
+    #   context 'actual_unit_urlを確認する' do
+    #     it 'actual_unit_urlが1個生成される' do
+    #       subject
+    #       expect(order.actual_unit.actual_unit_urls.count).to eq 1
+    #     end
+    #   end
+    #   context 'supplier_urlsを確認する' do
+    #     it 'supplier関連するsupplier_urlsが3個生成される' do
+    #       subject
+    #       expect(order.actual_unit.actual_unit_urls.map(&:supplier_url).first.url).to eq 'https://example_1.com/'
+    #     end
+    #     it 'orderに関連するsupplier_urlsが1個生成される' do
+    #       expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(1)
+    #     end
+    #     it 'orgに紐付いたsupplier_urlsが3個生成される' do
+    #       expect { subject }.to change { org.supplier_urls.count }.by(3)
+    #     end
+    #   end
+    # end
   end
 
   describe 'optional_unit_forms_for_form' do
     subject { form.optional_unit_forms_for_form }
-    context 'optional_unit_forms_attrsの中身がからのとき' do
-      let(:first_priority_attr) { nil }
+    context 'レコードがないとき' do
       let(:optional_unit_forms_attrs) { [] }
-      it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 5
-        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[5]).to be nil
+      it 'OptionalUnitFromのoptional_unit_url_id_and_url_arrayが全て空配列' do
+        subject
+        expect(subject[0].optional_unit_url_id_and_url_array).to eq []
+        expect(subject[1].optional_unit_url_id_and_url_array).to eq []
+        expect(subject[2].optional_unit_url_id_and_url_array).to eq []
+        expect(subject[3].optional_unit_url_id_and_url_array).to eq []
+        expect(subject[4].optional_unit_url_id_and_url_array).to eq []
       end
     end
-    context 'optional_unit_forms_attrsの中身が2個あるとき' do
-      let(:first_priority_attr) { '1' }
-      let(:optional_unit_forms_attrs) do
-        [
-          { optional_unit_url_id: nil, url: 'https://example_1.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_2.com/' }
-        ]
+
+    context 'optional_unitsレコードが3個あるとき' do
+      let(:optional_unit_forms_attrs) { [] }
+      let!(:optional_unit_a) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_a1) do
+        create :optional_unit_url, optional_unit: optional_unit_a, supplier_url: supplier_url_a1
       end
-      it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 5
-        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[5]).to be nil
+      let!(:optional_unit_url_a2) do
+        create :optional_unit_url, optional_unit: optional_unit_a, supplier_url: supplier_url_a2
+      end
+      let!(:supplier_url_a1) { create :supplier_url, url: 'https://example_a1.com', org: org }
+      let!(:supplier_url_a2) { create :supplier_url, url: 'https://example_a2.com', org: org }
+      before { supplier.update(first_priority_unit_id: optional_unit_a.id) }
+
+      let!(:optional_unit_b) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_b1) do
+        create :optional_unit_url, optional_unit: optional_unit_b, supplier_url: supplier_url_b1
+      end
+      let!(:optional_unit_url_b2) do
+        create :optional_unit_url, optional_unit: optional_unit_b, supplier_url: supplier_url_b2
+      end
+      let!(:supplier_url_b1) { create :supplier_url, url: 'https://example_b1.com', org: org }
+      let!(:supplier_url_b2) { create :supplier_url, url: 'https://example_b2.com', org: org }
+
+      let!(:optional_unit_c) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_c1) do
+        create :optional_unit_url, optional_unit: optional_unit_c, supplier_url: supplier_url_c1
+      end
+      let!(:optional_unit_url_c2) do
+        create :optional_unit_url, optional_unit: optional_unit_c, supplier_url: supplier_url_c2
+      end
+      let!(:supplier_url_c1) { create :supplier_url, url: 'https://example_c1.com', org: org }
+      let!(:supplier_url_c2) { create :supplier_url, url: 'https://example_c2.com', org: org }
+      it 'OptionalUnitFromのoptional_unit_url_id_and_url_arrayがいい感じ' do
+        subject
+        expect(subject[0].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_a1.id, url: 'https://example_a1.com' },
+          { optional_unit_url_id: optional_unit_url_a2.id, url: 'https://example_a2.com' }
+        ]
+        expect(subject[1].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_b1.id, url: 'https://example_b1.com' },
+          { optional_unit_url_id: optional_unit_url_b2.id, url: 'https://example_b2.com' }
+        ]
+        expect(subject[2].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_c1.id, url: 'https://example_c1.com' },
+          { optional_unit_url_id: optional_unit_url_c2.id, url: 'https://example_c2.com' }
+        ]
+        expect(subject[3].optional_unit_url_id_and_url_array).to eq []
+        expect(subject[4].optional_unit_url_id_and_url_array).to eq []
       end
     end
-    context 'optional_unit_forms_attrsの中身が3個あるとき' do
-      let(:first_priority_attr) { '2' }
-      let(:optional_unit_forms_attrs) do
-        [
-          { optional_unit_url_id: nil, url: 'https://example_1.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_2.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_3.com/' }
+
+    context 'optional_unitsレコードがMAXの5個あるとき' do
+      let(:optional_unit_forms_attrs) { [] }
+      let!(:optional_unit_a) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_a1) do
+        create :optional_unit_url, optional_unit: optional_unit_a, supplier_url: supplier_url_a1
+      end
+      let!(:optional_unit_url_a2) do
+        create :optional_unit_url, optional_unit: optional_unit_a, supplier_url: supplier_url_a2
+      end
+      let!(:supplier_url_a1) { create :supplier_url, url: 'https://example_a1.com', org: org }
+      let!(:supplier_url_a2) { create :supplier_url, url: 'https://example_a2.com', org: org }
+      before { supplier.update(first_priority_unit_id: optional_unit_a.id) }
+
+      let!(:optional_unit_b) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_b1) do
+        create :optional_unit_url, optional_unit: optional_unit_b, supplier_url: supplier_url_b1
+      end
+      let!(:optional_unit_url_b2) do
+        create :optional_unit_url, optional_unit: optional_unit_b, supplier_url: supplier_url_b2
+      end
+      let!(:supplier_url_b1) { create :supplier_url, url: 'https://example_b1.com', org: org }
+      let!(:supplier_url_b2) { create :supplier_url, url: 'https://example_b2.com', org: org }
+
+      let!(:optional_unit_c) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_c1) do
+        create :optional_unit_url, optional_unit: optional_unit_c, supplier_url: supplier_url_c1
+      end
+      let!(:optional_unit_url_c2) do
+        create :optional_unit_url, optional_unit: optional_unit_c, supplier_url: supplier_url_c2
+      end
+      let!(:supplier_url_c1) { create :supplier_url, url: 'https://example_c1.com', org: org }
+      let!(:supplier_url_c2) { create :supplier_url, url: 'https://example_c2.com', org: org }
+
+      let!(:optional_unit_d) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_d1) do
+        create :optional_unit_url, optional_unit: optional_unit_d, supplier_url: supplier_url_d1
+      end
+      let!(:optional_unit_url_d2) do
+        create :optional_unit_url, optional_unit: optional_unit_d, supplier_url: supplier_url_d2
+      end
+      let!(:supplier_url_d1) { create :supplier_url, url: 'https://example_d1.com', org: org }
+      let!(:supplier_url_d2) { create :supplier_url, url: 'https://example_d2.com', org: org }
+
+      let!(:optional_unit_e) { create :optional_unit, supplier: supplier }
+      let!(:optional_unit_url_e1) do
+        create :optional_unit_url, optional_unit: optional_unit_e, supplier_url: supplier_url_e1
+      end
+      let!(:optional_unit_url_e2) do
+        create :optional_unit_url, optional_unit: optional_unit_e, supplier_url: supplier_url_e2
+      end
+      let!(:supplier_url_e1) { create :supplier_url, url: 'https://example_e1.com', org: org }
+      let!(:supplier_url_e2) { create :supplier_url, url: 'https://example_e2.com', org: org }
+      it 'OptionalUnitFromのoptional_unit_url_id_and_url_arrayがいい感じ' do
+        subject
+        expect(subject[0].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_a1.id, url: 'https://example_a1.com' },
+          { optional_unit_url_id: optional_unit_url_a2.id, url: 'https://example_a2.com' }
         ]
-      end
-      it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 5
-        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[5]).to be nil
-      end
-    end
-    context 'optional_unit_forms_attrsの中身が4個あるとき' do
-      let(:first_priority_attr) { '3' }
-      let(:optional_unit_forms_attrs) do
-        [
-          { first_priority: true, optional_unit_url_id: nil, url: 'https://example_1.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_2.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_3.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_4.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_5.com/' },
-          { optional_unit_url_id: nil, url: 'https://example_6.com/' }
+        expect(subject[1].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_b1.id, url: 'https://example_b1.com' },
+          { optional_unit_url_id: optional_unit_url_b2.id, url: 'https://example_b2.com' }
         ]
-      end
-      it 'OptionalUnitFormが3個つくられる' do
-        expect(subject.count).to eq 6
-        expect(subject[0]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[1]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[2]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[3]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[4]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[5]).to be_an_instance_of(Supplier::SupplierForm::OptionalUnitForm)
-        expect(subject[6]).to be nil
+        expect(subject[2].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_c1.id, url: 'https://example_c1.com' },
+          { optional_unit_url_id: optional_unit_url_c2.id, url: 'https://example_c2.com' }
+        ]
+        expect(subject[3].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_d1.id, url: 'https://example_d1.com' },
+          { optional_unit_url_id: optional_unit_url_d2.id, url: 'https://example_d2.com' }
+        ]
+        expect(subject[4].optional_unit_url_id_and_url_array).to eq [
+          { optional_unit_url_id: optional_unit_url_e1.id, url: 'https://example_e1.com' },
+          { optional_unit_url_id: optional_unit_url_e2.id, url: 'https://example_e2.com' }
+        ]
       end
     end
   end

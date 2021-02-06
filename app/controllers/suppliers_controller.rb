@@ -13,6 +13,7 @@ class SuppliersController < ApplicationController
   end
 
   def update
+    binding.pry
     @form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
@@ -54,10 +55,8 @@ class SuppliersController < ApplicationController
   def optional_unit_forms_attrs
     normalize_params(
       params
-      .permit(
-        optional_unit_forms: %i[url optional_unit_url_id]
-      )
-    ).fetch(:optional_unit_forms, {})
+      .permit(ATTRIBUTE_NAMES)
+    ).fetch(:optional_unit_forms, {}).first.values
   end
 
   # def optional_unit_forms_attrs
@@ -69,12 +68,15 @@ class SuppliersController < ApplicationController
   #   ).fetch(:optional_unit_forms)
   # end
 
-  # ATTRIBUTE_NAMES = {
-  #   optional_unit_forms: %i[
-  #     first_priority
-  #     url
-  #   ]
-  # }.freeze
+  ATTRIBUTE_NAMES = {
+    optional_unit_forms: [
+      '0': %i[optional_unit_url_id url],
+      '1': %i[optional_unit_url_id url],
+      '2': %i[optional_unit_url_id url],
+      '3': %i[optional_unit_url_id url],
+      '4': %i[optional_unit_url_id url]
+    ]
+  }.freeze
 
   def normalize_params(permitted_params)
     p =

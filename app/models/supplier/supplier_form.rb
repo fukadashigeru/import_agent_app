@@ -9,9 +9,11 @@ class Supplier
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
     attribute :optional_unit_forms_attrs, (
       Types::Array.of(
-        Types::Hash.schema(
-          optional_unit_url_id: (Types::Optional::Integer | Types::Optional::String).optional.default(nil),
-          url: Types::String.default(''.freeze)
+        Types::Array.of(
+          Types::Hash.schema(
+            optional_unit_url_id: (Types::Optional::Integer | Types::Optional::String).optional.default(nil),
+            url: Types::String.default(''.freeze)
+          )
         )
       ).optional.default { [] }
     )
@@ -84,17 +86,36 @@ class Supplier
     def build_optional_unit_forms_by_record
       optional_units.map do |optional_unit|
         first_priority = optional_unit.id == first_priority_unit_id
-        # 今は一つだけのはず
-        optional_unit_url = optional_unit.optional_unit_urls.first
-        supplier_url = indexed_supplier_urls_map_by_id[optional_unit_url.supplier_url_id]
+        optional_unit_url_id_and_url_array =
+          indexed_optional_unit_url_id_and_url_array_by_optional_unit[optional_unit]
         OptionalUnitForm.new(
           ordering_org: ordering_org,
           supplier: supplier,
+          optional_unit: optional_unit,
           first_priority: first_priority,
-          optional_unit_url_id: optional_unit_url.id,
-          url: supplier_url.url
+          optional_unit_url_id_and_url_array: optional_unit_url_id_and_url_array
         )
       end
+    end
+
+    # return {#<OptionalUnit:..=> [{:optional_unit_url_id=>913, :url=>"https.."}, {:optional_unit_url_id=>914, :url=>"https.."}],
+    #         #<OptionalUnit:..=> [{:optional_unit_url_id=>913, :url=>"https.."}, {:optional_unit_url_id=>914, :url=>"https.."}],
+    #         #<OptionalUnit:..=> [{:optional_unit_url_id=>913, :url=>"https.."}, {:optional_unit_url_id=>914, :url=>"https.."}]}
+    def indexed_optional_unit_url_id_and_url_array_by_optional_unit
+      optional_units.map do |optional_unit|
+        optional_unit_url_id_and_url_array_unit =
+          optional_unit.optional_unit_urls.each_with_object([]) do |optional_unit_url, arr|
+            arr << {
+              optional_unit_url_id: optional_unit_url.id,
+              url: indexed_supplier_url_by_id[optional_unit_url.supplier_url.id].url
+            }
+          end
+        [optional_unit, optional_unit_url_id_and_url_array_unit]
+      end.to_h
+    end
+
+    def indexed_supplier_url_by_id
+      @indexed_supplier_url_by_id ||= ordering_org.supplier_urls.index_by(&:id)
     end
   end
 end
