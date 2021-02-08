@@ -14,12 +14,6 @@ class Supplier
       )
     ).optional.default([].freeze)
 
-    # => [{:optional_unit_id=>nil, :urls=>["aaaaaaa", "bbbbbb"]},
-    # {:optional_unit_id=>nil, :urls=>["dddd", "ccccc"]},
-    # {:optional_unit_id=>nil, :urls=>["", ""]},
-    # {:optional_unit_id=>nil, :urls=>["", ""]},
-    # {:optional_unit_id=>nil, :urls=>["", ""]}]
-
     def save_units!
       ApplicationRecord.transaction do
         optional_unit_forms_for_save.each(&:save_optional_unit!)
@@ -44,13 +38,12 @@ class Supplier
     def optional_unit_forms_for_save
       @optional_unit_forms_for_save ||=
         optional_unit_forms_attrs_arr.map.with_index do |optional_unit_form_hash, index|
+
+          next if not_build_optional_unit_form(optional_unit_form_hash)
+
           optional_unit_id = optional_unit_form_hash[:optional_unit_id]
-          # optional_unit = indexed_optional_units_by_id[optional_unit_id]
           first_priority = first_priority_attr == index
           optional_urls = optional_unit_form_hash[:urls]
-          # optional_unit_id_attr = optional_units_attrs[index][:optional_unit_id]
-          # optional_unit_id = optional_unit_id_attr.blank? ? nil : optional_unit_id_attr.to_i 
-          next if not_build_optional_unit_form(optional_unit_form_hash)
 
           OptionalUnitForm.new(
             ordering_org: ordering_org,
@@ -75,22 +68,6 @@ class Supplier
 
     private
 
-    # def actual_unit_url_id_and_url_array
-    #   @actual_unit_url_id_and_url_array ||= optional_unit_forms_attrs[first_priority_attr]
-    # end
-
-    # def supplier_urls
-    #   @supplier_urls ||= ordering_org.supplier_urls
-    # end
-
-    # def indexed_supplier_urls_map_by_id
-    #   @indexed_supplier_urls_map_by_id ||= supplier_urls.index_by(&:id)
-    # end
-
-    # def first_priority_unit_id
-    #   @first_priority_unit_id ||= supplier.first_priority_unit_id
-    # end
-
     def optional_units
       @optional_units ||= supplier.optional_units
     end
@@ -108,34 +85,6 @@ class Supplier
         )
       end
     end
-
-    # # return {#<OptionalUnit:..=> [{:optional_unit_url_id=>913, :url=>"https.."}, {:optional_unit_url_id=>914, :url=>"https.."}],
-    # #         #<OptionalUnit:..=> [{:optional_unit_url_id=>913, :url=>"https.."}, {:optional_unit_url_id=>914, :url=>"https.."}],
-    # #         #<OptionalUnit:..=> [{:optional_unit_url_id=>913, :url=>"https.."}, {:optional_unit_url_id=>914, :url=>"https.."}]}
-    # def indexed_optional_unit_url_id_and_url_array_by_optional_unit
-    #   optional_units.map do |optional_unit|
-    #     optional_unit_url_id_and_url_array_unit =
-    #       optional_unit.optional_unit_urls.each_with_object([]) do |optional_unit_url, arr|
-    #         arr << {
-    #           optional_unit_url_id: optional_unit_url.id,
-    #           url: indexed_supplier_url_by_id[optional_unit_url.supplier_url.id].url
-    #         }
-    #       end
-    #     [optional_unit, optional_unit_url_id_and_url_array_unit]
-    #   end.to_h
-    # end
-
-    # def indexed_supplier_url_by_id
-    #   @indexed_supplier_url_by_id ||= ordering_org.supplier_urls.index_by(&:id)
-    # end
-
-    # def url_blank?(optional_unit_url_id_and_url_array)
-    #   optional_unit_url_id_and_url_array.map{ |h| h[:url].blank? }.all?(true)
-    # end
-
-    # def indexed_optional_units_by_id
-    #   @indexed_optional_units_by_id ||= supplier.optional_units.index_by(:id)
-    # end
 
     def not_build_optional_unit_form(optional_unit_form_hash)
       optional_unit_id = optional_unit_form_hash[optional_unit_id]
