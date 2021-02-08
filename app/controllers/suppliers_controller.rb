@@ -13,13 +13,12 @@ class SuppliersController < ApplicationController
   end
 
   def update
-    binding.pry
     @form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
       order: @order,
       first_priority_attr: first_priority_attr,
-      optional_unit_forms_attrs: optional_unit_forms_attrs
+      optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
     @form.save_units!
     redirect_to [@org, :orders, :before_orders]
@@ -39,44 +38,19 @@ class SuppliersController < ApplicationController
     @order = @supplier.orders.find(params[:order_id])
   end
 
-  # def optional_unit_forms_attrs
-  #   params.require(:optional_unit_forms).values.map{|a| a.first}
-  # end
-
   def first_priority_attr
     normalize_params(
       params
-      .permit(
-        :first_priority
-      )
+      .permit(:first_priority)
     ).fetch(:first_priority, {})
   end
 
-  def optional_unit_forms_attrs
+  def optional_unit_forms_attrs_arr
     normalize_params(
       params
-      .permit(ATTRIBUTE_NAMES)
-    ).fetch(:optional_unit_forms, {}).first.values
+      .permit(optional_unit_forms: {})
+    ).fetch(:optional_unit_forms, {}).values
   end
-
-  # def optional_unit_forms_attrs
-  #   normalize_params(
-  #     params
-  #     .permit(
-  #       **ATTRIBUTE_NAMES
-  #     )
-  #   ).fetch(:optional_unit_forms)
-  # end
-
-  ATTRIBUTE_NAMES = {
-    optional_unit_forms: [
-      '0': %i[optional_unit_url_id url],
-      '1': %i[optional_unit_url_id url],
-      '2': %i[optional_unit_url_id url],
-      '3': %i[optional_unit_url_id url],
-      '4': %i[optional_unit_url_id url]
-    ]
-  }.freeze
 
   def normalize_params(permitted_params)
     p =

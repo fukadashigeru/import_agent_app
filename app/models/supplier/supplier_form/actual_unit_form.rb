@@ -7,15 +7,12 @@ class Supplier
       attribute :ordering_org, Types.Instance(Org)
       attribute :supplier, Types.Instance(Supplier)
       attribute :order, Types.Instance(Order)
-      # attribute :first_priority, Types::Bool.optional.default(false)
-      attribute :optional_unit_url_id, (Types::Optional::Integer | Types::Optional::String).optional.default(nil)
-      # attribute :actual_unit_url_id, Types::Integer.optional.default(nil)
-      attribute :url, Types::String.optional.default(''.freeze)
+      attribute :actual_urls, Types::Array.of(Types::String.optional.default(nil)).optional.default([])
+
+      delegate :actual_unit, to: :order
 
       def save_actual_unit!
-        return if url.empty?
-
-        if order.actual_unit
+        if actual_unit
           update_actual_unit!
         else
           create_actual_unit!
@@ -25,22 +22,26 @@ class Supplier
       private
 
       def create_actual_unit!
-        supplier_url = ordering_org.supplier_urls.find_or_create_by(url: url)
-
         order.create_actual_unit.tap do |actual_unit|
-          actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
+          actual_urls.each do |actual_url|
+            next if actual_url.blank?
+
+            supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
+            actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
+          end
         end
       end
 
       def update_actual_unit!
-        supplier_url = ordering_org.supplier_urls.find_or_create_by(url: url)
-        actual_unit_url = actual_unit.actual_unit_urls.first
-        actual_unit_url.update(supplier_url: supplier_url)
-        actual_unit_url.actual_unit
-      end
+        # optional_unit_urls全て削除
+        actual_unit.actual_unit_urls.delete_all
 
-      def actual_unit
-        @actual_unit ||= order.actual_unit
+        actual_urls.each do |actual_url|
+          next if actual_url.blank?
+
+          supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
+          actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
+        end
       end
     end
   end
