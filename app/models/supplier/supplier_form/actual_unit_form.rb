@@ -7,7 +7,7 @@ class Supplier
       attribute :ordering_org, Types.Instance(Org)
       attribute :supplier, Types.Instance(Supplier)
       attribute :order, Types.Instance(Order)
-      attribute :actual_urls, Types::Array.of(Types::String.optional.default(nil)).optional.default([])
+      attribute :actual_urls, Types::Array.of(Types::String.optional.default(nil)).optional.default([].freeze)
 
       delegate :actual_unit, to: :order
 
