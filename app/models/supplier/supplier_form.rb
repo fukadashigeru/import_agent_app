@@ -38,7 +38,6 @@ class Supplier
     def optional_unit_forms_for_save
       @optional_unit_forms_for_save ||=
         optional_unit_forms_attrs_arr.map.with_index do |optional_unit_form_hash, index|
-
           next if not_build_optional_unit_form(optional_unit_form_hash)
 
           optional_unit_id = optional_unit_form_hash[:optional_unit_id]

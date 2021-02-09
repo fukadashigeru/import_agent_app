@@ -82,7 +82,8 @@ RSpec.describe Supplier::SupplierForm do
       context 'supplier_urlsを確認する' do
         it 'orderに紐づくsupplier_urlのurlがしかるべきものとなっている' do
           subject
-          expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_11.com/', 'https://example_12.com/']
+          expect(order.actual_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_11.com/', 'https://example_12.com/']
         end
         it 'orderに関連するsupplier_urlsが2個生成される' do
           expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(2)
@@ -97,7 +98,10 @@ RSpec.describe Supplier::SupplierForm do
       let(:first_priority_attr) { '1' }
       let(:optional_unit_forms_attrs_arr) do
         [
-          { optional_unit_id: @optional_unit.id.to_s, urls: ['https://example_11.com/', 'https://example_12.com/'] },
+          {
+            optional_unit_id: @optional_unit.id.to_s,
+            urls: ['https://example_11.com/', 'https://example_12.com/']
+          },
           { optional_unit_id: nil, urls: ['https://example_21.com/', 'https://example_22.com/'] },
           { optional_unit_id: nil, urls: ['https://example_31.com/', 'https://example_32.com/'] },
           { optional_unit_id: nil, urls: ['', ''] },
@@ -155,7 +159,8 @@ RSpec.describe Supplier::SupplierForm do
           context '実際の買付先URLを確認する' do
             it '実際の買付先のURlが第一候補になっている' do
               subject
-              expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_21.com/', 'https://example_22.com/']
+              expect(order.actual_unit.supplier_urls.map(&:url))
+                .to eq ['https://example_21.com/', 'https://example_22.com/']
             end
           end
         end
@@ -185,7 +190,8 @@ RSpec.describe Supplier::SupplierForm do
           context '実際の買付先URLを確認する' do
             it '実際の買付先のURlが第一候補になっている' do
               subject
-              expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_21.com/', 'https://example_22.com/']
+              expect(order.actual_unit.supplier_urls.map(&:url))
+                .to eq ['https://example_21.com/', 'https://example_22.com/']
             end
           end
         end

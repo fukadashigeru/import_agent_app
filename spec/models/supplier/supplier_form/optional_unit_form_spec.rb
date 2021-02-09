@@ -120,7 +120,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
           end
           it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
             subject
-            expect(supplier.optional_units.last.supplier_urls.map(&:url)).to eq ['https://example_1.com/', 'https://example_2.com/']
+            expect(supplier.optional_units.last.supplier_urls.map(&:url))
+              .to eq ['https://example_1.com/', 'https://example_2.com/']
           end
         end
       end
@@ -180,8 +181,10 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
       context 'セット商品の場合' do
         let(:optional_unit_id) { @optional_unit.id }
         let(:optional_urls) { ['https://example_1.com/', 'https://example_2.com/'] }
-
-        before { @optional_unit = create_optional_unit(org, supplier, ['https://example_a.com/', 'https://example_b.com/']) }
+        before do
+          @optional_unit =
+            create_optional_unit(org, supplier, ['https://example_a.com/', 'https://example_b.com/'])
+        end
         context 'OptionalUnitを確認' do
           it 'OptionalUnitが増えておらず同一である' do
             subject
@@ -222,7 +225,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
           end
           it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
             subject
-            expect(supplier.optional_units.last.supplier_urls.map(&:url)).to eq ['https://example_1.com/', 'https://example_2.com/']
+            expect(supplier.optional_units.last.supplier_urls.map(&:url))
+              .to eq ['https://example_1.com/', 'https://example_2.com/']
           end
         end
       end
@@ -272,7 +276,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
           end
           it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
             subject
-            expect(supplier.optional_units.last.supplier_urls.map(&:url)).to eq ['https://example_1.com/', 'https://example_2.com/']
+            expect(supplier.optional_units.last.supplier_urls.map(&:url))
+              .to eq ['https://example_1.com/', 'https://example_2.com/']
           end
         end
       end
@@ -281,7 +286,10 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
         let(:optional_unit_id) { @optional_unit.id }
         let(:optional_urls) { ['https://example_1.com/'] }
 
-        before { @optional_unit = create_optional_unit(org, supplier, ['https://example_a.com/', 'https://example_b.com/']) }
+        before do
+          @optional_unit =
+            create_optional_unit(org, supplier, ['https://example_a.com/', 'https://example_b.com/'])
+        end
         context 'OptionalUnitを確認' do
           it 'OptionalUnitが増えておらず同一である' do
             subject
