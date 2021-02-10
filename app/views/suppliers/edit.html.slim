@@ -4,6 +4,14 @@
       | 買付先登録
     - fieldset.with(:subtext)
       | 商品IDが同じ注文は次回からこれらの買付先が設定されます。
+  .hidden.sm:block.absolute.top-0.right-0.pt-4.pr-4
+    / button.bg-white.rounded-md.text-gray-400.hover:text-gray-500.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500 type="button" 
+    = link_to [@org, :orders, :before_orders], class: 'bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: {"turbolinks" => false}
+      span.sr-only Close
+      /! Heroicon name: outline/x
+      svg.h-6.w-6 aria-hidden="true" fill="none" stroke="currentColor" viewbox=("0 0 24 24") xmlns="http://www.w3.org/2000/svg" 
+        path d=("M6 18L18 6M6 6l12 12") stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+
   .mt-8.border-t.border-gray-200.pt-5
   .shadow.overflow-hidden.border-b.border-gray-200(class="sm:rounded-lg")
     table.min-w-full.divide-y.divide-gray-200
