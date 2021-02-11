@@ -1,5 +1,6 @@
 import './companyMouseover.js'
 import './dismiss.js'
 import './dropdown.js'
+import './externalLink.js'
 import './modal.js'
 import './remoteReplace.js'
