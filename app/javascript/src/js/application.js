@@ -1,3 +1,4 @@
+import './addFormForSetItems.js'
 import './companyMouseover.js'
 import './dismiss.js'
 import './dropdown.js'

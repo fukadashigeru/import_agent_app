@@ -34,16 +34,21 @@
                 - first_priority_bool = optional_unit_form.first_priority == true
                 / = ff.radio_button :first_priority, true, value: i, name: "first_priority"
                 = radio_button_tag "first_priority", i, first_priority_bool
-              - optional_unit_form.supplier_forms.each do |supplier_form|
-                = ff.fields :supplier_form, model: supplier_form do |fff|
-                  td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
-                    span.relative.inline-flex.w-full
+              td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                span.relative.inline-flex.w-full
+                  - optional_unit_form.supplier_forms.each do |supplier_form|
+                    = ff.fields :supplier_form, model: supplier_form do |fff|
                       = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md"
-                      button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500(type="button" data-external-link)
+                      button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500.mr-3(type="button" data-external-link)
                         i.fas.fa-external-link-alt
-                    / = ff.hidden_field :optional_unit_url_id, value: optional_unit_form.optional_unit_url_id, name: "optional_unit_forms[][#{i}][][optional_unit_url_id]"
-              / td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
-              /   = text_field_tag "optional_unit_forms[#{i}][urls][]", nil,class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      / = text_field_tag "optional_unit_forms[#{i}][urls][]", nil,class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md"
+                      / button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500(type="button" data-external-link)
+                      /   i.fas.fa-external-link-alt
+                      - if optional_unit_form.supplier_forms.length < 2
+                        button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.px-3.py-2.rounded-full(type="button" data-form-for-set-items) 
+                          i.fas.fa-plus
+                          / svg.h-5.w-5 aria-hidden="true" fill="currentColor" viewbox=("0 0 20 20") xmlns="http://www.w3.org/2000/svg" 
+                          /   path clip-rule="evenodd" d=("M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z") fill-rule="evenodd" 
   = render(Ui::ActionsComponent.new) do
     .btn-wrapper
       button.inline-flex.items-center.px-4.py-2.border.border-transparent.text-sm.font-medium.rounded-md.shadow-sm.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(type="submit")
