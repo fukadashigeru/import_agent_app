@@ -1,4 +1,5 @@
 import axios from 'axios'
+import tippy from 'tippy.js'
 
 document.addEventListener('click', async (e) => {
   const clicked = e.target.closest('[data-remote-replace]')
