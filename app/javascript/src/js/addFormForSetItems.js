@@ -1,7 +1,8 @@
 document.addEventListener('click', (e) => {
-  const clicked = e.target.closest('[data-form-for-set-items]')
+  const clicked = e.target.closest('[data-add-form-for-set-items]')
 
   if (clicked) {
+    const remove_button = clicked.nextElementSibling;
     const extenalLinkBtn = clicked.previousElementSibling;
     const form = extenalLinkBtn.previousElementSibling;
     
@@ -11,9 +12,12 @@ document.addEventListener('click', (e) => {
 
     const parent = clicked.parentNode;
     
-    parent.appendChild(formClone);
-    parent.appendChild(extenalLinkBtnClone);
+    // parent.appendChild(formClone);
+    // parent.appendChild(extenalLinkBtnClone);
+    parent.insertBefore(formClone, clicked);
+    parent.insertBefore(extenalLinkBtnClone, clicked);
 
-    clicked.remove();
+    clicked.classList.add('hidden');
+    remove_button.classList.remove('hidden');
   }
 })
