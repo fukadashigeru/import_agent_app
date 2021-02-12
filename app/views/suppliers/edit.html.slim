@@ -21,7 +21,7 @@
       thead
         tr
           th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-12
-            i.fas.fa-question-circle#questionAboutFirstPriority
+            i.fas.fa-question-circle#questionAboutFirstPriority(data-modal-tooltip="第1希望の買付先にチェックを入れてください。")
           th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
             | 買付先URL
           / th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
@@ -33,7 +33,7 @@
               = ff.hidden_field :optional_unit_id, name: "optional_unit_forms[#{i}][optional_unit_id]", id: "hidden_field_#{i}"
               td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                 - first_priority_bool = optional_unit_form.first_priority == true
-                = radio_button_tag "first_priority", i, first_priority_bool, class: ''
+                = radio_button_tag "first_priority", i, first_priority_bool
               td.px-2.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                 span.relative.inline-flex.w-full
                   - optional_unit_form.supplier_forms.each_with_index do |supplier_form, index|
