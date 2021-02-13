@@ -4,7 +4,6 @@ import 'tippy.js/dist/tippy.css';
 document.addEventListener('turbolinks:load', init)
 
 export function init () {
-  console.log('a')
   tippy('[data-tooltip]', {
     theme: 'tooltip',
     content: (e) => e.getAttribute('data-tooltip')
