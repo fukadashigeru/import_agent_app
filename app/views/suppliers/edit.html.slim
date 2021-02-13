@@ -28,19 +28,19 @@
                 | 買付先URL
               .flex-initial.justify-end
                 i.fas.fa-question-circle(data-modal-tooltip-b="セット商品の場合は2つフォームを追加することができます。")
-      tbody.bg-white.divide-y.divide-gray-200
+      tbody.bg-white.divide-y.divide-gray-200#supplier-forms-table
         - @optional_unit_forms.each_with_index do |optional_unit_form, i|
           = f.fields :optional_units, model: optional_unit_form do |ff|
             tr
               = ff.hidden_field :optional_unit_id, name: "optional_unit_forms[#{i}][optional_unit_id]", id: "hidden_field_#{i}"
               td.px-6.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                 - first_priority_bool = optional_unit_form.first_priority == true
-                = radio_button_tag "first_priority", i, first_priority_bool
+                = radio_button_tag "first_priority", i, first_priority_bool, data: { firstpriority: 'foo' }
               td.px-2.py-4.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                 span.relative.inline-flex.w-full
                   - optional_unit_form.supplier_forms.each_with_index do |supplier_form, index|
                     = ff.fields :supplier_form, model: supplier_form do |fff|
-                      = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}"
+                      = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}", data: { supplierform: 'foo' }
                       button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500.mr-3(type="button" data-external-link)
                         i.fas.fa-external-link-alt
                   - if optional_unit_form.supplier_forms.size <= 1

@@ -1,4 +1,5 @@
 import './addFormForSetItems.js'
+import './checkRadioButton.js'
 import './companyMouseover.js'
 import './dismiss.js'
 import './dropdown.js'
