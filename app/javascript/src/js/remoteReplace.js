@@ -10,11 +10,6 @@ document.addEventListener('click', async (e) => {
 
     const target = document.getElementById(data.id)
 
-    // いらない子を削除
-    // target.childNodes.forEach((element) => {
-    //   console.log(element)
-    //   element.remove()
-    // })
     while(target.firstChild) {
       target.removeChild(target.firstChild);
     }

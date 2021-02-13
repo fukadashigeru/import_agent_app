@@ -14,11 +14,16 @@ export function init () {
 document.addEventListener('mouseover', init_modal)
 
 function init_modal () {
-  const target = document.querySelector('[data-modal-tooltip]')
-  if (target) {
-    tippy(target, {
+  const targetA = document.querySelector('[data-modal-tooltip-a]')
+  const targetB = document.querySelector('[data-modal-tooltip-b]')
+  if (targetA || targetB) {
+    tippy(targetA, {
       theme: 'tooltip',
-      content: (e) => e.getAttribute('data-modal-tooltip')
+      content: (e) => e.getAttribute('data-modal-tooltip-a')
+    })
+    tippy(targetB, {
+      theme: 'tooltip',
+      content: (e) => e.getAttribute('data-modal-tooltip-b')
     })
   }
 }

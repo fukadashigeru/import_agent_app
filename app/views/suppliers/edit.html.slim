@@ -21,11 +21,13 @@
       thead
         tr
           th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-12
-            i.fas.fa-question-circle#questionAboutFirstPriority(data-modal-tooltip="第1希望の買付先にチェックを入れてください。")
+            i.fas.fa-question-circle(data-modal-tooltip-a="第1希望の買付先にチェックを入れてください。")
           th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
-            | 買付先URL
-          / th.px-6.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
-          /   | 買付先URL
+            .flex
+              .flex-auto.pr-20
+                | 買付先URL
+              .flex-initial.justify-end
+                i.fas.fa-question-circle(data-modal-tooltip-b="セット商品の場合は1つフォームを追加することができます。")
       tbody.bg-white.divide-y.divide-gray-200
         - @optional_unit_forms.each_with_index do |optional_unit_form, i|
           = f.fields :optional_units, model: optional_unit_form do |ff|
