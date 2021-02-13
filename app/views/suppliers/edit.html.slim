@@ -27,7 +27,7 @@
               .flex-auto.pr-20
                 | 買付先URL
               .flex-initial.justify-end
-                i.fas.fa-question-circle(data-modal-tooltip-b="セット商品の場合は1つフォームを追加することができます。")
+                i.fas.fa-question-circle(data-modal-tooltip-b="セット商品の場合は2つフォームを追加することができます。")
       tbody.bg-white.divide-y.divide-gray-200
         - @optional_unit_forms.each_with_index do |optional_unit_form, i|
           = f.fields :optional_units, model: optional_unit_form do |ff|
@@ -43,20 +43,22 @@
                       = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}"
                       button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500.mr-3(type="button" data-external-link)
                         i.fas.fa-external-link-alt
-                      / = text_field_tag "optional_unit_forms[#{i}][urls][]", nil,class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md"
-                      / button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500(type="button" data-external-link)
-                      /   i.fas.fa-external-link-alt
-                      - if optional_unit_form.supplier_forms.length == index + 1
-                        - if optional_unit_form.supplier_forms.length == 1
-                          button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-3" type="button" data-add-form-for-set-items) 
-                            i.fas.fa-plus
-                          button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-3" type="button" data-remove-form-for-set-items) 
-                            i.fas.fa-minus
-                        - elsif optional_unit_form.supplier_forms.length == 2
-                          button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-3" type="button" data-add-form-for-set-items) 
-                            i.fas.fa-plus
-                          button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-3" type="button" data-remove-form-for-set-items) 
-                            i.fas.fa-minus
+                  - if optional_unit_form.supplier_forms.size <= 1
+                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mr-1" type="button" data-remove-form-for-set-items) 
+                      i.fas.fa-minus
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5" type="button" data-add-form-for-set-items) 
+                      i.fas.fa-plus
+                  - elsif optional_unit_form.supplier_forms.size >= 3
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mr-1" type="button" data-remove-form-for-set-items) 
+                      i.fas.fa-minus
+                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5" type="button" data-add-form-for-set-items) 
+                      i.fas.fa-plus
+                  - else
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mr-1" type="button" data-remove-form-for-set-items) 
+                      i.fas.fa-minus
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5" type="button" data-add-form-for-set-items) 
+                      i.fas.fa-plus
+  
   = render(Ui::ActionsComponent.new) do
     .btn-wrapper
       button.inline-flex.items-center.px-4.py-2.border.border-transparent.text-sm.font-medium.rounded-md.shadow-sm.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(type="submit")
