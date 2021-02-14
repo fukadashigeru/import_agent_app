@@ -15,19 +15,21 @@ class Supplier
         if actual_unit
           update_actual_unit!
         else
-          create_actual_unit!
+          create_actual_units!
         end
       end
 
       private
 
-      def create_actual_unit!
-        order.create_actual_unit.tap do |actual_unit|
-          actual_urls.each do |actual_url|
-            next if actual_url.blank?
+      def create_actual_units!
+        supplier_orders.each do |order|
+          order.create_actual_unit.tap do |actual_unit|
+            actual_urls.each do |actual_url|
+              next if actual_url.blank?
 
-            supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
-            actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
+              supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
+              actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
+            end
           end
         end
       end
@@ -42,6 +44,10 @@ class Supplier
           supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
           actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
         end
+      end
+
+      def supplier_orders
+        supplier.orders.where(status: :before_order).select{ |order| order.actual_unit.nil? }
       end
     end
   end

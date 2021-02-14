@@ -11,7 +11,7 @@ RSpec.describe Supplier::SupplierForm::ActualUnitForm do
   end
   let(:org) { create :org, org_type: :ordering_org }
   let(:supplier) { create :supplier, org: org }
-  let(:order) { create :order, ordering_org: org, supplier: supplier }
+  let(:order) { create :order, ordering_org: org, supplier: supplier, status: :before_order }
   let(:actual_urls) { [''] }
 
   def create_actual_unit(order, urls)
