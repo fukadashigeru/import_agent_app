@@ -7,12 +7,16 @@ class Supplier
     attribute :supplier, Types.Instance(Supplier)
     attribute :order, Types.Instance(Order)
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
+    attribute :actual_first_priority_attr, Types::Params::Integer.optional.default(nil)
     attribute :optional_unit_forms_attrs_arr, Types::Array.of(
       Types::Hash.schema(
         optional_unit_id: Types::Params::Integer.optional.default(nil),
         urls: Types::Array.of(Types::String.optional.default(nil)).optional.default([].freeze)
       )
     ).optional.default([].freeze)
+
+    delegate :optional_units, to: :supplier
+    delegate :actual_unit, to: :order
 
     def save_units!
       ApplicationRecord.transaction do
@@ -24,6 +28,13 @@ class Supplier
     # フォームように最低5個のoptional_unit_formを生成
     def optional_unit_forms_for_form(count: 5)
       optional_unit_forms = build_optional_unit_forms_by_record
+
+      optional_unit_forms = optional_unit_forms.tap do |forms|
+        if actual_unit && !optional_urls_hash.key?(actual_urls_by_record)
+          actual_supplier_urls = order.actual_unit.supplier_urls.map(&:url)
+          forms << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier, optional_urls: actual_supplier_urls)
+        end
+      end
 
       @optional_unit_forms_for_form ||= optional_unit_forms.tap do |forms|
         forms if forms.count >= count
@@ -97,9 +108,13 @@ class Supplier
     end
 
     def actual_urls
-      raise Error if first_priority_attr.blank?
+      if actual_first_priority_attr
+        optional_unit_forms_attrs_arr[actual_first_priority_attr][:urls]
+      else
+        raise Error if first_priority_attr.blank?
 
-      optional_unit_forms_attrs_arr[first_priority_attr][:urls]
+        optional_unit_forms_attrs_arr[first_priority_attr][:urls]
+      end
     end
 
     def indexed_supplier_urls_by_optional_unit
@@ -107,6 +122,21 @@ class Supplier
         optional_units.index_with do |optional_unit|
           optional_unit.optional_unit_urls.map { |optional_unit_url| optional_unit_url.supplier_url.url }
         end
+    end
+
+    def optional_urls_map_by_record
+      @optional_urls_map_by_record ||=
+        optional_units.map do |optional_unit|
+          optional_unit.supplier_urls.map(&:url)
+        end
+    end
+
+    def actual_urls_by_record
+      @actual_urls_by_record ||= actual_unit.supplier_urls.map(&:url)
+    end
+
+    def optional_urls_hash
+      @optional_urls_hash ||= optional_urls_map_by_record.index_with('')
     end
   end
 end
