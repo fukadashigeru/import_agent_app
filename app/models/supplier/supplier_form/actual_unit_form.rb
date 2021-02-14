@@ -47,7 +47,7 @@ class Supplier
       end
 
       def supplier_orders
-        supplier.orders.where(status: :before_order).select{ |order| order.actual_unit.nil? }
+        supplier.orders.where(status: :before_order).select { |order| order.actual_unit.nil? }
       end
     end
   end
