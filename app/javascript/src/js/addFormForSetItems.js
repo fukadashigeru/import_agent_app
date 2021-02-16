@@ -12,7 +12,6 @@ document.addEventListener('click', (e) => {
     formClone.value = null;
 
     const parent = clicked.parentNode;
-
     parent.insertBefore(formClone, remove_button);
     parent.insertBefore(extenalLinkBtnClone, remove_button);
 

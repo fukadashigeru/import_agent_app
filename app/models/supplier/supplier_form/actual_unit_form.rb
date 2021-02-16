@@ -22,8 +22,8 @@ class Supplier
       private
 
       def create_actual_units!
-        supplier_orders.each do |order|
-          order.create_actual_unit.tap do |actual_unit|
+        supplier_orders.each do |supplier_order|
+          supplier_order.create_actual_unit.tap do |actual_unit|
             actual_urls.each do |actual_url|
               next if actual_url.blank?
 

@@ -29,20 +29,9 @@ class Supplier
     def optional_unit_forms_for_form(count: 5)
       optional_unit_forms = build_optional_unit_forms_by_record
 
-      optional_unit_forms = optional_unit_forms.tap do |forms|
-        if actual_unit && !optional_urls_hash.key?(actual_urls_by_record)
-          actual_supplier_urls = order.actual_unit.supplier_urls.map(&:url)
-          forms << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier, optional_urls: actual_supplier_urls)
-        end
-      end
+      optional_unit_forms = build_optional_unit_forms_from_actual_unit(optional_unit_forms)
 
-      @optional_unit_forms_for_form ||= optional_unit_forms.tap do |forms|
-        forms if forms.count >= count
-
-        (count - forms.count).times do |_|
-          forms << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier)
-        end
-      end
+      @optional_unit_forms_for_form ||= build_optional_unit_forms_for_adjustment(optional_unit_forms, count)
     end
 
     # create処理内などで保存できるoptional_unit_formを生成
@@ -93,6 +82,29 @@ class Supplier
           first_priority: first_priority,
           optional_urls: optional_urls
         )
+      end
+    end
+
+    def build_optional_unit_forms_from_actual_unit(optional_unit_forms)
+      optional_unit_forms.tap do |forms|
+        if actual_unit && !optional_urls_hash.key?(actual_urls_by_record)
+          actual_supplier_urls = order.actual_unit.supplier_urls.map(&:url)
+          forms << OptionalUnitForm.new(
+            ordering_org: ordering_org,
+            supplier: supplier, optional_urls:
+            actual_supplier_urls
+          )
+        end
+      end
+    end
+
+    def build_optional_unit_forms_for_adjustment(optional_unit_forms, count)
+      optional_unit_forms.tap do |forms|
+        forms if forms.count >= count
+
+        (count - forms.count).times do |_|
+          forms << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier)
+        end
       end
     end
 

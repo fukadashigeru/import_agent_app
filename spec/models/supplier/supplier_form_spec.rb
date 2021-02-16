@@ -1,24 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Supplier::SupplierForm do
-  before { skip }
   let(:form) do
     described_class.new(
       ordering_org: org,
       supplier: supplier,
       order: order,
       first_priority_attr: first_priority_attr,
+      actual_first_priority_attr: actual_first_priority_attr,
       optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
   end
   let(:org) { create :org, org_type: :ordering_org }
   let(:supplier) { create :supplier, org: org }
-  let(:order) { create :order, ordering_org: org, supplier: supplier }
+  let(:order) { create :order, ordering_org: org, supplier: supplier, status: :before_order }
   let(:first_priority_attr) { '0' }
+  let(:actual_first_priority_attr) { nil }
   let(:optional_unit_forms_attrs_arr) do
     [
-      { optional_unit_id: nil, urls: ['https://example_11.com/', 'https://example_12.com/'] },
-      { optional_unit_id: nil, urls: ['https://example_21.com/', 'https://example_22.com/'] },
+      { optional_unit_id: nil, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+      { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
       { optional_unit_id: nil, urls: ['', ''] },
       { optional_unit_id: nil, urls: ['', ''] },
       { optional_unit_id: nil, urls: ['', ''] }
@@ -45,346 +46,151 @@ RSpec.describe Supplier::SupplierForm do
 
   describe 'save_units!' do
     subject { form.save_units! }
-    context '3件とも新規' do
-      let(:first_priority_attr) { '0' }
-      let(:optional_unit_forms_attrs_arr) do
-        [
-          { optional_unit_id: nil, urls: ['https://example_11.com/', 'https://example_12.com/'] },
-          { optional_unit_id: nil, urls: ['https://example_21.com/', 'https://example_22.com/'] },
-          { optional_unit_id: nil, urls: ['https://example_31.com/', 'https://example_32.com/'] },
-          { optional_unit_id: nil, urls: ['', ''] },
-          { optional_unit_id: nil, urls: ['', ''] }
-        ]
-      end
-      context 'optional_unitを確認する' do
-        it 'optional_unitで3個生成される' do
-          expect { subject }.to change { supplier.optional_units.count }.by(3)
-        end
-      end
-      context 'optional_unit_urlを確認する' do
-        it 'optional_unit_urlが3個生成される' do
-          expect { subject }.to change {
-            supplier.optional_units.map(&:optional_unit_urls).flatten.count
-          }.by(6)
-        end
-      end
-      context 'actual_unitを確認する' do
-        it 'actual_unitが(1個)生成される' do
-          subject
-          expect(order.actual_unit).to be_present
-        end
-      end
-      context 'actual_unit_urlを確認する' do
-        it 'actual_unit_urlが1個生成される' do
-          subject
-          expect(order.actual_unit.actual_unit_urls.count).to eq 2
-        end
-      end
-      context 'supplier_urlsを確認する' do
-        it 'orderに紐づくsupplier_urlのurlがしかるべきものとなっている' do
-          subject
-          expect(order.actual_unit.supplier_urls.map(&:url))
-            .to eq ['https://example_11.com/', 'https://example_12.com/']
-        end
-        it 'orderに関連するsupplier_urlsが2個生成される' do
-          expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(2)
-        end
-        it 'orgに紐付いたsupplier_urlsが3個生成される' do
-          expect { subject }.to change { org.supplier_urls.count }.by(6)
-        end
-      end
-    end
-
-    context '1件更新で2件新規：新規分が第一候補' do
+    context 'actual_unitがない場合' do
       let(:first_priority_attr) { '1' }
       let(:optional_unit_forms_attrs_arr) do
         [
           {
             optional_unit_id: @optional_unit.id.to_s,
-            urls: ['https://example_11.com/', 'https://example_12.com/']
+            urls: ['https://example_A.com/', 'https://example_B.com/']
           },
-          { optional_unit_id: nil, urls: ['https://example_21.com/', 'https://example_22.com/'] },
-          { optional_unit_id: nil, urls: ['https://example_31.com/', 'https://example_32.com/'] },
+          { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
+          { optional_unit_id: nil, urls: ['', ''] },
           { optional_unit_id: nil, urls: ['', ''] },
           { optional_unit_id: nil, urls: ['', ''] }
         ]
       end
-      let!(:supplier) { create :supplier, org: org }
-
       before do
         @optional_unit = create_optional_unit(
-          org, supplier, ['https://example_a.com', 'https://example_a.com']
+          org, supplier, ['https://example_a.com/']
         )
         supplier.update(first_priority_unit_id: @optional_unit.id)
       end
-
       context 'optional_unitを確認する' do
-        it 'supplierに紐づくoptional_unitが3個ある' do
-          expect { subject }.to change { supplier.optional_units.count }.from(1).to(3)
+        it 'optional_unitで1個生成される' do
+          expect { subject }.to change { OptionalUnit.count }.from(1).to(2)
         end
       end
       context 'optional_unit_urlを確認する' do
         it 'optional_unit_urlが2個生成される' do
           expect { subject }.to change {
-            supplier.optional_units.map(&:optional_unit_urls).flatten.count
-          }.from(2).to(6)
+            supplier.reload.optional_units.map(&:optional_unit_urls).flatten.count
+          }.from(1).to(4)
+        end
+      end
+      context 'actual_unitを確認する' do
+        it 'actual_unitが(1個)生成される' do
+          expect(order.reload.actual_unit).to be_nil
+          subject
+          expect(order.reload.actual_unit).to be_present
+        end
+      end
+      context 'actual_unit_urlを確認する' do
+        it 'actual_unit_urlが2個ある' do
+          subject
+          expect(order.reload.actual_unit.actual_unit_urls.count).to eq 2
+        end
+        it 'actual_unit_urlが2個生成される' do
+          expect { subject }.to change {
+            ActualUnitUrl.count
+          }.from(0).to(2)
         end
       end
       context 'supplier_urlsを確認する' do
-        it 'orderに関連するsupplier_urlsが1個生成される' do
+        it 'orderに紐づくsupplier_urlのurlが設定のものとなっている' do
+          subject
+          expect(order.reload.actual_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_C.com/', 'https://example_D.com/']
+        end
+        it 'orderに関連するsupplier_urlsが2個生成される' do
           expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(2)
         end
-        it 'orgに紐付いたsupplier_urlsが3個生成される' do
-          expect { subject }.to change {
-            supplier.optional_units.map(&:supplier_urls).flatten.count
-          }.from(2).to(6)
+        it 'orgに紐付いたsupplier_urlsが4個生成される' do
+          expect { subject }.to change { org.supplier_urls.count }.by(4)
         end
       end
-      context '実際の買付先周りを確認する' do
-        context 'actual_unitがない場合' do
-          context 'actual_unitを確認する' do
-            it 'actual_unitが(1個)生成される' do
-              subject
-              expect(order.actual_unit).to be_present
-            end
-          end
-          context 'actual_unit_urlを確認する' do
-            it 'orderに紐づくactual_unit_urlが存在する' do
-              subject
-              expect(order.actual_unit.actual_unit_urls.count).to eq 2
-            end
-            it 'actual_unit_urlが2個生成される' do
-              expect { subject }.to change { ActualUnitUrl.count }.by(2)
-            end
-          end
-          context '実際の買付先URLを確認する' do
-            it '実際の買付先のURlが第一候補になっている' do
-              subject
-              expect(order.actual_unit.supplier_urls.map(&:url))
-                .to eq ['https://example_21.com/', 'https://example_22.com/']
-            end
-          end
-        end
-
-        context 'actual_unitがある場合' do
-          before { create_actual_unit(order, ['https://example_a.com']) }
-          context 'actual_unitを確認する' do
-            it 'actual_unitは増えない' do
-              expect { subject }.to change { ActualUnit.count }.by(0)
-            end
-            it 'actual_unitが存在する' do
-              subject
-              expect(order.actual_unit).to be_present
-            end
-            it 'actual_unitのidが変わらない' do
-              expect { subject }.not_to(change { order.actual_unit.id })
-            end
-          end
-          context 'actual_unit_urlを確認する' do
-            it 'actual_unit_urlは増えない' do
-              expect { subject }.to change { ActualUnitUrl.count }.from(1).to(2)
-            end
-            it 'actual_unit_urlのidが変わらない' do
-              expect { subject }.to change { order.actual_unit.actual_unit_urls.count }.from(1).to(2)
-            end
-          end
-          context '実際の買付先URLを確認する' do
-            it '実際の買付先のURlが第一候補になっている' do
-              subject
-              expect(order.actual_unit.supplier_urls.map(&:url))
-                .to eq ['https://example_21.com/', 'https://example_22.com/']
-            end
-          end
+      context 'first_priority_unit_idを確認' do
+        it '第1候補が更新されている' do
+          expect(supplier.first_priority_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_a.com/']
+          subject
+          expect(supplier.first_priority_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_C.com/', 'https://example_D.com/']
         end
       end
     end
 
-    context '1件更新で2件新規：更新分が第一候補' do
-      let(:first_priority_attr) { '0' }
+    context 'actual_unitがある場合' do
+      let(:first_priority_attr) { '1' }
       let(:optional_unit_forms_attrs_arr) do
         [
-          { optional_unit_id: @optional_unit.id.to_s, urls: ['https://example_1.com/'] },
-          { optional_unit_id: nil, urls: ['https://example_2.com/'] },
-          { optional_unit_id: nil, urls: ['https://example_3.com/'] },
+          {
+            optional_unit_id: @optional_unit.id.to_s,
+            urls: ['https://example_A.com/', 'https://example_B.com/']
+          },
+          { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
+          { optional_unit_id: nil, urls: ['', ''] },
           { optional_unit_id: nil, urls: ['', ''] },
           { optional_unit_id: nil, urls: ['', ''] }
         ]
       end
-      let!(:supplier) { create :supplier, org: org }
       before do
         @optional_unit = create_optional_unit(
-          org, supplier, ['https://example_a.com', 'https://example_b.com']
+          org, supplier, ['https://example_a.com/']
         )
         supplier.update(first_priority_unit_id: @optional_unit.id)
       end
-
+      before { create_actual_unit(order, ['https://example_a.com/']) }
       context 'optional_unitを確認する' do
-        it 'optional_unitが1個から3個に増える' do
-          expect { subject }.to change { supplier.optional_units.count }.from(1).to(3)
+        it 'optional_unitで1個生成される' do
+          expect { subject }.to change { OptionalUnit.count }.from(1).to(2)
         end
       end
       context 'optional_unit_urlを確認する' do
-        it 'optional_unit_urlが2個から3個に増える' do
+        it 'optional_unit_urlが2個生成される' do
           expect { subject }.to change {
             supplier.reload.optional_units.map(&:optional_unit_urls).flatten.count
-          }.from(2).to(3)
+          }.from(1).to(4)
         end
       end
-      context 'supplier_urlsを確認する' do
-        it 'orderに関連するsupplier_urlsが1個生成される' do
-          expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(1)
-        end
-        it 'orgに紐付いたsupplier_urlsが3個生成される' do
-          expect { subject }.to change { org.supplier_urls.count }.from(2).to(5)
-        end
-      end
-      context '実際の買付先周りを確認する' do
-        context 'actual_unitがない場合' do
-          context 'actual_unitを確認する' do
-            it 'actual_unitが(1個)生成される' do
-              subject
-              expect(order.actual_unit).to be_present
-            end
-          end
-          context 'actual_unit_urlを確認する' do
-            it 'actual_unit_urlが存在する' do
-              subject
-              expect(order.actual_unit.actual_unit_urls.count).to eq 1
-            end
-            it 'actual_unit_urlが1個生成される' do
-              expect { subject }.to change { ActualUnit.count }.by(1)
-            end
-          end
-          context '実際の買付先URLを確認する' do
-            it '実際の買付先のURlが第一候補になっている' do
-              subject
-              expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_1.com/']
-            end
-          end
-        end
-
-        context 'actual_unitがある場合' do
-          before { create_actual_unit(order, ['https://example_1.com/']) }
-          context 'actual_unitを確認する' do
-            it 'actual_unitは増えない' do
-              expect { subject }.to change { ActualUnit.count }.by(0)
-            end
-            it 'actual_unitが存在する' do
-              subject
-              expect(order.actual_unit).to be_present
-            end
-            it 'actual_unitのidが変わらない' do
-              expect { subject }.not_to(change { order.actual_unit.id })
-            end
-          end
-          context 'actual_unit_urlを確認する' do
-            it 'actual_unit_urlは増えない' do
-              expect { subject }.to change { ActualUnitUrl.count }.by(0)
-            end
-            it 'actual_unit_urlが存在する' do
-              subject
-              expect(order.actual_unit.actual_unit_urls.count).to eq 1
-            end
-          end
-          context '実際の買付先URLを確認する' do
-            it '実際の買付先のURlが第一候補になっている' do
-              subject
-              expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_1.com/']
-            end
-          end
+      context 'actual_unitを確認する' do
+        it 'actual_unitが(1個)生成される' do
+          expect(order.reload.actual_unit).to be_present
+          subject
+          expect(order.reload.actual_unit).to be_present
         end
       end
-    end
-
-    context '3件とも更新' do
-      let(:first_priority_attr) { '2' }
-      let(:optional_unit_forms_attrs_arr) do
-        [
-          { optional_unit_id: @optional_unit_a.id.to_s, urls: ['https://example_1.com/'] },
-          { optional_unit_id: @optional_unit_b.id.to_s, urls: ['https://example_2.com/'] },
-          { optional_unit_id: @optional_unit_c.id.to_s, urls: ['https://example_3.com/'] }
-        ]
-      end
-      before do
-        @optional_unit_a = create_optional_unit(org, supplier, ['https://example_a.com'])
-        @optional_unit_b = create_optional_unit(org, supplier, ['https://example_b.com'])
-        @optional_unit_c = create_optional_unit(org, supplier, ['https://example_c.com'])
-        supplier.update(first_priority_unit_id: @optional_unit_c.id)
-      end
-      context 'optional_unitを確認する' do
-        it 'optional_unitで生成されない' do
-          expect { subject }.to change { supplier.reload.optional_units.count }.by(0)
+      context 'actual_unit_urlを確認する' do
+        it 'actual_unit_urlが2個ある' do
+          subject
+          expect(order.reload.actual_unit.actual_unit_urls.count).to eq 2
         end
-      end
-      context 'optional_unit_urlを確認する' do
-        it 'optional_unit_urlが生成されない' do
+        it 'actual_unit_urlが2個生成される' do
           expect { subject }.to change {
-            supplier.optional_units.map(&:optional_unit_urls).flatten.count
-          }.by(0)
+            ActualUnitUrl.count
+          }.from(1).to(2)
         end
       end
       context 'supplier_urlsを確認する' do
-        it 'orderに関連するsupplier_urlsが1個生成される' do
-          expect { subject }.to change { ActualUnitUrl.all.map(&:supplier_url).count }.by(1)
+        it 'orderに紐づくsupplier_urlのurlが設定のものとなっている' do
+          subject
+          expect(order.reload.actual_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_C.com/', 'https://example_D.com/']
         end
-        it 'orgに紐付いたsupplier_urlsが3個生成される' do
-          expect { subject }.to change { org.supplier_urls.count }.by(3)
+        it 'orderに紐づくactual_unitが変わらない' do
+          expect { subject }.not_to(change { order.actual_unit })
+        end
+        it 'orgに紐付いたsupplier_urlsが4個生成される' do
+          expect { subject }.to change { org.supplier_urls.count }.by(4)
         end
       end
-      context '実際の買付先周りを確認する' do
-        context 'actual_unitがない場合' do
-          context 'actual_unitを確認する' do
-            it 'actual_unitが(1個)生成される' do
-              subject
-              expect(order.actual_unit).to be_present
-            end
-          end
-          context 'actual_unit_urlを確認する' do
-            it 'actual_unit_urlが存在する' do
-              subject
-              expect(order.actual_unit.actual_unit_urls.count).to eq 1
-            end
-            it 'actual_unit_urlが1個生成される' do
-              expect { subject }.to change { ActualUnit.count }.by(1)
-            end
-          end
-          context '実際の買付先URLを確認する' do
-            it '実際の買付先のURlが第一候補になっている' do
-              subject
-              expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_3.com/']
-            end
-          end
-        end
-
-        context 'actual_unitがある場合' do
-          before { create_actual_unit(order, ['https://example_b.com']) }
-          context 'actual_unitを確認する' do
-            it 'actual_unitは増えない' do
-              expect { subject }.to change { ActualUnit.count }.by(0)
-            end
-            it 'actual_unitが存在する' do
-              subject
-              expect(order.actual_unit).to be_present
-            end
-            it 'actual_unitのidが変わらない' do
-              expect { subject }.not_to(change { order.actual_unit.id })
-            end
-          end
-          context 'actual_unit_urlを確認する' do
-            it 'actual_unit_urlは増えない' do
-              expect { subject }.to change { ActualUnitUrl.count }.by(0)
-            end
-            it 'actual_unit_urlが存在する' do
-              subject
-              expect(order.actual_unit.actual_unit_urls.count).to eq 1
-            end
-          end
-          context '実際の買付先URLを確認する' do
-            it '実際の買付先のURlが第一候補になっている' do
-              subject
-              expect(order.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_3.com/']
-            end
-          end
+      context 'first_priority_unit_idを確認' do
+        it '第1候補が更新されている' do
+          expect(supplier.first_priority_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_a.com/']
+          subject
+          expect(supplier.first_priority_unit.supplier_urls.map(&:url))
+            .to eq ['https://example_C.com/', 'https://example_D.com/']
         end
       end
     end

@@ -15,7 +15,8 @@ document.addEventListener('mouseover', init_modal)
 function init_modal () {
   const targetA = document.querySelector('[data-modal-tooltip-a]')
   const targetB = document.querySelector('[data-modal-tooltip-b]')
-  if (targetA || targetB) {
+  const targetC = document.querySelector('[data-modal-tooltip-c]')
+  if (targetA || targetB || targetC) {
     tippy(targetA, {
       theme: 'tooltip',
       content: (e) => e.getAttribute('data-modal-tooltip-a')
@@ -23,6 +24,10 @@ function init_modal () {
     tippy(targetB, {
       theme: 'tooltip',
       content: (e) => e.getAttribute('data-modal-tooltip-b')
+    })
+    tippy(targetC, {
+      theme: 'tooltip',
+      content: (e) => e.getAttribute('data-modal-tooltip-c')
     })
   }
 }
