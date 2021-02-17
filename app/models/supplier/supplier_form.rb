@@ -18,10 +18,18 @@ class Supplier
     delegate :optional_units, to: :supplier
     delegate :actual_unit, to: :order
 
+    validate :valid_order_having_no_actual?, unless: :actual_first_priority_attr
+
+    def valid_order_having_no_actual?
+      return if indexed_supplier_orders_by_id.key?(order)
+
+      errors.add(:base, '不正な注文のため操作が取り消されました。')
+    end
+
     def save_units!
       ApplicationRecord.transaction do
         optional_unit_forms_for_save.each(&:save_optional_unit!)
-        actual_unit_form.save_actual_unit!
+        actual_unit_forms_for_save.each(&:save_actual_unit!)
       end
     end
 
@@ -54,21 +62,29 @@ class Supplier
         end.compact
     end
 
-    # optional_unit_forms_attrsからactual_unit_formsも生成する
-    def actual_unit_form
-      @actual_unit_form ||=
-        ActualUnitForm.new(
-          ordering_org: ordering_org,
-          supplier: supplier,
-          order: order,
-          actual_urls: actual_urls
-        )
-    end
-
     private
 
-    def optional_units
-      @optional_units ||= supplier.optional_units
+    def actual_unit_forms_for_save
+      @actual_unit_forms_for_save ||=
+        if actual_unit
+          [].tap do |arr|
+            arr << ActualUnitForm.new(
+              ordering_org: ordering_org,
+              supplier: supplier,
+              order: order,
+              actual_urls: actual_urls
+            )
+          end
+        else
+          supplier_orders.map do |supplier_order|
+            ActualUnitForm.new(
+              ordering_org: ordering_org,
+              supplier: supplier,
+              order: supplier_order,
+              actual_urls: actual_urls
+            )
+          end
+        end
     end
 
     def build_optional_unit_forms_by_record
@@ -149,6 +165,14 @@ class Supplier
 
     def optional_urls_hash
       @optional_urls_hash ||= optional_urls_map_by_record.index_with('')
+    end
+
+    def supplier_orders
+      @supplier_orders ||= supplier.orders.before_order.having_no_actual_unit
+    end
+
+    def indexed_supplier_orders_by_id
+      @indexed_supplier_orders_by_id ||= supplier_orders.index_with('')
     end
   end
 end

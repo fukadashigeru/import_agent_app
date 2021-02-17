@@ -18,6 +18,7 @@ class SuppliersController < ApplicationController
       supplier: @supplier,
       order: @order,
       first_priority_attr: first_priority_attr,
+      actual_first_priority_attr: actual_first_priority_attr,
       optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
     @form.save_units!
@@ -43,6 +44,9 @@ class SuppliersController < ApplicationController
       params
       .permit(:first_priority)
     ).fetch(:first_priority, {})
+  end
+
+  def actual_first_priority_attr
   end
 
   def optional_unit_forms_attrs_arr

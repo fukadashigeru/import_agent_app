@@ -6,7 +6,6 @@ class Supplier
 
       attribute :ordering_org, Types.Instance(Org)
       attribute :supplier, Types.Instance(Supplier)
-      # attribute :optional_unit, Types.Instance(OptionalUnit).optional.default(nil)
       attribute :optional_unit_id, Types::Integer.optional.default(nil)
       attribute :first_priority, Types::Bool.optional.default(false)
       attribute :optional_urls, Types::Array.of(Types::String).optional.default([''].freeze)

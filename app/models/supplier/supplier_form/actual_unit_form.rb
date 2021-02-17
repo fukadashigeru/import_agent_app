@@ -22,14 +22,12 @@ class Supplier
       private
 
       def create_actual_units!
-        supplier_orders.each do |supplier_order|
-          supplier_order.create_actual_unit.tap do |actual_unit|
-            actual_urls.each do |actual_url|
-              next if actual_url.blank?
+        order.create_actual_unit.tap do |actual_unit|
+          actual_urls.each do |actual_url|
+            next if actual_url.blank?
 
-              supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
-              actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
-            end
+            supplier_url = ordering_org.supplier_urls.find_or_create_by(url: actual_url)
+            actual_unit.actual_unit_urls.create(supplier_url: supplier_url)
           end
         end
       end

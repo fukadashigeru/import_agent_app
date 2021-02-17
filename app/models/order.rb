@@ -16,6 +16,18 @@ class Order < ApplicationRecord
   validate :buying_org?
   # validate :validate_trade_no
 
+  # scope :having_actual_unit, -> { select(&:actual_unit) }
+  scope :having_actual_unit, lambda {
+    ids = ActualUnit.select(:order_id)
+    where(id: ids)
+  }
+
+  # scope :having_no_actual_unit, -> { select { |order| order.actual_unit.nil? } }
+  scope :having_no_actual_unit, lambda {
+    ids = ActualUnit.select(:order_id)
+    where.not(id: ids)
+  }
+
   def status_i18n
     I18n.t status, scope: %i[enum orders status]
   end
