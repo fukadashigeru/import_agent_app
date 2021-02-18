@@ -11,7 +11,7 @@ class Supplier
       attribute :optional_urls, Types::Array.of(Types::String).optional.default([''].freeze)
 
       def save_optional_unit!
-        if optional_unit_id && optional_urls_all_blank
+        if optional_unit_id && optional_urls_all_blank?
           delete_optional_unit
         else
           update_or_create_optional_unit
@@ -33,19 +33,19 @@ class Supplier
         if first_priority
           raise '第1優先で選択できません。'
         else
-          optional_unit_before_update.destroy
+          pre_optional_unit.destroy
         end
       end
 
       def update_or_create_optional_unit
-        optional_unit =
-          if optional_unit_before_update
+        post_optional_unit =
+          if pre_optional_unit
             update_optional_unit!
           else
             create_optional_unit!
           end
 
-        optional_unit.tap do |unit|
+        post_optional_unit.tap do |unit|
           assign_first_priority(unit) if first_priority
         end
       end
@@ -63,8 +63,9 @@ class Supplier
 
       def update_optional_unit!
         # optional_unit_urls全て削除
-        optional_unit_before_update.optional_unit_urls.delete_all
-        optional_unit_before_update.tap do |unit|
+        pre_optional_unit.optional_unit_urls.delete_all
+        # 新しいoptional_unit_urlsを作成
+        pre_optional_unit.tap do |unit|
           optional_urls.each do |optional_url|
             next if optional_url.blank?
 
@@ -78,11 +79,11 @@ class Supplier
         supplier.update(first_priority_unit_id: optional_unit.id)
       end
 
-      def optional_unit_before_update
-        @optional_unit_before_update ||= supplier.optional_units.find_by(id: optional_unit_id)
+      def pre_optional_unit
+        @pre_optional_unit ||= supplier.optional_units.find_by(id: optional_unit_id)
       end
 
-      def optional_urls_all_blank
+      def optional_urls_all_blank?
         optional_urls.map(&:blank?).all?(true)
       end
     end
