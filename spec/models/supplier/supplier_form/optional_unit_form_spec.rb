@@ -77,7 +77,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
           end
           it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
             subject
-            expect(supplier.optional_units.last.supplier_urls.map(&:url)).to eq ['https://example_A.com/', 'https://example_B.com/']
+            expect(supplier.optional_units.last.supplier_urls.map(&:url))
+              .to eq ['https://example_A.com/', 'https://example_B.com/']
           end
         end
       end
@@ -133,7 +134,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
           end
           it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
             subject
-            expect(supplier.optional_units.last.supplier_urls.map(&:url)).to eq ['https://example_A.com/', 'https://example_B.com/']
+            expect(supplier.optional_units.last.supplier_urls.map(&:url))
+              .to eq ['https://example_A.com/', 'https://example_B.com/']
           end
         end
       end
