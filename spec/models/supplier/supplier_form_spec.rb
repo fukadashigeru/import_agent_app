@@ -89,7 +89,10 @@ RSpec.describe Supplier::SupplierForm do
         context '異常' do
           let(:optional_unit_forms_attrs_arr) do
             [
-              { optional_unit_id: @other_optional_unit.id, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+              {
+                optional_unit_id: @other_optional_unit.id,
+                urls: ['https://example_A.com/', 'https://example_B.com/']
+              },
               { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
               { optional_unit_id: nil, urls: ['', ''] },
               { optional_unit_id: nil, urls: ['', ''] },
@@ -103,7 +106,10 @@ RSpec.describe Supplier::SupplierForm do
         context '正常' do
           let(:optional_unit_forms_attrs_arr) do
             [
-              { optional_unit_id: @optional_unit.id, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+              {
+                optional_unit_id: @optional_unit.id,
+                urls: ['https://example_A.com/', 'https://example_B.com/']
+              },
               { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
               { optional_unit_id: nil, urls: ['', ''] },
               { optional_unit_id: nil, urls: ['', ''] },
@@ -115,11 +121,14 @@ RSpec.describe Supplier::SupplierForm do
           end
         end
       end
-      context 'optional_unitがない場合' do 
+      context 'optional_unitがない場合' do
         context '異常' do
           let(:optional_unit_forms_attrs_arr) do
             [
-              { optional_unit_id: @other_optional_unit.id, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+              {
+                optional_unit_id: @other_optional_unit.id,
+                urls: ['https://example_A.com/', 'https://example_B.com/']
+              },
               { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
               { optional_unit_id: nil, urls: ['', ''] },
               { optional_unit_id: nil, urls: ['', ''] },
