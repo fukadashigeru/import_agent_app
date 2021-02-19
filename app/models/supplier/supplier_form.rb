@@ -26,10 +26,10 @@ class Supplier
       errors.add(:base, '不正な注文のため操作が取り消されました。')
     end
 
-    def save_units!
+    def upsert_or_destroy_units!
       ApplicationRecord.transaction do
-        optional_unit_forms_for_save.each(&:save_optional_unit!)
-        actual_unit_forms_for_save.each(&:save_actual_unit!)
+        optional_unit_forms_for_save.each(&:upsert_or_destroy!)
+        actual_unit_forms_for_save.each(&:upsert_actual_unit!)
       end
     end
 

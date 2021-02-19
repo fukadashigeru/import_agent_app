@@ -65,7 +65,6 @@ RSpec.describe Supplier::SupplierForm do
         context 'actual_unitがあるとき' do
           before { create_actual_unit(order, ['https://example_a.com/']) }
           it do
-            # binding.pry
             is_expected.to include '不正な注文のため操作が取り消されました。'
           end
         end
@@ -79,8 +78,8 @@ RSpec.describe Supplier::SupplierForm do
   end
 
   describe 'Methods' do
-    describe 'save_units!' do
-      subject { form.save_units! }
+    describe 'upsert_or_destroy_units!' do
+      subject { form.upsert_or_destroy_units! }
       context 'actual_unitがない場合' do
         let(:first_priority_attr) { '1' }
         let(:optional_unit_forms_attrs_arr) do

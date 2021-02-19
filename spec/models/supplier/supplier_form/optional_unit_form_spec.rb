@@ -27,8 +27,8 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
   end
 
   describe 'Methods' do
-    describe 'save_optional_unit!' do
-      subject { form.save_optional_unit! }
+    describe 'upsert_or_destroy!' do
+      subject { form.upsert_or_destroy! }
       context 'optional_unitが新規登録の場合' do
         let(:optional_urls) { ['https://example_A.com/', 'https://example_B.com/'] }
         context 'OptionalUnitを確認' do
@@ -68,17 +68,34 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
           end
         end
         context 'SupplierUrlを確認' do
-          it 'SupplierUrlが2個増える' do
-            expect { subject }.to change { SupplierUrl.count }.from(0).to(2)
+          context 'supplier_urlがない場合' do
+            it 'SupplierUrlが2個増える' do
+              expect { subject }.to change { SupplierUrl.count }.from(0).to(2)
+            end
+            it 'このoptional_unitに紐づくsupplier_urlは2個' do
+              subject
+              expect(supplier.optional_units.last.supplier_urls.count).to eq 2
+            end
+            it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
+              subject
+              expect(supplier.optional_units.last.supplier_urls.map(&:url))
+                .to eq ['https://example_A.com/', 'https://example_B.com/']
+            end
           end
-          it 'このoptional_unitに紐づくsupplier_urlは2個' do
-            subject
-            expect(supplier.optional_units.last.supplier_urls.count).to eq 2
-          end
-          it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
-            subject
-            expect(supplier.optional_units.last.supplier_urls.map(&:url))
-              .to eq ['https://example_A.com/', 'https://example_B.com/']
+          context 'supplier_urlがある場合' do
+            before { create :supplier_url, org: org, url: 'https://example_A.com/'}
+            it 'SupplierUrlが1個増える' do
+              expect { subject }.to change { SupplierUrl.count }.from(1).to(2)
+            end
+            it 'このoptional_unitに紐づくsupplier_urlは2個' do
+              subject
+              expect(supplier.optional_units.last.supplier_urls.count).to eq 2
+            end
+            it 'optional_unitに紐づくsupplier_urlを厳密に確認' do
+              subject
+              expect(supplier.optional_units.last.supplier_urls.map(&:url))
+                .to eq ['https://example_A.com/', 'https://example_B.com/']
+            end
           end
         end
       end

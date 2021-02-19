@@ -11,7 +11,7 @@ class Supplier
 
       delegate :actual_unit, to: :order
 
-      def save_actual_unit!
+      def upsert_actual_unit!
         if actual_unit
           update_actual_unit!
         else

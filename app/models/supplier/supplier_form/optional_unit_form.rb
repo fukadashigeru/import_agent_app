@@ -10,11 +10,11 @@ class Supplier
       attribute :first_priority, Types::Bool.optional.default(false)
       attribute :optional_urls, Types::Array.of(Types::String).optional.default([''].freeze)
 
-      def save_optional_unit!
+      def upsert_or_destroy!
         if optional_unit_id && optional_urls_all_blank?
-          delete_optional_unit
+          destroy_optional_unit!
         else
-          update_or_create_optional_unit
+          upsert_optional_unit!
         end
       end
 
@@ -29,7 +29,7 @@ class Supplier
 
       private
 
-      def delete_optional_unit
+      def destroy_optional_unit!
         if first_priority
           raise '第1優先で選択できません。'
         else
@@ -37,7 +37,7 @@ class Supplier
         end
       end
 
-      def update_or_create_optional_unit
+      def upsert_optional_unit!
         post_optional_unit =
           if pre_optional_unit
             update_optional_unit!

@@ -21,7 +21,7 @@ class SuppliersController < ApplicationController
       actual_first_priority_attr: actual_first_priority_attr,
       optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
-    @form.save_units!
+    @form.upsert_or_destroy_units!
     redirect_to [@org, :orders, :before_orders]
   end
 
