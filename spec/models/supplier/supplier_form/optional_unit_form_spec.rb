@@ -83,7 +83,7 @@ RSpec.describe Supplier::SupplierForm::OptionalUnitForm do
             end
           end
           context 'supplier_urlがある場合' do
-            before { create :supplier_url, org: org, url: 'https://example_A.com/'}
+            before { create :supplier_url, org: org, url: 'https://example_A.com/' }
             it 'SupplierUrlが1個増える' do
               expect { subject }.to change { SupplierUrl.count }.from(1).to(2)
             end

@@ -43,10 +43,14 @@ class SuppliersController < ApplicationController
     normalize_params(
       params
       .permit(:first_priority)
-    ).fetch(:first_priority, {})
+    ).fetch(:first_priority, nil)
   end
 
   def actual_first_priority_attr
+    normalize_params(
+      params
+      .permit(:actual_first_priority)
+    ).fetch(:actual_first_priority, nil)
   end
 
   def optional_unit_forms_attrs_arr
