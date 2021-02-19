@@ -18,13 +18,8 @@ class Supplier
     delegate :optional_units, to: :supplier
     delegate :actual_unit, to: :order
 
-    validate :valid_order_having_no_actual?, unless: :actual_first_priority_attr
-
-    def valid_order_having_no_actual?
-      return if indexed_supplier_orders_by_id.key?(order)
-
-      errors.add(:base, '不正な注文のため操作が取り消されました。')
-    end
+    validate :valid_order_having_no_actual, unless: :actual_first_priority_attr
+    validate :valid_optional_units_belong_to_supplier
 
     def upsert_or_destroy_units!
       ApplicationRecord.transaction do
@@ -173,6 +168,28 @@ class Supplier
 
     def indexed_supplier_orders_by_id
       @indexed_supplier_orders_by_id ||= supplier_orders.index_with('')
+    end
+
+    def valid_order_having_no_actual
+      return if indexed_supplier_orders_by_id.key?(order)
+
+      errors.add(:base, '不正な注文のため操作が取り消されました。')
+    end
+
+    def valid_optional_units_belong_to_supplier
+      return if check_all_optional_unit_belong_to_supplier
+
+      errors.add(:base, '不正な買付先のため操作が取り消されました。')
+    end
+
+    def check_all_optional_unit_belong_to_supplier
+      optional_unit_ids.all? do |optional_unit_id|
+        supplier.optional_units.index_by(&:id).key?(optional_unit_id)
+      end
+    end
+
+    def optional_unit_ids
+      @optional_unit_ids ||= optional_unit_forms_attrs_arr.pluck(:optional_unit_id).compact
     end
   end
 end

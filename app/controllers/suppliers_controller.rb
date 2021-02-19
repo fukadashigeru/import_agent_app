@@ -21,7 +21,11 @@ class SuppliersController < ApplicationController
       actual_first_priority_attr: actual_first_priority_attr,
       optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
-    @form.upsert_or_destroy_units!
+    if @form.valid?
+      @form.upsert_or_destroy_units!
+    else
+      flash[:danger] = '処理が完了できませんでした。'
+    end
     redirect_to [@org, :orders, :before_orders]
   end
 
@@ -79,5 +83,9 @@ class SuppliersController < ApplicationController
 
       [key, new_val]
     end.to_h
+  end
+
+  def flash_base_validation_error_msg(record)
+    flash.now[:danger] = record.errors.full_messages_for(:base) if record.errors[:base].any?
   end
 end

@@ -45,7 +45,7 @@ RSpec.describe Supplier::SupplierForm do
   end
 
   describe 'Validation' do
-    describe 'valid_order_having_no_actual?' do
+    describe 'valid_order_having_no_actual' do
       subject { form.tap(&:valid?).errors[:base] }
       context 'actual_first_priority_attrがあるとき' do
         let(:actual_first_priority_attr) { '1' }
@@ -71,6 +71,63 @@ RSpec.describe Supplier::SupplierForm do
         context 'actual_unitがないとき' do
           it do
             is_expected.to be_blank
+          end
+        end
+      end
+    end
+
+    describe 'valid_optional_units_belong_to_supplier' do
+      subject { form.tap(&:valid?).errors[:base] }
+      before do
+        @other_optional_unit = create_optional_unit(org, other_supplier, ['https://example_a.com/'])
+      end
+      let(:other_supplier) { create :supplier, org: org }
+      context 'optional_unitがある場合' do
+        before do
+          @optional_unit = create_optional_unit(org, supplier, ['https://example_a.com/'])
+        end
+        context '異常' do
+          let(:optional_unit_forms_attrs_arr) do
+            [
+              { optional_unit_id: @other_optional_unit.id, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+              { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
+              { optional_unit_id: nil, urls: ['', ''] },
+              { optional_unit_id: nil, urls: ['', ''] },
+              { optional_unit_id: nil, urls: ['', ''] }
+            ]
+          end
+          it do
+            is_expected.to include '不正な買付先のため操作が取り消されました。'
+          end
+        end
+        context '正常' do
+          let(:optional_unit_forms_attrs_arr) do
+            [
+              { optional_unit_id: @optional_unit.id, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+              { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
+              { optional_unit_id: nil, urls: ['', ''] },
+              { optional_unit_id: nil, urls: ['', ''] },
+              { optional_unit_id: nil, urls: ['', ''] }
+            ]
+          end
+          it do
+            is_expected.to be_blank
+          end
+        end
+      end
+      context 'optional_unitがない場合' do 
+        context '異常' do
+          let(:optional_unit_forms_attrs_arr) do
+            [
+              { optional_unit_id: @other_optional_unit.id, urls: ['https://example_A.com/', 'https://example_B.com/'] },
+              { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
+              { optional_unit_id: nil, urls: ['', ''] },
+              { optional_unit_id: nil, urls: ['', ''] },
+              { optional_unit_id: nil, urls: ['', ''] }
+            ]
+          end
+          it do
+            is_expected.to include '不正な買付先のため操作が取り消されました。'
           end
         end
       end
