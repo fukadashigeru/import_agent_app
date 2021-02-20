@@ -1,0 +1,124 @@
+[data-tippy-root] {
+  max-width: calc(100vw - 10px);
+}
+
+.tippy-box[data-theme~='tooltip'] {
+  position: relative;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: 0;
+  transition-property: transform, visibility, opacity;
+
+  &[data-animation=fade][data-state=hidden] {
+    opacity: 0;
+  }
+
+  &[data-placement^=top] > .tippy-arrow {
+    bottom: 0;
+
+    &:before {
+      bottom: -7px;
+      left: 0;
+      border-width: 8px 8px 0;
+      border-top-color: initial;
+      transform-origin: center top;
+    }
+  }
+
+  &[data-placement^=bottom] > .tippy-arrow {
+    top: 0;
+
+    &:before {
+      top: -7px;
+      left: 0;
+      border-width: 0 8px 8px;
+      border-bottom-color: initial;
+      transform-origin: center bottom;
+    }
+  }
+
+  &[data-placement^=left] > .tippy-arrow {
+    right: 0;
+
+    &:before {
+      border-width: 8px 0 8px 8px;
+      border-left-color: initial;
+      right: -7px;
+      transform-origin: center left;
+    }
+  }
+
+  &[data-placement^=right] > .tippy-arrow {
+    left: 0;
+
+    &:before {
+      left: -7px;
+      border-width: 8px 8px 8px 0;
+      border-right-color: initial;
+      transform-origin: center right;
+    }
+  }
+
+  &[data-inertia][data-state=visible] {
+    transition-timing-function: cubic-bezier(0.54, 1.5, 0.38, 1.11);
+  }
+
+  .tippy-arrow {
+    width: 16px;
+    height: 16px;
+    color: #333;
+
+    &:before {
+      content: "";
+      position: absolute;
+      border-color: transparent;
+      border-style: solid;
+    }
+  }
+
+  .tippy-content {
+    position: relative;
+    padding: 5px 9px;
+    z-index: 1;
+  }
+
+  background-color: rgba(0, 0, 0, 0.7);
+
+  > .tippy-arrow {
+    width: 14px;
+    height: 14px;
+  }
+
+  &[data-placement^=top] > .tippy-arrow:before {
+    border-width: 7px 7px 0;
+    border-top-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &[data-placement^=bottom] > .tippy-arrow:before {
+    border-width: 0 7px 7px;
+    border-bottom-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &[data-placement^=left] > .tippy-arrow:before {
+    border-width: 7px 0 7px 7px;
+    border-left-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &[data-placement^=right] > .tippy-arrow:before {
+    border-width: 7px 7px 7px 0;
+    border-right-color: rgba(0, 0, 0, 0.7);
+  }
+
+  > {
+    .tippy-backdrop {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .tippy-svg-arrow {
+      fill: rgba(0, 0, 0, 0.7);
+    }
+  }
+}
