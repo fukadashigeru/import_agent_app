@@ -16,7 +16,8 @@ module PlaceOrders
         private
 
         def import_orders!
-          Order.import! orders
+          Order.import! orders,
+                        recursive: true
         end
 
         def orders
@@ -27,6 +28,8 @@ module PlaceOrders
 
         # rubocop:disable Metrics/AbcSize
         def build_order(row)
+          supplier = indexed_suppliers_by_item_no[row.item_no]
+
           ordering_org.orders_to_order.new(
             shop_type: shop_type,
             item_no: row.item_no,
@@ -42,7 +45,8 @@ module PlaceOrders
             information: row.information,
             memo: row.memo,
             status: :before_order,
-            supplier: indexed_suppliers_by_item_no[row.item_no]
+            supplier: supplier,
+            actual_unit: build_actual_unit(supplier)
           )
         end
         # rubocop:enable Metrics/AbcSize
@@ -74,6 +78,14 @@ module PlaceOrders
 
         def csv_string
           @csv_string ||= NKF.nkf('-xw', io.read)
+        end
+
+        def build_actual_unit(supplier)
+          return nil unless supplier.first_priority_unit
+
+          ActualUnit.new(
+            supplier_urls: supplier.first_priority_unit.supplier_urls
+          )
         end
       end
     end
