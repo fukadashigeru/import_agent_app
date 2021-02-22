@@ -1,0 +1,72 @@
+= form_with url: [@org, @supplier, { order_id: @order.id }], model: @form, method: :put, local: true do |f|
+  = render(Ui::FieldsetComponent.new) do |fieldset|
+    - fieldset.with(:title)
+      | 買付先登録
+    - fieldset.with(:subtext)
+      | 商品IDが同じ注文は次回からこれらの買付先が設定されます。
+  .hidden.sm:block.absolute.top-0.right-0.pt-4.pr-4
+    / = link_to [@org, :orders, :before_orders], class: 'bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: {"turbolinks" => false}
+    button.bg-white.rounded-md.text-gray-400.hover:text-gray-500.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(
+      type="button"
+      data-modal-close
+    )
+      span.sr-only Close
+      /! Heroicon name: outline/x
+      svg.h-6.w-6 aria-hidden="true" fill="none" stroke="currentColor" viewbox=("0 0 24 24") xmlns="http://www.w3.org/2000/svg" 
+        path d=("M6 18L18 6M6 6l12 12") stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+
+  .mt-4.border-t.border-gray-200.pt-5
+  .shadow.overflow-hidden.border-b.border-gray-200(class="sm:rounded-lg")
+    table.min-w-full.divide-y.divide-gray-200
+      thead
+        tr
+          th.px-3.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-4
+            i.fas.fa-question-circle(data-modal-tooltip-a="買付先候補の第1希望にチェックを入れてください。これからの注文や実際の買付先が登録されていない場合に適用されます。")
+          - if @order.actual_unit
+            th.px-3.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-4
+              i.fas.fa-question-circle(data-modal-tooltip-b="この注文の実際の買付先となるものにチェックを入れてください。")
+          th.px-5.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
+            .flex
+              .flex-auto.pr-20
+                | 買付先URL
+              .flex-initial.justify-end
+                i.fas.fa-question-circle(data-modal-tooltip-c="セット商品の場合は2つフォームを追加することができます。")
+      tbody.bg-white.divide-y.divide-gray-200#supplier-forms-table
+        - @optional_unit_forms.each_with_index do |optional_unit_form, i|
+          = f.fields :optional_units, model: optional_unit_form do |ff|
+            tr
+              = ff.hidden_field :optional_unit_id, name: "optional_unit_forms[#{i}][optional_unit_id]", id: "hidden_field_#{i}"
+              td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                - first_priority_bool = optional_unit_form.first_priority == true
+                = radio_button_tag "first_priority", i, first_priority_bool, data: { firstpriority: 'foo' }
+              - if @order.actual_unit
+                td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                  - actual_first_priority_bool = optional_unit_form.optional_urls == @order.actual_unit.supplier_urls.map(&:url)
+                  = radio_button_tag "actual_first_priority", i, actual_first_priority_bool, data: { actualfirstpriority: 'foo' }
+              td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                span.relative.inline-flex.w-full
+                  - optional_unit_form.supplier_forms.each_with_index do |supplier_form, index|
+                    = ff.fields :supplier_form, model: supplier_form do |fff|
+                      = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}", data: { supplierform: 'foo' }
+                      button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500.mr-3(type="button" data-external-link)
+                        i.fas.fa-external-link-alt
+                  - if optional_unit_form.supplier_forms.size <= 1
+                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
+                      i.fas.fa-minus
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
+                      i.fas.fa-plus
+                  - elsif optional_unit_form.supplier_forms.size >= 3
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
+                      i.fas.fa-minus
+                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
+                      i.fas.fa-plus
+                  - else
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
+                      i.fas.fa-minus
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
+                      i.fas.fa-plus
+  
+  = render(Ui::ActionsComponent.new) do
+    .btn-wrapper
+      button.inline-flex.items-center.px-4.py-2.border.border-transparent.text-sm.font-medium.rounded-md.shadow-sm.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(type="submit")
+        | 登録

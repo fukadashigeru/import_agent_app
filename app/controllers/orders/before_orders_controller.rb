@@ -3,7 +3,13 @@ module Orders
     before_action :set_org
 
     def index
-      @orders = @org.orders_to_order.where(status: :before_order).order(created_at: :desc)
+      @order_repository = Order::OrderRepository.new(
+        org: @org,
+        shop_type: :ordering_org,
+        status: [:before_order],
+        order_by: :desc
+      )
+      @orders = @order_repository.orders.page(params[:page]).per(30)
     end
 
     private

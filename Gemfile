@@ -50,6 +50,8 @@ gem 'dry-types'
 
 gem 'activerecord-import'
 
+gem 'kaminari'
+
 gem 'view_component', require: 'view_component/engine'
 
 group :development, :test do
@@ -58,6 +60,7 @@ group :development, :test do
 
   gem 'factory_bot_rails'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 
 group :development do

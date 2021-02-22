@@ -2,7 +2,6 @@ document.addEventListener('turbolinks:load', init)
 
 function init () {
   let companies = document.getElementsByClassName('company');
-  console.log(companies);
   for (var i = 0, len = companies.length; i < len; i++) {
     let company = companies[i];
     company.addEventListener('mouseenter', (e) => {

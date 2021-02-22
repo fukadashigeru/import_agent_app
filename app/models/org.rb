@@ -7,6 +7,8 @@ class Org < ApplicationRecord
                            foreign_key: :buying_org_id,
                            dependent: :restrict_with_error,
                            inverse_of: :buying_org
+  has_many :suppliers, dependent: :restrict_with_error, inverse_of: :org
+  has_many :supplier_urls, dependent: :destroy
   enum org_type: {
     ordering_org: 1,
     buying_org: 2

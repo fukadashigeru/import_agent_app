@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
+  describe 'Associations' do
+    it { is_expected.to have_one(:actual_unit).dependent(:destroy) }
+  end
   describe 'Validations' do
     describe 'validate :ordering_org?' do
       subject { order.tap(&:valid?).errors[:base] }
