@@ -1,10 +1,13 @@
 class Order < ApplicationRecord
-  belongs_to :ordering_org, class_name: 'Org', inverse_of: :orders_to_order
+  belongs_to :ec_shop, inverse_of: :orders
+  has_one :ordering_org, through: :ec_shop,
+                         source: :org,
+                         class_name: 'Org',
+                         inverse_of: :orders_to_order
   belongs_to :supplier, inverse_of: :orders
   # belongs_to :supplier, inverse_of: :orders, optional: true
   belongs_to :buying_org, class_name: 'Org', inverse_of: :orders_to_buy, optional: true
-  has_one :actual_unit, dependent: :destroy
-  enum shop_type: ShopType.to_activerecord_enum
+  has_one :actual_unit, dependent: :destroy, inverse_of: :order
   enum status: {
     before_order: 1,
     ordered: 2,
@@ -12,7 +15,7 @@ class Order < ApplicationRecord
     shipped: 4
   }
 
-  validate :ordering_org?
+  # validate :ordering_org?
   validate :buying_org?
   # validate :validate_trade_no
 
