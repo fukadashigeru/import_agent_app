@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_114747) do
 
   create_table "suppliers", force: :cascade do |t|
     t.bigint "ec_shop_id", null: false
-    t.integer "ec_shop_type"
+    t.boolean "is_have_stock", default: true, null: false
     t.string "item_number", comment: "商品ID"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

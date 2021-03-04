@@ -22,18 +22,16 @@ module PlaceOrders
 
         def orders
           rows.map do |row|
-            build_order(row) if !indexed_orders_by_trade_no[row.trade_no]
+            build_order(row) if !indexed_orders_by_trade_number[row.trade_number]
           end.compact
         end
 
         # rubocop:disable Metrics/AbcSize
         def build_order(row)
-          supplier = indexed_suppliers_by_item_no[row.item_no]
+          supplier = indexed_suppliers_by_item_number[row.item_number]
 
           ordering_org.orders_to_order.new(
-            shop_type: shop_type,
-            item_no: row.item_no,
-            trade_no: row.trade_no,
+            trade_number: row.trade_number,
             title: row.title,
             postal: row.postal,
             address: row.address,
@@ -46,24 +44,25 @@ module PlaceOrders
             memo: row.memo,
             status: :before_order,
             supplier: supplier,
+            ec_shop: supplier.ec_shop,
             actual_unit: build_actual_unit(supplier)
           )
         end
         # rubocop:enable Metrics/AbcSize
 
-        def indexed_suppliers_by_item_no
-          @indexed_suppliers_by_item_no ||= ordering_org.suppliers.send(shop_type_key).index_by(&:item_no)
+        def indexed_suppliers_by_item_number
+          @indexed_suppliers_by_item_number ||= ordering_org.suppliers.ec_shop_is(ec_shop_type_key).index_by(&:item_number)
         end
 
-        def indexed_orders_by_trade_no
-          @indexed_orders_by_trade_no ||= ordering_org
-                                          .orders_to_order
-                                          .send(shop_type_key)
-                                          .index_by(&:trade_no)
+        def indexed_orders_by_trade_number
+          @indexed_orders_by_trade_number ||= ordering_org
+                                              .orders_to_order
+                                              .ec_shop_is(ec_shop_type_key)
+                                              .index_by(&:trade_number)
         end
 
-        def shop_type_key
-          @shop_type_key ||= ShopType.find_by_id(shop_type).key
+        def ec_shop_type_key
+          @ec_shop_type_key ||= EcShopType.find_by_id(shop_type).key
         end
 
         def rows

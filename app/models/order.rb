@@ -15,9 +15,13 @@ class Order < ApplicationRecord
     shipped: 4
   }
 
-  # validate :ordering_org?
+  validate :ordering_org?
   validate :buying_org?
   # validate :validate_trade_no
+  scope :ec_shop_is, lambda { |ec_shop_type|
+    ec_shop = EcShop.where(ec_shop_type: ec_shop_type)
+    joins(:ec_shop).merge(ec_shop)
+  }
 
   # scope :having_actual_unit, -> { select(&:actual_unit) }
   scope :having_actual_unit, lambda {
@@ -49,9 +53,9 @@ class Order < ApplicationRecord
     errors.add(:base, :not_buying_org)
   end
 
-  def validate_trade_no
-    return if ordering_org.orders.where(shop_type: shop_type, trade_no: trade_no).empty?
+  # def validate_trade_no
+  #   return if ordering_org.orders.where(shop_type: shop_type, trade_no: trade_no).empty?
 
-    errors.add(:base, '取引IDが既に登録されています。')
-  end
+  #   errors.add(:base, '取引IDが既に登録されています。')
+  # end
 end
