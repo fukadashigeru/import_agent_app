@@ -50,7 +50,10 @@ module PlaceOrders
         # rubocop:enable Metrics/AbcSize
 
         def indexed_suppliers_by_item_number
-          @indexed_suppliers_by_item_number ||= ordering_org.suppliers.ec_shop_is(ec_shop.ec_shop_type).index_by(&:item_number)
+          @indexed_suppliers_by_item_number ||= ordering_org
+                                                .suppliers
+                                                .ec_shop_is(ec_shop.ec_shop_type)
+                                                .index_by(&:item_number)
         end
 
         def indexed_orders_by_trade_number
