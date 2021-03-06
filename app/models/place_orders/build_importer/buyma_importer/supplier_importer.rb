@@ -6,8 +6,7 @@ module PlaceOrders
 
         attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
         attribute :ordering_org, Types.Instance(Org)
-        attribute :shop_type, Types::Params::Integer
-        # attribute :rows, Types::Array.of(Types.Instance(CsvRow))
+        attribute :ec_shop, Types.Instance(EcShop)
 
         def call
           import_suppliers!
@@ -27,19 +26,11 @@ module PlaceOrders
           end.compact
         end
 
-        def ec_shop
-          @ec_shop ||= ordering_org.ec_shops.find_or_create_by(ec_shop_type: 3)
-        end
-
         def indexed_suppliers_by_item_number
           @indexed_suppliers_by_item_number ||= ordering_org
                                                 .suppliers
-                                                .ec_shop_is(ec_shop_type_key)
+                                                .ec_shop_is(ec_shop.ec_shop_type)
                                                 .index_by(&:item_number)
-        end
-
-        def ec_shop_type_key
-          @ec_shop_type_key ||= EcShopType.find_by_id(shop_type).key
         end
 
         def rows

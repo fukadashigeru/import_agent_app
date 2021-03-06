@@ -55,9 +55,9 @@ ja:
         place_orders/form:
           attributes:
             base:
-              shop_type_required: ショップタイプを選択してください。
+              ec_shop_type_required: ショップタイプを選択してください。
               csv_file_required: CSVファイルをアップロードしてください。
-              invalid_shop_type: 未対応のショップタイプです。
+              invalid_ec_shop_type: 未対応のショップタイプです。
               csv_header_lack: ファイルのヘッダー項目に不足があります。
   activerecord:
     # attributes:

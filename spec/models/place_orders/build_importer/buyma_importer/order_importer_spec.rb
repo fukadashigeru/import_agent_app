@@ -17,11 +17,12 @@ RSpec.describe PlaceOrders::BuildImporter::BuymaImporter::OrderImporter do
         described_class.new(
           io: io,
           ordering_org: ordering_org,
-          shop_type: 3
+          ec_shop: ec_shop
         )
       end
       let(:io) { StringIO.new(csv_text) }
       let(:ordering_org) { create :org, org_type: :ordering_org }
+      let(:ec_shop) { create :ec_shop, org: ordering_org, ec_shop_type: :buyma }
       let(:csv_text) do
         <<~CSV
           商品ID,商品名,価格,受注数,取引ID,ニックネーム,名前（本名）,郵便番号,住所,電話番号,発送方法,色・サイズ,連絡事項,名前（ローマ字）,住所(ローマ字),受注メモ

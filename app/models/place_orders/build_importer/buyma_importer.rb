@@ -5,10 +5,10 @@ module PlaceOrders
 
       attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
       attribute :ordering_org, Types.Instance(Org)
-      attribute :shop_type, Types::Params::Integer
+      attribute :ec_shop_type, Types::Params::Integer
 
       validate :new_order_present
-      validate :check_trade_no_duplication
+      validate :check_trade_number_duplication
 
       BATCH_SIZE = 300
 
@@ -27,7 +27,7 @@ module PlaceOrders
         SupplierImporter.new(
           io: StringIO.new(csv_string),
           ordering_org: ordering_org,
-          shop_type: shop_type
+          ec_shop: ec_shop
         ).call
       end
 
@@ -35,13 +35,17 @@ module PlaceOrders
         OrderImporter.new(
           io: StringIO.new(csv_string),
           ordering_org: ordering_org,
-          shop_type: shop_type
+          ec_shop: ec_shop
         ).call
       end
 
-      def shop_type_key
-        @shop_type_key ||= ShopType.find_by_id(shop_type).key
+      def ec_shop
+        @ec_shop ||= ordering_org.ec_shops.find_or_create_by(ec_shop_type: ec_shop_type)
       end
+
+      # def ec_shop_type_key
+      #   @ec_shop_type_key ||= EcShopType.find_by_id(ec_shop_type).key
+      # end
 
       def rows
         @rows ||= read_csv.map do |row|
@@ -57,16 +61,16 @@ module PlaceOrders
         @csv_string ||= NKF.nkf('-xw', io.read)
       end
 
-      def csv_trade_no_array
-        @csv_trade_no_array ||= rows.map(&:trade_no)
+      def csv_trade_number_array
+        @csv_trade_number_array ||= rows.map(&:trade_number)
       end
 
-      def orders_trade_no_array
-        @orders_trade_no_array ||= ordering_org.orders_to_order.send(shop_type_key).map(&:trade_no)
+      def orders_trade_number_array
+        @orders_trade_number_array ||= ordering_org.orders_to_order.map(&:trade_number)
       end
 
       def new_order
-        @new_order ||= csv_trade_no_array - orders_trade_no_array
+        @new_order ||= csv_trade_number_array - orders_trade_number_array
       end
 
       def new_order_present
@@ -74,10 +78,10 @@ module PlaceOrders
       end
 
       def duplication_presence
-        (csv_trade_no_array.count - csv_trade_no_array.uniq.count).positive?
+        (csv_trade_number_array.count - csv_trade_number_array.uniq.count).positive?
       end
 
-      def check_trade_no_duplication
+      def check_trade_number_duplication
         errors.add(:base, 'ファイル内に同じお取引IDが2件以上ありインポートできません。') if duplication_presence
       end
     end

@@ -4,7 +4,7 @@ module PlaceOrders
 
     attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
     attribute :ordering_org, Types.Instance(Org)
-    attribute :shop_type, Types::Params::Integer
+    attribute :ec_shop_type, Types::Params::Integer
 
     delegate :call, to: :importer
 
@@ -15,7 +15,7 @@ module PlaceOrders
     private
 
     def klass
-      case shop_type_key
+      case ec_shop_type_key
       when :buyma
         BuymaImporter
       else
@@ -23,8 +23,8 @@ module PlaceOrders
       end
     end
 
-    def shop_type_key
-      @shop_type_key ||= ShopType.find_by_id(shop_type).key
+    def ec_shop_type_key
+      @ec_shop_type_key ||= EcShopType.find_by_id(ec_shop_type).key
     end
   end
 end
