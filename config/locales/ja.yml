@@ -41,7 +41,7 @@ ja:
       org_type:
         ordering_org: 発注会社
         buying_org: 買付会社
-    shop_type:
+    ec_shop_type:
       default: ImportAgent専用
       amazon: Amazon
       buyma: BUYMA

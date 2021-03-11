@@ -48,7 +48,7 @@ module PlaceOrders
     def form_params
       normalize_params(
         params.required(:place_orders_form).permit(
-          :shop_type,
+          :ec_shop_type,
           :csv_file
         )
       )
