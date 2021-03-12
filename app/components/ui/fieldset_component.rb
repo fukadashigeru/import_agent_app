@@ -3,7 +3,7 @@ module Ui
     with_content_areas :title, :subtext, :actions
 
     def initialize(first: true)
-      super
+      super()
       @first = first
     end
   end
