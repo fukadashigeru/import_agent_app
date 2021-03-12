@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :order do
-    shop_type { :default }
+    # TODO
   end
 end

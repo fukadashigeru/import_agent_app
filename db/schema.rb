@@ -31,6 +31,14 @@ ActiveRecord::Schema.define(version: 2021_01_28_114747) do
     t.index ["order_id"], name: "index_actual_units_on_order_id"
   end
 
+  create_table "ec_shops", force: :cascade do |t|
+    t.integer "ec_shop_type"
+    t.bigint "org_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["org_id"], name: "index_ec_shops_on_org_id"
+  end
+
   create_table "optional_unit_urls", force: :cascade do |t|
     t.bigint "supplier_url_id", null: false
     t.bigint "optional_unit_id", null: false
@@ -48,9 +56,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_114747) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "shop_type"
-    t.string "item_no", comment: "商品ID"
-    t.string "trade_no", comment: "取引ID"
+    t.string "trade_number", comment: "取引ID"
     t.string "title"
     t.string "postal"
     t.string "address"
@@ -62,14 +68,14 @@ ActiveRecord::Schema.define(version: 2021_01_28_114747) do
     t.string "information", comment: "連絡事項"
     t.string "memo", comment: "受注メモ"
     t.integer "status"
-    t.bigint "ordering_org_id", null: false
+    t.bigint "ec_shop_id", null: false
     t.bigint "buying_org_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "supplier_id"
     t.index ["buying_org_id"], name: "index_orders_on_buying_org_id"
-    t.index ["ordering_org_id", "shop_type", "trade_no"], name: "index_orders_on_ordering_org_id_and_shop_type_and_trade_no", unique: true
-    t.index ["ordering_org_id"], name: "index_orders_on_ordering_org_id"
+    t.index ["ec_shop_id", "trade_number"], name: "index_orders_on_ec_shop_id_and_trade_number", unique: true
+    t.index ["ec_shop_id"], name: "index_orders_on_ec_shop_id"
     t.index ["supplier_id"], name: "index_orders_on_supplier_id"
   end
 
@@ -90,26 +96,28 @@ ActiveRecord::Schema.define(version: 2021_01_28_114747) do
   end
 
   create_table "suppliers", force: :cascade do |t|
-    t.bigint "org_id", null: false
-    t.integer "shop_type"
-    t.string "item_no", comment: "商品ID"
+    t.bigint "ec_shop_id", null: false
+    t.boolean "is_have_stock", default: true, null: false
+    t.string "item_number", comment: "商品ID"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "first_priority_unit_id"
+    t.index ["ec_shop_id", "item_number"], name: "index_suppliers_on_ec_shop_id_and_item_number", unique: true
+    t.index ["ec_shop_id"], name: "index_suppliers_on_ec_shop_id"
     t.index ["first_priority_unit_id"], name: "index_suppliers_on_first_priority_unit_id"
-    t.index ["org_id"], name: "index_suppliers_on_org_id"
   end
 
   add_foreign_key "actual_unit_urls", "actual_units"
   add_foreign_key "actual_unit_urls", "supplier_urls"
   add_foreign_key "actual_units", "orders"
+  add_foreign_key "ec_shops", "orgs"
   add_foreign_key "optional_unit_urls", "optional_units"
   add_foreign_key "optional_unit_urls", "supplier_urls"
   add_foreign_key "optional_units", "suppliers"
+  add_foreign_key "orders", "ec_shops"
   add_foreign_key "orders", "orgs", column: "buying_org_id"
-  add_foreign_key "orders", "orgs", column: "ordering_org_id"
   add_foreign_key "orders", "suppliers"
   add_foreign_key "supplier_urls", "orgs"
+  add_foreign_key "suppliers", "ec_shops"
   add_foreign_key "suppliers", "optional_units", column: "first_priority_unit_id"
-  add_foreign_key "suppliers", "orgs"
 end
