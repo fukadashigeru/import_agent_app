@@ -1,7 +1,7 @@
 module Ui
   class LabelComponent < ViewComponent::Base
     def initialize(form:, name:)
-      super
+      super()
       @form = form
       @name = name
     end

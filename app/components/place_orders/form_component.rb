@@ -3,7 +3,7 @@ module PlaceOrders
     attr_reader :org, :form
 
     def initialize(org:, form:)
-      super
+      super()
       @org = org
       @form = form
     end
