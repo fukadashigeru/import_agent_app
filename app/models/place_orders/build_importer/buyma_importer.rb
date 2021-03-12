@@ -5,7 +5,9 @@ module PlaceOrders
 
       attribute :io, Types.Instance(IO) | Types.Instance(Tempfile) | Types.Instance(StringIO)
       attribute :ordering_org, Types.Instance(Org)
-      attribute :ec_shop_type, Types::Params::Integer
+      attribute :ec_shop_type, Types::Params::Symbol.optional
+                                                    .default(nil)
+                                                    .enum(*EcShopType.to_activerecord_enum.keys)
 
       validate :new_order_present
       validate :check_trade_number_duplication
@@ -42,10 +44,6 @@ module PlaceOrders
       def ec_shop
         @ec_shop ||= ordering_org.ec_shops.find_or_create_by(ec_shop_type: ec_shop_type)
       end
-
-      # def ec_shop_type_key
-      #   @ec_shop_type_key ||= EcShopType.find_by_id(ec_shop_type).key
-      # end
 
       def rows
         @rows ||= read_csv.map do |row|

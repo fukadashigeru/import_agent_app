@@ -4,7 +4,9 @@ module PlaceOrders
     include ActiveModel::Validations
 
     attribute :ordering_org, Types.Instance(Org)
-    attribute :ec_shop_type, Types::Params::Integer.optional.default(nil)
+    attribute :ec_shop_type, Types::Params::Symbol.optional
+                                                  .default(nil)
+                                                  .enum(*EcShopType.to_activerecord_enum.keys)
     attribute :csv_file, Types::Instance(ActionDispatch::Http::UploadedFile).optional.default(nil)
 
     validate :validate_ec_shop_type_presence
@@ -67,20 +69,16 @@ module PlaceOrders
     end
 
     def validate_ec_shop_type
-      return if ec_shop_type_key == :buyma
+      return if ec_shop_type == :buyma
 
       errors.add(:base, :invalid_ec_shop_type)
     end
 
     def vaildate_csv_header
-      case ec_shop_type_key
+      case ec_shop_type
       when :buyma
         errors.add(:base, :csv_header_lack) if !BUYMA_HEADERS_ELE_REQUIRED.to_set.subset?(csv_headers.to_set)
       end
-    end
-
-    def ec_shop_type_key
-      @ec_shop_type_key ||= EcShopType.find_by_id(ec_shop_type)&.key
     end
   end
 end

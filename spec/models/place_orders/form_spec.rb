@@ -10,7 +10,7 @@ RSpec.describe PlaceOrders::Form do
   end
   let(:importer) { form.build_importer }
   let(:ordering_org) { create :org }
-  let(:ec_shop_type) { 3 }
+  let(:ec_shop_type) { :buyma }
   let(:csv_file) do
     ActionDispatch::Http::UploadedFile.new(
       filename: 'foo.csv',
@@ -29,7 +29,7 @@ RSpec.describe PlaceOrders::Form do
     subject { form.tap(&:valid?).errors[:base] }
     describe 'validate :validate_ec_shop_type_presence' do
       context 'ec_shop_typeがある場合' do
-        let(:ec_shop_type) { 3 }
+        let(:ec_shop_type) { :buyma }
         it { is_expected.to be_blank }
       end
       context 'ec_shop_typeがない場合' do
@@ -48,17 +48,17 @@ RSpec.describe PlaceOrders::Form do
     end
     describe 'validate :validate_ec_shop_type' do
       context 'ec_shop_typeがbuymaのとき' do
-        let(:ec_shop_type) { 3 }
+        let(:ec_shop_type) { :buyma }
         it { is_expected.to be_blank }
       end
       context 'ec_shop_typeがbuymaではないとき' do
-        let(:ec_shop_type) { 1 }
+        let(:ec_shop_type) { :default }
         it { is_expected.to include '未対応のショップタイプです。' }
       end
     end
     describe 'validate :vaildate_csv_header' do
       context 'ec_shop_typeが3のとき' do
-        let(:ec_shop_type) { 3 }
+        let(:ec_shop_type) { :buyma }
         context 'ヘッダーの必須項目が全てあるとき' do
           let(:csv_text) do
             <<~CSV
@@ -83,7 +83,7 @@ RSpec.describe PlaceOrders::Form do
   describe 'Methods' do
     describe '#build_importer' do
       subject { form.build_importer }
-      let(:ec_shop_type) { 3 }
+      let(:ec_shop_type) { :buyma }
       let(:io) { StringIO.new(csv_text) }
       let(:csv_text) do
         <<~CSV

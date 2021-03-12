@@ -20,7 +20,7 @@ RSpec.describe PlaceOrders::BuildImporter::BuymaImporter do
     end
     let(:io) { StringIO.new(csv_text) }
     let(:ordering_org) { create :org, org_type: :ordering_org }
-    let(:ec_shop_type) { 3 }
+    let(:ec_shop_type) { :buyma }
 
     describe '2件の場合' do
       let(:csv_text) do

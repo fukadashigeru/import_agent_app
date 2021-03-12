@@ -34,7 +34,7 @@ module PlaceOrders
         redirect_to [@org, :orders, :before_orders]
       else
         flash[:danger] = @form.errors.full_messages
-        render 'show'
+        render :show
       end
     end
     # rubocop:enable Metrics/AbcSize
