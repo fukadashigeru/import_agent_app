@@ -21,6 +21,8 @@ class Supplier
     validate :valid_order_having_no_actual, unless: :actual_first_priority_attr
     validate :valid_optional_units_belong_to_supplier
 
+    FORM_COUNT = 5
+
     def upsert_or_destroy_units!
       ApplicationRecord.transaction do
         optional_unit_forms_for_save.each(&:upsert_or_destroy!)
@@ -28,13 +30,21 @@ class Supplier
       end
     end
 
-    # フォームように最低5個のoptional_unit_formを生成
-    def optional_unit_forms_for_form(count: 5)
-      optional_unit_forms = build_optional_unit_forms_by_record
+    # フォーム用に最低5個のoptional_unit_formを生成
+    def optional_unit_forms
+      count = optional_units.count > FORM_COUNT ? optional_units.count : FORM_COUNT
+      @optional_unit_forms ||= buid_forms(count)
+    end
 
-      optional_unit_forms = build_optional_unit_forms_from_actual_unit(optional_unit_forms)
-
-      @optional_unit_forms_for_form ||= build_optional_unit_forms_for_adjustment(optional_unit_forms, count)
+    # OptionalUnitFormをcountだけbuildする
+    def buid_forms(count)
+      Array.new(count).map.with_index do |_, i|
+        if optional_units[i]
+          build_unit_form_from_optional_unit(optional_units[i])
+        else
+          OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier)
+        end
+      end
     end
 
     # create処理内などで保存できるoptional_unit_formを生成
@@ -82,41 +92,27 @@ class Supplier
         end
     end
 
-    def build_optional_unit_forms_by_record
-      optional_units.map do |optional_unit|
-        first_priority = optional_unit.id == supplier.first_priority_unit_id
-        optional_urls = indexed_supplier_urls_by_optional_unit[optional_unit]
-        OptionalUnitForm.new(
-          ordering_org: ordering_org,
-          supplier: supplier,
-          optional_unit_id: optional_unit.id,
-          first_priority: first_priority,
-          optional_urls: optional_urls
+    def build_unit_form_from_optional_unit(optional_unit)
+      first_priority = optional_unit.id == supplier.first_priority_unit_id
+      optional_urls = indexed_supplier_urls_by_optional_unit[optional_unit]
+      OptionalUnitForm.new(
+        ordering_org: ordering_org,
+        supplier: supplier,
+        optional_unit_id: optional_unit.id,
+        first_priority: first_priority,
+        optional_urls: optional_urls
         )
-      end
     end
 
-    def build_optional_unit_forms_from_actual_unit(optional_unit_forms)
-      optional_unit_forms.tap do |forms|
-        if actual_unit && !optional_urls_hash.key?(actual_urls_by_record)
-          actual_supplier_urls = order.actual_unit.supplier_urls.map(&:url)
-          forms << OptionalUnitForm.new(
-            ordering_org: ordering_org,
-            supplier: supplier, optional_urls:
-            actual_supplier_urls
-          )
-        end
-      end
-    end
+    def build_unit_form_from_actual_unit(actual_unit)
+      return nil if optional_urls_hash.key?(actual_urls_by_record)
 
-    def build_optional_unit_forms_for_adjustment(optional_unit_forms, count)
-      optional_unit_forms.tap do |forms|
-        forms if forms.count >= count
-
-        (count - forms.count).times do |_|
-          forms << OptionalUnitForm.new(ordering_org: ordering_org, supplier: supplier)
-        end
-      end
+      actual_supplier_urls = actual_unit.supplier_urls.map(&:url)
+      OptionalUnitForm.new(
+        ordering_org: ordering_org,
+        supplier: supplier,
+        optional_urls: actual_supplier_urls
+      )
     end
 
     def not_build_optional_unit_form(optional_unit_form_hash)

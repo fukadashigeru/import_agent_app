@@ -9,7 +9,7 @@ class SuppliersController < ApplicationController
       supplier: @supplier,
       order: @order
     )
-    @optional_unit_forms = @form.optional_unit_forms_for_form
+    @optional_unit_forms = @form.optional_unit_forms
   end
 
   def update
