@@ -6,7 +6,7 @@ class Supplier
     attribute :ordering_org, Types.Instance(Org)
     attribute :supplier, Types.Instance(Supplier)
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
-    attribute :order_ids, Tyeps::Array.of(Types::Params::Integer)
+    attribute :order_ids, Types::Array.of(Types::Params::Integer) | Types::Params::Symbol
     attribute :optional_unit_forms_attrs_arr, Types::Array.of(
       Types::Hash.schema(
         optional_unit_id: Types::Params::Integer.optional.default(nil),
@@ -90,17 +90,32 @@ class Supplier
     end
 
     def actual_unit_forms
-      order_ids.map do |order_id|
-        order = indexed_orders_by_id[order_id]
+      if order_ids == :all
+        orders.map do |order|
+          ActualUnitForm.new(
+            ordering_org: ordering_org,
+            supplier: supplier,
+            order: order,
+            actual_urls: actual_urls
+          )
+        end
+      else
+        order_ids.map do |order_id|
+          order = indexed_orders_by_id[order_id]
+          next unless order
 
-        next unless order
+          ActualUnitForm.new(
+            ordering_org: ordering_org,
+            supplier: supplier,
+            order: order,
+            actual_urls: actual_urls
+          )
+        end
+      end
+    end
 
-        ActualUnitForm.new(
-          ordering_org: ordering_org,
-          supplier: supplier,
-          order: order,
-          actual_urls: actual_urls
-        )
+    def actual_urls
+      optional_unit_forms_attrs_arr[first_priority_attr][:urls]
     end
 
     def indexed_orders_by_id

@@ -7,7 +7,7 @@ RSpec.describe Supplier::SupplierForm do
       supplier: supplier,
       order: order,
       first_priority_attr: first_priority_attr,
-      # actual_first_priority_attr: actual_first_priority_attr,
+      order_ids: order_ids,
       optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
   end
@@ -15,7 +15,7 @@ RSpec.describe Supplier::SupplierForm do
   let(:supplier) { create :supplier, org: org }
   let(:order) { create :order, ordering_org: org, supplier: supplier, status: :before_order }
   let(:first_priority_attr) { '0' }
-  let(:actual_first_priority_attr) { nil }
+  let(:order_ids) { :all }
   let(:optional_unit_forms_attrs_arr) do
     [
       { optional_unit_id: nil, urls: ['https://example_A.com/', 'https://example_B.com/'] },
