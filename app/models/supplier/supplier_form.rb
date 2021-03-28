@@ -5,10 +5,8 @@ class Supplier
 
     attribute :ordering_org, Types.Instance(Org)
     attribute :supplier, Types.Instance(Supplier)
-    # attribute :order, Types.Instance(Order)
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
     attribute :order_ids, Tyeps::Array.of(Types::Params::Integer)
-    # attribute :actuaOl_first_priority_attr, Types::Params::Integer.optional.default(nil)
     attribute :optional_unit_forms_attrs_arr, Types::Array.of(
       Types::Hash.schema(
         optional_unit_id: Types::Params::Integer.optional.default(nil),
