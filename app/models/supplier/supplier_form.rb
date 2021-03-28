@@ -5,9 +5,10 @@ class Supplier
 
     attribute :ordering_org, Types.Instance(Org)
     attribute :supplier, Types.Instance(Supplier)
-    attribute :order, Types.Instance(Order)
+    # attribute :order, Types.Instance(Order)
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
-    # attribute :actual_first_priority_attr, Types::Params::Integer.optional.default(nil)
+    attribute :order_ids, Tyeps::Array.of(Types::Params::Integer)
+    # attribute :actuaOl_first_priority_attr, Types::Params::Integer.optional.default(nil)
     attribute :optional_unit_forms_attrs_arr, Types::Array.of(
       Types::Hash.schema(
         optional_unit_id: Types::Params::Integer.optional.default(nil),
@@ -16,6 +17,7 @@ class Supplier
     ).optional.default([].freeze)
 
     delegate :optional_units, to: :supplier
+    delegate :orders, to: :supplier
     # delegate :actual_unit, to: :order
 
     validate :valid_order_having_no_actual, unless: :actual_first_priority_attr
@@ -26,7 +28,7 @@ class Supplier
     def upsert_or_destroy_units!
       ApplicationRecord.transaction do
         valid_optional_unit_forms.each(&:upsert_or_destroy!)
-        # actual_unit_forms_for_save.each(&:upsert_actual_unit!)
+        actual_unit_forms.each(&:upsert_actual_unit!)
       end
     end
 
@@ -87,6 +89,24 @@ class Supplier
         first_priority: first_priority,
         optional_urls: optional_urls
       )
+    end
+
+    def actual_unit_forms
+      order_ids.map do |order_id|
+        order = indexed_orders_by_id[order_id]
+
+        next unless order
+
+        ActualUnitForm.new(
+          ordering_org: ordering_org,
+          supplier: supplier,
+          order: order,
+          actual_urls: actual_urls
+        )
+    end
+
+    def indexed_orders_by_id
+      @indexed_orders_by_id ||= supplier.orders.index_by(&:id)
     end
 
     # def build_unit_form_from_actual_unit(actual_unit)
