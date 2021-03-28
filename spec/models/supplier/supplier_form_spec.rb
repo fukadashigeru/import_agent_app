@@ -7,7 +7,7 @@ RSpec.describe Supplier::SupplierForm do
       supplier: supplier,
       order: order,
       first_priority_attr: first_priority_attr,
-      actual_first_priority_attr: actual_first_priority_attr,
+      # actual_first_priority_attr: actual_first_priority_attr,
       optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
     )
   end

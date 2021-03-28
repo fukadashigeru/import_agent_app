@@ -27,6 +27,10 @@ class Supplier
           end
       end
 
+      def blank_form?
+        optional_unit_id.nil? && optional_urls.all?(&:blank?)
+      end
+
       private
 
       def destroy_optional_unit!
