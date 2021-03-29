@@ -7,7 +7,7 @@ RSpec.describe Supplier::SupplierForm do
       supplier: supplier,
       first_priority_attr: first_priority_attr,
       order_ids: order_ids,
-      optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
+      forms_attrs_array: forms_attrs_array
     )
   end
   let(:org) { create :org, org_type: :ordering_org }
@@ -15,7 +15,7 @@ RSpec.describe Supplier::SupplierForm do
   let(:order) { create :order, ordering_org: org, supplier: supplier, status: :before_order }
   let(:first_priority_attr) { '0' }
   let(:order_ids) { :all }
-  let(:optional_unit_forms_attrs_arr) do
+  let(:forms_attrs_array) do
     [
       { optional_unit_id: nil, urls: ['https://example_A.com/', 'https://example_B.com/'] },
       { optional_unit_id: nil, urls: ['https://example_C.com/', 'https://example_D.com/'] },
@@ -87,7 +87,7 @@ RSpec.describe Supplier::SupplierForm do
           @optional_unit = create_optional_unit(org, supplier, ['https://example_a.com/'])
         end
         context '異常' do
-          let(:optional_unit_forms_attrs_arr) do
+          let(:forms_attrs_array) do
             [
               {
                 optional_unit_id: @other_optional_unit.id,
@@ -104,7 +104,7 @@ RSpec.describe Supplier::SupplierForm do
           end
         end
         context '正常' do
-          let(:optional_unit_forms_attrs_arr) do
+          let(:forms_attrs_array) do
             [
               {
                 optional_unit_id: @optional_unit.id,
@@ -123,7 +123,7 @@ RSpec.describe Supplier::SupplierForm do
       end
       context 'optional_unitがない場合' do
         context '異常' do
-          let(:optional_unit_forms_attrs_arr) do
+          let(:forms_attrs_array) do
             [
               {
                 optional_unit_id: @other_optional_unit.id,
@@ -148,7 +148,7 @@ RSpec.describe Supplier::SupplierForm do
       subject { form.upsert_or_destroy_units! }
       context 'order_idsが:allの場合' do
         let(:first_priority_attr) { '1' }
-        let(:optional_unit_forms_attrs_arr) do
+        let(:forms_attrs_array) do
           [
             {
               optional_unit_id: @optional_unit.id.to_s,
@@ -200,7 +200,7 @@ RSpec.describe Supplier::SupplierForm do
 
       context 'order_idsがidの配列の場合' do
         let(:first_priority_attr) { '1' }
-        let(:optional_unit_forms_attrs_arr) do
+        let(:forms_attrs_array) do
           [
             {
               optional_unit_id: @optional_unit.id.to_s,
@@ -247,7 +247,7 @@ RSpec.describe Supplier::SupplierForm do
     # describe 'optional_unit_forms_for_form' do
     #   subject { form.optional_unit_forms_for_form }
     #   context 'レコードがないとき' do
-    #     let(:optional_unit_forms_attrs_arr) { [] }
+    #     let(:optional_unit_forms_attrs_array) { [] }
     #     it 'OptionalUnitFromのoptional_urlsがいい感じ' do
     #       subject
     #       expect(subject[0].optional_urls).to eq ['']
@@ -259,7 +259,7 @@ RSpec.describe Supplier::SupplierForm do
     #   end
 
     #   context 'optional_unitsレコードが3個あるとき' do
-    #     let(:optional_unit_forms_attrs_arr) { [] }
+    #     let(:optional_unit_forms_attrs_array) { [] }
     #     before do
     #       @optional_unit_a = create_optional_unit(
     #         org, supplier, ['https://example_a1.com', 'https://example_a2.com']
@@ -317,7 +317,7 @@ RSpec.describe Supplier::SupplierForm do
     #   subject { form.optional_unit_forms_for_save }
     #   context 'optional_unitsレコードが2個あるとき' do
     #     let(:first_priority_attr) { '2' }
-    #     let(:optional_unit_forms_attrs_arr) do
+    #     let(:optional_unit_forms_attrs_array) do
     #       [
     #         {
     #           optional_unit_id: @optional_unit_a.id.to_s,
