@@ -91,7 +91,7 @@ class Supplier
 
     def actual_unit_forms
       if order_ids == :all
-        orders.map do |order|
+        orders.having_no_actual_unit.map do |order|
           ActualUnitForm.new(
             ordering_org: ordering_org,
             supplier: supplier,

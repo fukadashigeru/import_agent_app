@@ -34,6 +34,9 @@ class Order < ApplicationRecord
     ids = ActualUnit.select(:order_id)
     where.not(id: ids)
   }
+  
+  # 下記を追加しsupplier_formで使う。ordersを絞り込むときに
+  # scope :having_no_supplier_url
 
   def status_i18n
     I18n.t status, scope: %i[enum orders status]
