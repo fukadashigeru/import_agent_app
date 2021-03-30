@@ -171,8 +171,10 @@ RSpec.describe Supplier::SupplierForm do
         context 'optional_unitの買付先について' do
           it do
             subject
-            expect(@optional_unit.supplier_urls.map(&:url)).to eq ['https://example_A.com/', 'https://example_B.com/'] 
-            expect(OptionalUnit.last.supplier_urls.map(&:url)).to eq ['https://example_C.com/', 'https://example_D.com/'] 
+            expect(@optional_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_A.com/', 'https://example_B.com/']
+            expect(OptionalUnit.last.supplier_urls.map(&:url))
+              .to eq ['https://example_C.com/', 'https://example_D.com/']
           end
         end
         context 'actual_unitがないorder' do
@@ -180,9 +182,11 @@ RSpec.describe Supplier::SupplierForm do
           let!(:order2) { create :order, supplier: supplier, status: :ordered, ordering_org: org }
           it do
             subject
-            expect(order1.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_C.com/', 'https://example_D.com/']
+            expect(order1.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_C.com/', 'https://example_D.com/']
             # 本来はこうあるべきではないがactual_unitがなければ、status: :orderedであれば買付先が登録される
-            expect(order2.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_C.com/', 'https://example_D.com/']
+            expect(order2.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_C.com/', 'https://example_D.com/']
           end
         end
         context 'actual_unitがあるorder' do
@@ -194,8 +198,10 @@ RSpec.describe Supplier::SupplierForm do
           end
           it do
             subject
-            expect(order1.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_A.com/', 'https://example_B.com/']
-            expect(order2.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_A.com/', 'https://example_B.com/']
+            expect(order1.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_A.com/', 'https://example_B.com/']
+            expect(order2.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_A.com/', 'https://example_B.com/']
           end
         end
       end
@@ -243,9 +249,12 @@ RSpec.describe Supplier::SupplierForm do
           end
           it 'order_idsのOrderの買付先が更新されている' do
             subject
-            expect(order1.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_C.com/', 'https://example_D.com/']
-            expect(order2.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_C.com/', 'https://example_D.com/']
-            expect(order3.actual_unit.supplier_urls.map(&:url)).to eq ['https://example_A.com/', 'https://example_B.com/']
+            expect(order1.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_C.com/', 'https://example_D.com/']
+            expect(order2.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_C.com/', 'https://example_D.com/']
+            expect(order3.actual_unit.supplier_urls.map(&:url))
+              .to eq ['https://example_A.com/', 'https://example_B.com/']
           end
         end
       end

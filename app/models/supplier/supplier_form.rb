@@ -7,7 +7,8 @@ class Supplier
     attribute :supplier, Types.Instance(Supplier)
     attribute :order, Types.Instance(Order)
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
-    attribute :order_ids, (Types::Array.of(Types::Params::Integer) | Types::Params::Symbol).optional.default(nil)
+    attribute :order_ids,
+              (Types::Array.of(Types::Params::Integer) | Types::Params::Symbol).optional.default(nil)
     attribute :forms_attrs_array, Types::Array.of(
       Types::Hash.schema(
         optional_unit_id: Types::Params::Integer.optional.default(nil),
@@ -43,7 +44,6 @@ class Supplier
     def valid_forms
       @valid_forms ||=
         forms_attrs_array.map.with_index do |form_attrs, index|
-
           optional_unit_id = form_attrs[:optional_unit_id]
           first_priority = first_priority_attr == index
           optional_urls = form_attrs[:urls]
