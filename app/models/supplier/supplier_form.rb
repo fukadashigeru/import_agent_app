@@ -5,9 +5,9 @@ class Supplier
 
     attribute :ordering_org, Types.Instance(Org)
     attribute :supplier, Types.Instance(Supplier)
-    # attribute :order, Types.Instance(Order)
+    attribute :order, Types.Instance(Order)
     attribute :first_priority_attr, Types::Params::Integer.optional.default(nil)
-    attribute :order_ids, Types::Array.of(Types::Params::Integer) | Types::Params::Symbol
+    attribute :order_ids, (Types::Array.of(Types::Params::Integer) | Types::Params::Symbol).optional.default(nil)
     attribute :forms_attrs_array, Types::Array.of(
       Types::Hash.schema(
         optional_unit_id: Types::Params::Integer.optional.default(nil),
@@ -62,7 +62,7 @@ class Supplier
         if optional_units[i]
           build_form_from_optional_unit(optional_units[i])
         else
-          build_unit_form
+          build_form
         end
       end
     end
@@ -72,7 +72,7 @@ class Supplier
       first_priority = optional_unit.id == supplier.first_priority_unit_id
       optional_urls = indexed_supplier_urls_by_optional_unit[optional_unit]
 
-      build_unit_form(
+      build_form(
         optional_unit_id: optional_unit.id,
         first_priority: first_priority,
         optional_urls: optional_urls
@@ -133,27 +133,6 @@ class Supplier
     def indexed_orders_by_id
       @indexed_orders_by_id ||= supplier.orders.index_by(&:id)
     end
-
-    # def build_unit_form_from_actual_unit(actual_unit)
-    #   return nil if optional_urls_hash.key?(actual_urls_by_record)
-
-    #   actual_supplier_urls = actual_unit.supplier_urls.map(&:url)
-    #   OptionalUnitForm.new(
-    #     ordering_org: ordering_org,
-    #     supplier: supplier,
-    #     optional_urls: actual_supplier_urls
-    #   )
-    # end
-
-    # def actual_urls
-    #   if actual_first_priority_attr
-    #     optional_unit_forms_attrs_arr[actual_first_priority_attr][:urls]
-    #   else
-    #     raise Error if first_priority_attr.blank?
-
-    #     optional_unit_forms_attrs_arr[first_priority_attr][:urls]
-    #   end
-    # end
 
     def indexed_supplier_urls_by_optional_unit
       @indexed_supplier_urls_by_optional_unit ||=
