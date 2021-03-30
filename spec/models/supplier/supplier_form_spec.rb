@@ -264,7 +264,7 @@ RSpec.describe Supplier::SupplierForm do
       subject { form.forms }
       context '買付先候補が1件も無い場合（OptinalUnitが1件もない場合）' do
         it '5つの買付先URLがnilになっている' do
-          expect(subject.map(&:optional_urls)).to eq [nil, nil, nil, nil, nil]
+          expect(subject.map(&:optional_urls)).to eq [[''], [''], [''], [''], ['']]
         end
       end
       context '買付先候補がある場合（OptinalUnitがあるもない場合）' do
@@ -276,7 +276,7 @@ RSpec.describe Supplier::SupplierForm do
           supplier.update(first_priority_unit_id: @optional_unit.id)
         end
         it do
-          expect(subject.map(&:first_priority)).to eq [false, true, false, nil, nil]
+          expect(subject.map(&:first_priority)).to eq [false, true, false, false, false]
         end
         it '買付先URLがしかるべきものになっている（生成順が微妙かも）' do
           expect(subject.map(&:optional_urls))
@@ -284,8 +284,8 @@ RSpec.describe Supplier::SupplierForm do
               ['https://example_A.com/'],
               ['https://example_B.com/', 'https://example_C.com/'],
               ['https://example_D.com/'],
-              nil,
-              nil
+              [''],
+              ['']
             ]
         end
       end

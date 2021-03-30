@@ -7,6 +7,7 @@ class Supplier
       attribute :ordering_org, Types.Instance(Org)
       attribute :supplier, Types.Instance(Supplier)
       attribute :optional_unit_id, Types::Integer.optional.default(nil)
+      # 下の2つはoptional外してもいいかも
       attribute :first_priority, Types::Bool.optional.default(false)
       attribute :optional_urls, Types::Array.of(Types::String).optional.default([''].freeze)
 
@@ -19,6 +20,7 @@ class Supplier
       end
 
       def supplier_forms
+        binding.pry
         @supplier_forms =
           optional_urls.map do |optional_url|
             SupplierUrlForm.new(

@@ -80,7 +80,7 @@ class Supplier
     end
 
     # OptionalUnitFormをbuildする
-    def build_form(optional_unit_id: nil, first_priority: nil, optional_urls: nil)
+    def build_form(optional_unit_id: nil, first_priority: false, optional_urls: [''])
       OptionalUnitForm.new(
         ordering_org: ordering_org,
         supplier: supplier,

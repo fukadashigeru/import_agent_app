@@ -4,12 +4,12 @@ class SuppliersController < ApplicationController
   before_action :set_order
 
   def edit
-    @form = Supplier::SupplierForm.new(
+    @supplier_form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
       order: @order
     )
-    @optional_unit_forms = @form.optional_unit_forms
+    @optional_unit_forms = @supplier_form.forms
   end
 
   def update
