@@ -13,16 +13,16 @@ class SuppliersController < ApplicationController
   end
 
   def update
-    @form = Supplier::SupplierForm.new(
+    @supplier_form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
       order: @order,
       first_priority_attr: first_priority_attr,
-      actual_first_priority_attr: actual_first_priority_attr,
-      optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
+      order_ids: :all,
+      forms_attrs_array: forms_attrs_array
     )
-    if @form.valid?
-      @form.upsert_or_destroy_units!
+    if @supplier_form.valid?
+      @supplier_form.upsert_or_destroy_units!
     else
       flash[:danger] = '処理が完了できませんでした。'
     end
@@ -57,7 +57,7 @@ class SuppliersController < ApplicationController
     ).fetch(:actual_first_priority, nil)
   end
 
-  def optional_unit_forms_attrs_arr
+  def forms_attrs_array
     normalize_params(
       params
       .permit(optional_unit_forms: {})

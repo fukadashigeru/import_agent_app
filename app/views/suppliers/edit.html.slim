@@ -22,9 +22,6 @@
         tr
           th.px-3.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-4
             i.fas.fa-question-circle(data-modal-tooltip-a="買付先候補の第1希望にチェックを入れてください。これからの注文や実際の買付先が登録されていない場合に適用されます。")
-          - if @order.actual_unit
-            th.px-3.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center.w-4
-              i.fas.fa-question-circle(data-modal-tooltip-b="この注文の実際の買付先となるものにチェックを入れてください。")
           th.px-5.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
             .flex
               .flex-auto.pr-20
@@ -41,8 +38,8 @@
                 = radio_button_tag "first_priority", i, first_priority_bool, data: { firstpriority: 'foo' }
               td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
                 span.relative.inline-flex.w-full
-                  - optional_unit_form.supplier_forms.each_with_index do |supplier_form, index|
-                    = ff.fields :supplier_form, model: supplier_form do |fff|
+                  - optional_unit_form.supplier_forms.each_with_index do |supplier_url_form, index|
+                    = ff.fields :supplier_url_form, model: supplier_url_form do |fff|
                       = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}", data: { supplierform: 'foo' }
                       button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500.mr-3(type="button" data-external-link)
                         i.fas.fa-external-link-alt

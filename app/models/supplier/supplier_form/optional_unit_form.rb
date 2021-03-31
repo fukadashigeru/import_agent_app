@@ -20,7 +20,6 @@ class Supplier
       end
 
       def supplier_forms
-        binding.pry
         @supplier_forms =
           optional_urls.map do |optional_url|
             SupplierUrlForm.new(

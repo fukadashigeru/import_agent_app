@@ -20,8 +20,8 @@ class Supplier
     delegate :orders, to: :supplier
     delegate :actual_unit, to: :order
 
-    validate :valid_order_having_no_actual, unless: :actual_first_priority_attr
-    validate :valid_optional_units_belong_to_supplier
+    # validate :valid_order_having_no_actual, unless: :actual_first_priority_attr
+    # validate :valid_optional_units_belong_to_supplier
 
     FORM_COUNT = 5
 
