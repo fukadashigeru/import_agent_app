@@ -45,7 +45,7 @@ RSpec.describe Supplier::SupplierForm do
   end
 
   describe 'Validation' do
-    before { pending }
+    before { skip }
     describe 'valid_order_having_no_actual' do
       subject { form.tap(&:valid?).errors[:base] }
       context 'actual_first_priority_attrがあるとき' do
