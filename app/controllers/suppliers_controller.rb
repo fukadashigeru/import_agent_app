@@ -18,7 +18,7 @@ class SuppliersController < ApplicationController
       supplier: @supplier,
       order: @order,
       first_priority_attr: first_priority_attr,
-      # order_ids: :all,
+      order_ids: order_ids,
       forms_attrs_array: forms_attrs_array
     )
     if @supplier_form.valid?
@@ -62,6 +62,30 @@ class SuppliersController < ApplicationController
       params
       .permit(optional_unit_forms: {})
     ).fetch(:optional_unit_forms, {}).values
+  end
+
+  def order_ids
+    if normalize_params(params.permit(:order_ids)).present?
+      # 'all'
+      order_ids_all
+    else
+      # ['1','2','3']
+      order_ids_array
+    end
+  end
+
+  def order_ids_array
+    normalize_params(
+      params
+      .permit(order_ids: [])
+    ).fetch(:order_ids)
+  end
+
+  def order_ids_all
+    normalize_params(
+      params
+      .permit(:order_ids)
+    ).fetch(:order_ids)
   end
 
   def normalize_params(permitted_params)
