@@ -68,12 +68,21 @@
             th.px-5.py-3.bg-gray-100.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider.text-center
               | 注文番号
         tbody.bg-white.divide-y.divide-gray-200#supplier-forms-table
+          / 当該の注文(Order)
+          tr
+            td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center.cursor-not-allowed
+              input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded.cursor-not-allowed.opacity-25 type="checkbox" disabled="disabled" checked="checked"
+              = hidden_field_tag "order_ids[]", @supplier_form.order.id
+            td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+              = @supplier_form.order.trade_number
+          / 当該の注文以外のOrder
           - @supplier.orders.each do |order|
-            tr
-              td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
-                = check_box_tag "order_ids[]", order.id, false, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
-              td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
-                = order.trade_number
+            - if order != @supplier_form.order
+              tr
+                td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                  = check_box_tag "order_ids[]", order.id, true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
+                td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
+                  = order.trade_number
   / 新規登録画面
   - else
     = hidden_field_tag "order_ids", :all
