@@ -36,7 +36,12 @@ class SuppliersController < ApplicationController
   end
 
   def set_supplier
-    @supplier = @org.suppliers.find(params[:id])
+    @supplier =
+      @org.suppliers.includes(
+        first_priority_unit: :supplier_urls,
+        optional_units: :supplier_urls,
+        orders: { actual_unit: :supplier_urls }
+      ).find(params[:id])
   end
 
   def set_order
