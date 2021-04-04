@@ -16,10 +16,16 @@ nav.bg-gray-800.shadow-sm
                   | 注文一覧
               - if @active == :place_orders
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
-                  | 発注
+                  | 注文入力
               - else
                 = link_to [@org, :place_orders, :import], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
-                  | 発注
+                  | 注文入力
+              - if @active == :suppliers
+                .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
+                  | 買付先一覧
+              - else
+                = link_to [@org, :suppliers], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                  | 買付先一覧
       .hidden.sm:ml-6.sm:flex.sm:items-center
         button.p-1.border-2.border-transparent.text-gray-400.rounded-full.hover:text-gray-500.focus:outline-none.focus:text-gray-500.focus:bg-gray-100.transition.duration-150.ease-in-out[aria-label="Notifications"]
           svg.h-6.w-6[stroke="currentColor" fill="none" viewbox="0 0 24 24"]

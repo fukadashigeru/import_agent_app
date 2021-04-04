@@ -1,7 +1,11 @@
 class SuppliersController < ApplicationController
   before_action :set_org
-  before_action :set_supplier
-  before_action :set_order
+  before_action :set_suppliers, only: %i[index]
+  before_action :set_supplier, only: %i[edit update]
+  before_action :set_order, only: %i[edit update]
+
+  def index
+  end
 
   def edit
     @supplier_form = Supplier::SupplierForm.new(
@@ -33,6 +37,10 @@ class SuppliersController < ApplicationController
 
   def set_org
     @org = Org.find(params[:org_id])
+  end
+
+  def set_suppliers
+    @suppliers = @org.suppliers.page(params[:page]).per(30)
   end
 
   def set_supplier
