@@ -22,9 +22,9 @@ ruby:
               | 商品ID
             th.w-28.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
               | 商品画像
-            th.w-32.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+            th.w-40.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
               | 販売元ページ
-            th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+            th.w-44.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
               | 買付先ページ
             th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
               | サイズ
@@ -50,8 +50,10 @@ ruby:
               td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 | 商品画像
               td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
-                a.text-indigo-600.hover:text-indigo-900 href="#"  販売元ページ
-              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500.w-40
+                a.text-indigo-600.hover:text-indigo-900 href="#"
+                  i.fas.fa-external-link-alt(class="mr-0.5")
+                  | 販売元ページ
+              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 - optional_supplier_urls = order.supplier.optional_units.map(&:supplier_urls)
                 - actual_supplier_urls = order&.actual_unit&.supplier_urls
                 / 買付先候補も実際の買付先も登録されていない場合
@@ -67,10 +69,18 @@ ruby:
                 - elsif actual_supplier_urls.present?
                   .flex
                     .flex-initial
-                      - actual_supplier_urls.each do |supplier_url|
-                        div
-                          = link_to supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900', target: :_blank do
-                            | 買付先ページ
+                      - if actual_supplier_urls.size == 1
+                        - actual_supplier_urls.each do |supplier_url|
+                          div
+                            = link_to supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900', target: :_blank do
+                              i.fas.fa-external-link-alt(class="mr-0.5")
+                              | 買付先ページ
+                      - else
+                        - actual_supplier_urls.each_with_index do |supplier_url, i|
+                          div(class="mb-0.5")
+                            = link_to supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900', target: :_blank do
+                              i.fas.fa-external-link-alt(class="mr-0.5")
+                              | セット商品 #{i + 1}
                     - if @indexed_all_supplier_urls_is_same_by_supplier[order.supplier]
                       .flex.ml-3
                         - data_remote_replace_json = { url: url_for([:edit, @org, order.supplier, {order_id: order.id}]), id: form_mdoal_id}.to_json
@@ -90,13 +100,13 @@ ruby:
 
               td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 = order.color_size
-              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
+              td.text-center.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 = order.quantity
               td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 | 〒#{order.postal}
                 br
                 = order.address
-              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
+              td.text-right.px-6.pr-8.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 | $100
               td.px-6.py-4.whitespace-no-wrap.text-right.text-xs.leading-5.font-medium
                 a.text-indigo-600.hover:text-indigo-900 href="#"
