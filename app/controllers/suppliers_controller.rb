@@ -1,10 +1,13 @@
 class SuppliersController < ApplicationController
   before_action :set_org
   before_action :set_suppliers, only: %i[index]
-  before_action :set_supplier, only: %i[edit update]
+  before_action :set_supplier, only: %i[show edit update]
   before_action :set_order, only: %i[edit update]
 
   def index
+  end
+
+  def show
   end
 
   def edit

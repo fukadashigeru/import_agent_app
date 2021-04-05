@@ -9,6 +9,6 @@ Rails.application.routes.draw do
     namespace :place_orders do
       resource :import, only: %i[show create]
     end
-    resources :suppliers, only: %i[index edit update]
+    resources :suppliers, only: %i[index show edit update]
   end
 end
