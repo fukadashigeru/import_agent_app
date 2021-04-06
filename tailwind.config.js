@@ -9,5 +9,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('tailwindcss-box-shadow-outline-extended')
   ],
 }
