@@ -7,8 +7,9 @@ RSpec.describe Order, type: :model do
   describe 'Validations' do
     describe 'validate :ordering_org?' do
       subject { order.tap(&:valid?).errors[:base] }
-      let(:order) { build :order, ordering_org: ordering_org }
+      let(:order) { build :order, ec_shop: ec_shop }
       let(:ordering_org) { create :org, org_type: org_type }
+      let(:ec_shop) { create :ec_shop, org: ordering_org }
       context 'org_typeがordering_orgの場合' do
         let(:org_type) { :ordering_org }
         it { is_expected.to be_blank }

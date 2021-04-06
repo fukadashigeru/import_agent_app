@@ -1,7 +1,7 @@
 module Orders
   class NavbarComponent < ViewComponent::Base
     def initialize(org:, active:)
-      super
+      super()
       @org = org
       @active = active
     end

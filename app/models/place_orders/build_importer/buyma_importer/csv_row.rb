@@ -5,8 +5,8 @@ module PlaceOrders
         attribute :row, Types.Instance(CSV::Row)
 
         module HeaderColumns
-          ITEM_NO = '商品ID'.freeze
-          TRADE_NO = '取引ID'.freeze
+          ITEM_NUMBER = '商品ID'.freeze
+          TRADE_NUMBER = '取引ID'.freeze
           TITLE = '商品名'.freeze
           POSTAL = '郵便番号'.freeze
           ADDRESS = '住所'.freeze
@@ -19,12 +19,12 @@ module PlaceOrders
           MEMO = '受注メモ'.freeze
         end
 
-        def item_no
-          row[HeaderColumns::ITEM_NO]
+        def item_number
+          row[HeaderColumns::ITEM_NUMBER]
         end
 
-        def trade_no
-          row[HeaderColumns::TRADE_NO]
+        def trade_number
+          row[HeaderColumns::TRADE_NUMBER]
         end
 
         def title

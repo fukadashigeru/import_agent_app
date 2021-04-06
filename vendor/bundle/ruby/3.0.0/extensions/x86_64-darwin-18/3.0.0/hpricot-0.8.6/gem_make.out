@@ -1,0 +1,43 @@
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/3.0.0/gems/hpricot-0.8.6/ext/hpricot_scan
+/Users/fukadashigeru/.rbenv/versions/3.0.0/bin/ruby -I /Users/fukadashigeru/.rbenv/versions/3.0.0/lib/ruby/3.0.0 -r ./siteconf20210313-20954-3snzjb.rb extconf.rb
+checking for main() in -lc... yes
+creating Makefile
+
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/3.0.0/gems/hpricot-0.8.6/ext/hpricot_scan
+make "DESTDIR=" clean
+
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/3.0.0/gems/hpricot-0.8.6/ext/hpricot_scan
+make "DESTDIR="
+compiling hpricot_css.c
+hpricot_css.rl:87:14: warning: field precision should have type 'int', but argument has type 'long' [-Wformat]
+        {te = p+1;{ FILTERAUTO(); }}
+                    ^~~~~~~~~~~~
+hpricot_css.rl:15:20: note: expanded from macro 'FILTERAUTO'
+  sprintf(filt, "%.*s", te - ts, ts); \
+                 ~~^~   ~~~~~~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include/secure/_stdio.h:47:56: note: expanded from macro 'sprintf'
+  __builtin___sprintf_chk (str, 0, __darwin_obsz(str), __VA_ARGS__)
+                                                       ^~~~~~~~~~~
+hpricot_css.c:3407:9: warning: comparison between pointer and integer ('char *' and 'int')
+        if ( p == eof )
+             ~ ^  ~~~
+2 warnings generated.
+compiling hpricot_scan.c
+hpricot_scan.rl:855:3: warning: incompatible pointer types passing 'VALUE (VALUE, VALUE, VALUE, VALUE, VALUE)' (aka 'unsigned long (unsigned long, unsigned long, unsigned long, unsigned long, unsigned long)') to parameter of type 'VALUE (*)(VALUE, VALUE, VALUE, VALUE)' (aka 'unsigned long (*)(unsigned long, unsigned long, unsigned long, unsigned long)') [-Wincompatible-pointer-types]
+  rb_define_singleton_method(mHpricot, "css", hpricot_css, 3);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/fukadashigeru/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/internal/anyargs.h:307:143: note: expanded from macro 'rb_define_singleton_method'
+#define rb_define_singleton_method(obj, mid, func, arity)   RBIMPL_ANYARGS_DISPATCH_rb_define_singleton_method((arity), (func))((obj), (mid), (func), (arity))
+                                                                                                                                              ^~~~~~
+/Users/fukadashigeru/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/internal/anyargs.h:270:1: note: passing argument to parameter here
+RBIMPL_ANYARGS_DECL(rb_define_singleton_method, VALUE, const char *)
+^
+/Users/fukadashigeru/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/internal/anyargs.h:257:72: note: expanded from macro 'RBIMPL_ANYARGS_DECL'
+RBIMPL_ANYARGS_ATTRSET(sym) static void sym ## _03(__VA_ARGS__, VALUE(*)(VALUE, VALUE, VALUE, VALUE), int); \
+                                                                       ^
+1 warning generated.
+linking shared-object hpricot_scan.bundle
+
+current directory: /Users/fukadashigeru/projects/import_agent_app/vendor/bundle/ruby/3.0.0/gems/hpricot-0.8.6/ext/hpricot_scan
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 hpricot_scan.bundle ./.gem.20210313-20954-gs8yy2

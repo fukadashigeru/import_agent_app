@@ -4,13 +4,13 @@ RSpec.describe PlaceOrders::Form do
   let(:form) do
     described_class.new(
       ordering_org: ordering_org,
-      shop_type: shop_type,
+      ec_shop_type: ec_shop_type,
       csv_file: csv_file
     )
   end
   let(:importer) { form.build_importer }
   let(:ordering_org) { create :org }
-  let(:shop_type) { 3 }
+  let(:ec_shop_type) { :buyma }
   let(:csv_file) do
     ActionDispatch::Http::UploadedFile.new(
       filename: 'foo.csv',
@@ -27,13 +27,13 @@ RSpec.describe PlaceOrders::Form do
   end
   describe 'Validations' do
     subject { form.tap(&:valid?).errors[:base] }
-    describe 'validate :validate_shop_type_presence' do
-      context 'shop_typeがある場合' do
-        let(:shop_type) { 3 }
+    describe 'validate :validate_ec_shop_type_presence' do
+      context 'ec_shop_typeがある場合' do
+        let(:ec_shop_type) { :buyma }
         it { is_expected.to be_blank }
       end
-      context 'shop_typeがない場合' do
-        let(:shop_type) { nil }
+      context 'ec_shop_typeがない場合' do
+        let(:ec_shop_type) { nil }
         it { is_expected.to include 'ショップタイプを選択してください。' }
       end
     end
@@ -46,19 +46,19 @@ RSpec.describe PlaceOrders::Form do
         it { is_expected.to include 'CSVファイルをアップロードしてください。' }
       end
     end
-    describe 'validate :validate_shop_type' do
-      context 'shop_typeがbuymaのとき' do
-        let(:shop_type) { 3 }
+    describe 'validate :validate_ec_shop_type' do
+      context 'ec_shop_typeがbuymaのとき' do
+        let(:ec_shop_type) { :buyma }
         it { is_expected.to be_blank }
       end
-      context 'shop_typeがbuymaではないとき' do
-        let(:shop_type) { 1 }
+      context 'ec_shop_typeがbuymaではないとき' do
+        let(:ec_shop_type) { :default }
         it { is_expected.to include '未対応のショップタイプです。' }
       end
     end
     describe 'validate :vaildate_csv_header' do
-      context 'shop_typeが3のとき' do
-        let(:shop_type) { 3 }
+      context 'ec_shop_typeが3のとき' do
+        let(:ec_shop_type) { :buyma }
         context 'ヘッダーの必須項目が全てあるとき' do
           let(:csv_text) do
             <<~CSV
@@ -83,7 +83,7 @@ RSpec.describe PlaceOrders::Form do
   describe 'Methods' do
     describe '#build_importer' do
       subject { form.build_importer }
-      let(:shop_type) { 3 }
+      let(:ec_shop_type) { :buyma }
       let(:io) { StringIO.new(csv_text) }
       let(:csv_text) do
         <<~CSV
@@ -103,7 +103,7 @@ RSpec.describe PlaceOrders::Form do
       it 'callが一度呼ばれるはず' do
         # is_expected.to have_attributes(
         #   ordering_org: ordering_org,
-        #   shop_type: 3
+        #   ec_shop_type: 3
         # )
         is_expected.to be_an_instance_of(PlaceOrders::BuildImporter::BuymaImporter)
       end

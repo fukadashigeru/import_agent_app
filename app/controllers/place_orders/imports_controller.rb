@@ -34,7 +34,7 @@ module PlaceOrders
         redirect_to [@org, :orders, :before_orders]
       else
         flash[:danger] = @form.errors.full_messages
-        render 'show'
+        render :show
       end
     end
     # rubocop:enable Metrics/AbcSize
@@ -48,7 +48,7 @@ module PlaceOrders
     def form_params
       normalize_params(
         params.required(:place_orders_form).permit(
-          :shop_type,
+          :ec_shop_type,
           :csv_file
         )
       )

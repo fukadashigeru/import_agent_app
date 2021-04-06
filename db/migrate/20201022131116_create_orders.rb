@@ -2,9 +2,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
   # rubocop:disable Metrics/AbcSize
   def change
     create_table :orders do |t|
-      t.integer :shop_type
-      t.string :item_no, comment: '商品ID'
-      t.string :trade_no, comment: '取引ID'
+      t.string :trade_number, comment: '取引ID'
       t.string :title
       t.string :postal
       t.string :address
@@ -16,12 +14,12 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.string :information, comment: '連絡事項'
       t.string :memo, comment: '受注メモ'
       t.integer :status
-      t.references :ordering_org, null: false, foreign_key: { to_table: :orgs }
+      t.references :ec_shop, null: false, foreign_key: true
       t.references :buying_org, foreign_key: { to_table: :orgs }
 
       t.timestamps
 
-      t.index %i[ordering_org_id shop_type trade_no], unique: true
+      t.index %i[ec_shop_id trade_number], unique: true
     end
   end
   # rubocop:enable Metrics/AbcSize
