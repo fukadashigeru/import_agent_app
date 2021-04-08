@@ -29,6 +29,6 @@ class Supplier < ApplicationRecord
 
   def indexed_supplier_urls_by_orders
     @indexed_supplier_urls_by_orders ||=
-      orders.index_with { |order| order.actual_unit.supplier_urls }
+      orders.index_with { |order| order.actual_unit&.supplier_urls }
   end
 end

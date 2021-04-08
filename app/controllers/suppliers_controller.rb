@@ -2,7 +2,6 @@ class SuppliersController < ApplicationController
   before_action :set_org
   before_action :set_suppliers, only: %i[index]
   before_action :set_supplier, only: %i[show edit update]
-  before_action :set_order, only: %i[edit update]
 
   def index
   end
@@ -13,17 +12,17 @@ class SuppliersController < ApplicationController
   def edit
     @supplier_form = Supplier::SupplierForm.new(
       ordering_org: @org,
-      supplier: @supplier,
-      order: @order
+      supplier: @supplier
     )
     @optional_unit_forms = @supplier_form.forms
+    @redirect = params[:redirect]
+    @status = params[:status]
   end
 
   def update
     @supplier_form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
-      order: @order,
       first_priority_attr: first_priority_attr,
       order_ids: order_ids,
       forms_attrs_array: forms_attrs_array
@@ -33,10 +32,15 @@ class SuppliersController < ApplicationController
     else
       flash[:danger] = '処理が完了できませんでした。'
     end
-    redirect_to [@org, :orders, :before_orders]
+    case params[:redirect].to_sym
+    when :before_orders
+      redirect_to [@org, :orders, :before_orders]
+    when :suppliers_show
+      redirect_to [@org, @supplier]
+    end
   end
 
-  # private
+  private
 
   def set_org
     @org = Org.find(params[:org_id])
@@ -53,10 +57,6 @@ class SuppliersController < ApplicationController
         optional_units: :supplier_urls,
         orders: { actual_unit: :supplier_urls }
       ).find(params[:id])
-  end
-
-  def set_order
-    @order = @supplier.orders.find(params[:order_id])
   end
 
   def first_priority_attr

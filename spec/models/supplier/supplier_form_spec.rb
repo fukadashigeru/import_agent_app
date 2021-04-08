@@ -5,7 +5,6 @@ RSpec.describe Supplier::SupplierForm do
     described_class.new(
       ordering_org: org,
       supplier: supplier,
-      order: order,
       first_priority_attr: first_priority_attr,
       order_ids: order_ids,
       forms_attrs_array: forms_attrs_array

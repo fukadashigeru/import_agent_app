@@ -59,7 +59,7 @@ ruby:
                 - actual_supplier_urls = order&.actual_unit&.supplier_urls
                 / 買付先候補も実際の買付先も登録されていない場合
                 - if optional_supplier_urls.flatten.blank? && actual_supplier_urls.blank?
-                  - data_remote_replace_json = { url: url_for([:edit, @org, order.supplier, {order_id: order.id}]), id: form_mdoal_id}.to_json
+                  - data_remote_replace_json = { url: url_for([:edit, @org, order.supplier, {redirect: :before_orders}]), id: form_mdoal_id}.to_json
                   button.btn-xs.btn-primary(
                     type="button"
                     data-modal-open="##{modal_spinner_id}"
@@ -84,7 +84,7 @@ ruby:
                               | セット商品 #{i + 1}
                     - if @indexed_all_supplier_urls_is_same_by_supplier[order.supplier]
                       .flex.ml-3
-                        - data_remote_replace_json = { url: url_for([:edit, @org, order.supplier, {order_id: order.id}]), id: form_mdoal_id}.to_json
+                        - data_remote_replace_json = { url: url_for([:edit, @org, order.supplier, {redirect: :before_orders}]), id: form_mdoal_id}.to_json
                         button.text-indigo-600.hover:text-indigo-900(
                           type="button"
                           data-modal-open="##{modal_spinner_id}"

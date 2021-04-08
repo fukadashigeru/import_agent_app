@@ -1,4 +1,4 @@
-= form_with url: [@org, @supplier, { order_id: @order.id }], model: @supplier_form, method: :put, local: true do |f|
+= form_with url: [@org, @supplier, {redirect: @redirect}], model: @supplier_form, method: :put, local: true do |f|
   = render(Ui::FieldsetComponent.new) do |fieldset|
     - fieldset.with(:title)
       | 買付先登録
@@ -58,13 +58,21 @@
                       i.fas.fa-minus
                     button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
                       i.fas.fa-plus
-  / / 買付先がすべて同じで一括編集する場合
-  - if @supplier.all_supplier_urls_is_same?
-    - @supplier.orders.before_order.each do |order|
-      = hidden_field_tag "order_ids[]", order.id
-  / / 新規登録画面
-  - else
-    = hidden_field_tag "order_ids", :all
+  - case @redirect.to_sym
+  - when :before_orders
+    / / 買付先がすべて同じで一括編集する場合
+    - if @supplier.all_supplier_urls_is_same?
+      - @supplier.orders.before_order.each do |order|
+        = hidden_field_tag "order_ids[]", order.id
+    / / 新規登録画面
+    - else
+      = hidden_field_tag "order_ids", :all
+  - when :suppliers_show
+    - case @status.to_sym
+    - when :edit
+      = hidden_field_tag "order_ids", nil
+    - when :new
+      = hidden_field_tag "order_ids", :all
   / / 編集画面の場合,条件を変える
   / - if @supplier.optional_units.present?
   /   .mt-4
