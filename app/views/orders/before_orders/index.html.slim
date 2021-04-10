@@ -2,14 +2,17 @@ ruby:
   modal_spinner_id = "id-#{SecureRandom.uuid}"
   form_mdoal_id = "id-#{SecureRandom.uuid}"
 
-= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :ordered))
-.border-t-2.border-gray-100
-= render(::Orders::NavbarComponent.new(org: @org, active: :before_orders))
-.mx-auto.sm:px-6.lg:px-8
+= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :place_orders))
+= render(::PlaceOrders::NavbarComponent.new(org: @org, import: :done, before_orders: :active, confirm: :pending))
+
+- if @orders.present?
   .overflow-x-auto(class="sm:-mx-6 lg:-mx-8")
   .align-middle.inline-block.min-w-full(class="sm:px-6 lg:px-8")
-    .flex.justify-end.py-4
-      = paginate @orders
+    .flex.justify-between.py-4
+      button.btn.btn-secondary
+        | 買付業者指定
+      div
+        = paginate @orders
     .shadow.overflow-hidden.border-b.border-gray-200(class="sm:rounded-lg")
       table.min-w-full.divide-y.divide-gray-200
         thead
@@ -112,6 +115,9 @@ ruby:
               td.px-6.py-4.whitespace-no-wrap.text-right.text-xs.leading-5.font-medium
                 a.text-indigo-600.hover:text-indigo-900 href="#"
                   i.fas.fa-edit
+- else
+  .max-w-3xl.mx-auto.bg-gray-200.overflow-hidden.rounded-lg.sm:my-24.h-96.text-gray-400.flex.items-center.justify-center
+    | 入力された注文の下書きはありません。
 
 .fixed.z-50.inset-0.overflow-y-auto.hidden(id="#{modal_spinner_id}" data-modal)
   .flex.items-end.justify-center.min-h-screen.pt-4.px-4.pb-20.text-center.sm:block.sm:p-0
@@ -124,3 +130,4 @@ ruby:
       .h-full(id=(form_mdoal_id))
         .h-full.bg-white.flex.items-center.justify-center.text-gray-400
           i.fa.fa-spinner.fa-pulse.fa-3x
+

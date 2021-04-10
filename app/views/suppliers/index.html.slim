@@ -1,7 +1,7 @@
 = render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :suppliers))
 .border-t-2.border-gray-100
 
-.mx-auto.sm:px-6.lg:px-8
+- if @suppliers.present? 
   .overflow-x-auto(class="sm:-mx-6 lg:-mx-8")
   .align-middle.flex.flex-col.mx-auto.mt-4(class="sm:px-6 lg:px-8 lg:w-3/4")
     .flex.justify-end.py-4
@@ -31,3 +31,7 @@
                 | 10件
               td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
                 | 10件
+
+- else
+  .max-w-3xl.mx-auto.bg-gray-200.overflow-hidden.rounded-lg.sm:my-24.h-96.text-gray-400.flex.items-center.justify-center
+    | 登録された買付先はありません。

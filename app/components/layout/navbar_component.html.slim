@@ -8,18 +8,54 @@ nav.bg-gray-800.shadow-sm
           .ml-10.flex.items-baseline.space-x-4
             / TODO:タブの表示・非表示はあとで修正予定
             - if @tab
+              - if @org.orders_to_order.before_order.present?
+                - button_style = @active == :place_orders ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' 
+                div(
+                  data-controller="dropdown"
+                  data-dropdown-placement-value="bottom-start"
+                )
+                  button.px-3.py-2.rounded-md.text-sm.font-medium.focus:outline-none.transition.duration-150.ease-in-out(
+                    type="button"
+                    class=button_style
+                    data-dropdown="place-orders-dropdown"
+                    data-dropdown-target="trigger"
+                  )
+                    | 注文入力
+                  #place-orders-dropdown.relative.hidden(
+                    data-dropdown-target="dropdownPlace"
+                  )
+                    .origin-top-right.absolute.left-0.mt-2.w-40.rounded-md.shadow-lg
+                      .py-1.rounded-md.bg-white.shadow-xs
+                        = link_to [@org, :place_orders, :import], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out #{'opacity-50 cursor-not-allowed pointer-events-none' if @switch_company}" do
+                          .flex
+                            span.flex-shrink-0.w-5.h-5.flex.items-center.justify-center.border-2.border-gray-700.rounded-full.text-sm
+                              span
+                                | 1
+                            span.flex.text-sm.font-medium.items-center.justify-center.ml-2
+                              | インポート
+                      .py-1.rounded-md.bg-white.shadow-xs
+                        = link_to [@org, :orders, :before_orders], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out #{'opacity-50 cursor-not-allowed pointer-events-none' if @switch_company}" do
+                          .flex
+                            span.flex-shrink-0.w-5.h-5.flex.items-center.justify-center.border-2.border-gray-700.rounded-full.text-sm
+                              span
+                                | 2
+                            span.flex.text-sm.font-medium.items-center.justify-center.ml-2
+                              | 下書き
+              - else
+                - if @active == :place_orders
+                  = link_to [@org, :place_orders, :import], class: "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium #{import_pointer_events}" do
+                    | 注文入力
+                - else
+                  = link_to [@org, :place_orders, :import], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                    | 注文入力 
+
               - if @active == :ordered
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
                   | 注文一覧
               - else
-                = link_to [@org, :orders, :before_orders], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
+                = link_to [@org, :orders, :after_orders], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
                   | 注文一覧
-              - if @active == :place_orders
-                .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
-                  | 注文入力
-              - else
-                = link_to [@org, :place_orders, :import], class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' do
-                  | 注文入力
+
               - if @active == :suppliers
                 .bg-gray-900.text-white.px-3.py-2.rounded-md.text-sm.font-medium
                   | 買付先一覧
@@ -32,6 +68,7 @@ nav.bg-gray-800.shadow-sm
             path[stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"]
         .ml-3.relative(
           data-controller="dropdown"
+          data-dropdown-placement-value="bottom-end"
         )
           button.flex.text-sm.border-2.border-transparent.rounded-full.focus:outline-none.transition.duration-150.ease-in-out(
             type="button"

@@ -2,8 +2,7 @@ ruby:
   form = ::PlaceOrders::FormComponent.new(org: @org, form: @form)
 
 = render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :place_orders))
-.border-t-2.border-gray-100
-= render(::PlaceOrders::NavbarComponent.new(org: @org, active: :imports))
+= render(::PlaceOrders::NavbarComponent.new(org: @org, import: :active, before_orders: :pending, confirm: :pending))
 .m-auto.mt-16.w-1/2
   .flex.justify-end
     button.btn.btn-white.btn-disabled(disabled)
