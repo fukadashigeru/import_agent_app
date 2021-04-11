@@ -9,6 +9,8 @@ class Supplier
       attribute :order, Types.Instance(Order)
       attribute :actual_urls, Types::Array.of(Types::String.optional.default(nil)).optional.default([].freeze)
 
+      validate :valid_urls?
+
       delegate :actual_unit, to: :order
 
       def upsert_actual_unit!
@@ -46,6 +48,12 @@ class Supplier
 
       def supplier_orders
         supplier.orders.where(status: :before_order).select { |order| order.actual_unit.nil? }
+      end
+
+      def valid_urls?
+        return if actual_urls.any?(&:present?)
+
+        errors.add(:base, '不正な値です。')
       end
     end
   end

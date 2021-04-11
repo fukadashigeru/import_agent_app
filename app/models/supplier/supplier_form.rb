@@ -15,6 +15,8 @@ class Supplier
       )
     ).optional.default([].freeze)
 
+    validate :valid_supplier_form?
+
     delegate :optional_units, to: :supplier
     delegate :orders, to: :supplier
 
@@ -134,6 +136,12 @@ class Supplier
         optional_units.index_with do |optional_unit|
           optional_unit.optional_unit_urls.map { |optional_unit_url| optional_unit_url.supplier_url.url }
         end
+    end
+
+    def valid_supplier_form?
+      return if actual_unit_forms.all?(&:valid?)
+
+      errors.add(:base, '不正な値です。')
     end
   end
 end

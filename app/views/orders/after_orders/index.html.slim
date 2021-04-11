@@ -63,5 +63,7 @@
                   i.fas.fa-edit
 
 - else
-  .max-w-3xl.mx-auto.bg-gray-200.overflow-hidden.rounded-lg.sm:my-24.h-96.text-gray-400.flex.items-center.justify-center
+  .max-w-3xl.mx-auto.bg-gray-200.overflow-hidden.rounded-lg.sm:my-24.h-96.text-gray-400.flex.flex-col.items-center.justify-center
     | 発注済の注文はありません。
+    = link_to [@org, :place_orders, :import], class: 'btn btn-primary mt-3' do
+      | 注文入力
