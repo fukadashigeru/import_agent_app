@@ -15,6 +15,9 @@ document.addEventListener('click', async (e) => {
     }
 
     target.insertAdjacentHTML('beforeend', html)
+
+    const event = new CustomEvent('remoteReplaceDone');
+    document.dispatchEvent(event)
   }
 })
 

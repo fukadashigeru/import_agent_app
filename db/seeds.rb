@@ -56,6 +56,7 @@ ec_shop_buyma.orders.create(
     {
       supplier: indexed_suppliers_by_id.fetch('seed-item-2000'),
       trade_number: 'seed-trade-2000',
+      title: '◯◯◯◯◯◯◯◯◯◯',
       postal: 'XXX-XXXX',
       address: '◯◯県◯◯市◯◯区◯丁目◯◯-◯◯',
       addressee: 'YYYYYY',

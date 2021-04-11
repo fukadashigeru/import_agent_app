@@ -1,6 +1,7 @@
 .notification-container {
-  @apply fixed inset-0 flex flex-col pointer-events-none p-6 items-center justify-start z-50;
+  @apply fixed inset-0 flex flex-col pointer-events-none p-6 items-end justify-start z-50;
 }
+
 .notification {
   @apply w-full bg-white shadow-lg rounded-lg pointer-events-auto;
   &-inner {
@@ -20,30 +21,30 @@
   }
 
   &-green {
-    @apply bg-green-50;
+    @apply bg-white border border-green-400;
     .notification-icon {
-      @apply text-green-400;
+      @apply text-green-500;
     }
     .notification-text {
-      @apply text-green-800;
+      @apply text-green-500;
     }
   }
   &-red {
-    @apply bg-red-100;
+    @apply bg-white border-2 border-red-400;
     .notification-icon {
-      @apply text-red-800;
+      @apply text-red-600;
     }
     .notification-text {
-      @apply text-red-800;
+      @apply text-red-600;
     }
   }
   &-blue {
-    @apply bg-blue-50;
+    @apply bg-white border border-blue-400;
     .notification-icon {
-      @apply text-blue-400;
+      @apply text-blue-600;
     }
     .notification-text {
-      @apply text-blue-700;
+      @apply text-blue-600;
     }
   }
 }

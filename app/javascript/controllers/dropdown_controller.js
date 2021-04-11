@@ -4,6 +4,10 @@ import 'tippy.js/animations/perspective.css';
 
 export default class extends Controller {
   static targets = [ "trigger", "dropdownPlace"]
+  
+  static values = {
+    placement: String 
+  }
 
   connect() {
     tippy(this.triggerTarget, {
@@ -14,9 +18,9 @@ export default class extends Controller {
       appendTo: () => document.body,
       animation: 'perspective',
       duration: 100,
-      placement: 'bottom-end'
+      placement: this.placementValue,
+      offset: [0, 4]
     })
-    this.dropdownPlaceTarget.remove()
   }
 }
 

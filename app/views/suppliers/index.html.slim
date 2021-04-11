@@ -1,0 +1,37 @@
+= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :suppliers))
+.border-t-2.border-gray-100
+
+- if @suppliers.present? 
+  .overflow-x-auto(class="sm:-mx-6 lg:-mx-8")
+  .align-middle.flex.flex-col.mx-auto.mt-4(class="sm:px-6 lg:px-8 lg:w-3/4")
+    .flex.justify-end.py-4
+      = paginate @suppliers
+    .shadow.overflow-hidden.border-b.border-gray-200(class="sm:rounded-lg")
+      table.min-w-full.divide-y.divide-gray-200
+        thead
+          tr
+            th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+              | 商品ID
+            th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+              | 発注前
+            th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+              | 発注済
+            th.px-6.py-3.bg-gray-50.text-left.text-xs.leading-4.font-medium.text-gray-500.uppercase.tracking-wider
+              | 発送後
+
+        tbody.bg-white.divide-y.divide-gray-200
+          - @suppliers.each do |supplier|
+            tr
+              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5
+                = link_to [@org, supplier], class: "font-medium text-indigo-600 hover:text-indigo-500"
+                  = supplier.item_number
+              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
+                | 10件
+              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
+                | 10件
+              td.px-6.py-4.whitespace-no-wrap.text-xs.leading-5.text-gray-500
+                | 10件
+
+- else
+  .max-w-3xl.mx-auto.bg-gray-200.overflow-hidden.rounded-lg.sm:my-24.h-96.text-gray-400.flex.items-center.justify-center
+    | 登録された買付先はありません。

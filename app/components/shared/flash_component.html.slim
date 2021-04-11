@@ -1,6 +1,6 @@
 .notification-container
   - flash.each_with_index do |(key, val), i|
-    .notification.max-w-2xl.mb-4(
+    .notification.max-w-sm.mb-4(
       id="#{get_id(i)}"
       class="#{notification_style_class(key)}"
     )
@@ -19,4 +19,3 @@
             .ml-4.flex-shrink-0.flex(class="pt-0.5")
               button.notification-close(data-dismiss="##{get_id(i)}")
                 i.notification-close-icon.fa.fa-times
-

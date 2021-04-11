@@ -11,4 +11,24 @@ class Supplier < ApplicationRecord
     ec_shop = EcShop.where(ec_shop_type: ec_shop_type)
     joins(:ec_shop).merge(ec_shop)
   }
+
+  def all_supplier_urls_is_same?
+    return nil unless first_priority_unit
+
+    first_supplier_url_ids = first_priority_unit.supplier_urls.ids.sort
+    uniq_actual_supplier_urls.reject { |su| su.ids.sort == first_supplier_url_ids }.blank?
+  end
+
+  def uniq_actual_supplier_urls
+    @uniq_actual_supplier_urls ||=
+      orders
+      .before_order
+      .map { |order| indexed_supplier_urls_by_orders[order] }
+      .uniq { |supplier_urls| supplier_urls.ids.sort }
+  end
+
+  def indexed_supplier_urls_by_orders
+    @indexed_supplier_urls_by_orders ||=
+      orders.index_with { |order| order.actual_unit&.supplier_urls }
+  end
 end

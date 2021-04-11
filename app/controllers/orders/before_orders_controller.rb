@@ -9,6 +9,8 @@ module Orders
         order_by: :desc
       )
       @orders = @orders_repository.orders.page(params[:page]).per(30)
+      @indexed_all_supplier_urls_is_same_by_supplier =
+        Supplier::SuppliersRepository.new(org: @org).indexed_all_supplier_urls_is_same_by_supplier
     end
 
     private

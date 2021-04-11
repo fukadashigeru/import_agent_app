@@ -1,0 +1,115 @@
+ruby:
+  modal_spinner_id = "id-#{SecureRandom.uuid}"
+  form_mdoal_id = "id-#{SecureRandom.uuid}"
+
+= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: nil))
+.border-t-2.border-gray-100
+
+.m-auto.mt-16
+  .bg-white.max-w-4xl.mx-auto.shadow.mt-3.sm:rounded-lg.sm:divide-y.sm:divide-gray-200
+    .px-4.py-5.sm:px-6
+      h3.text-lg.leading-6.font-medium.text-gray-900
+        | 買付先候補一覧
+      p.mt-1.max-w-2xl.text-sm.text-gray-500
+        - if @supplier.optional_units.present?
+          | 商品ID
+          = link_to @supplier.item_number,@supplier.item_number, class: 'text-indigo-600 hover:text-indigo-900 px-1', target: :_blank
+          | の買付先候補一覧です。
+        - else
+          | 商品ID
+          = link_to @supplier.item_number,@supplier.item_number, class: 'text-indigo-600 hover:text-indigo-900 px-1', target: :_blank
+          | の買付先候補を登録してください。
+    .px-4.py-5.sm:p-0
+      .flex.flex-col.pt-4
+        .py-2.align-middle.inline-block.min-w-full.sm:px-6.lg:px-8
+          .shadow.border-b.border-gray-200.sm:rounded-lg
+            - if @supplier.optional_units.present?
+              table.min-w-full.divide-y.divide-gray-200
+                thead.bg-gray-50
+                  tr
+                    th.px-6.py-3.w-24.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+                      | 第1候補
+                    th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+                      | 買付先URL
+                tbody.bg-white.divide-y.divide-gray-200
+                  - @supplier.optional_units.each do |optional_unit|
+                    - supplier_urls = optional_unit.supplier_urls
+                    tr.bg-white
+                      td.px-6.py-4.whitespace-nowrap.text-sm.font-medium.text-gray-900
+                        - if @supplier.first_priority_unit == optional_unit
+                          i.fas.fa-check-circle.text-green-500.ml-3
+                      td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
+                        - supplier_urls.each do |supplier_url|
+                          = link_to supplier_url.url, supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900 mr-3', target: :_blank
+            - else
+              .bg-gray-100.overflow-hidden.rounded-lg.h-36.flex.items-center.justify-center.text-gray-400
+                | 買付先候補を登録してください。
+    .py-4.mt-4.sm:py-5.sm:px-6
+      .flex.justify-end
+        - if @supplier.optional_units.present?
+          - data_remote_replace_json = { url: url_for([:edit, @org, @supplier, { redirect: :suppliers_show, status: :edit }]), id: form_mdoal_id}.to_json
+          button.btn.btn-secondary(
+            type="button"
+            data-modal-open="##{modal_spinner_id}"
+            data-remote-replace=(data_remote_replace_json)
+          )
+            | 編集
+        - else
+          - data_remote_replace_json = { url: url_for([:edit, @org, @supplier, { redirect: :suppliers_show, status: :new }]), id: form_mdoal_id}.to_json
+          button.btn.btn-primary(
+            type="button"
+            data-modal-open="##{modal_spinner_id}"
+            data-remote-replace=(data_remote_replace_json)
+          )
+            | 登録
+
+
+.m-auto.my-16
+  .bg-white.pb-4.max-w-4xl.mx-auto.shadow.mt-3.sm:rounded-lg.sm:divide-y.sm:divide-gray-200
+    .px-4.py-5.sm:px-6
+      h3.text-lg.leading-6.font-medium.text-gray-900
+        | 注文一覧
+      p.mt-1.max-w-2xl.text-sm.text-gray-500
+        | 商品ID
+        = link_to @supplier.item_number,@supplier.item_number, class: 'text-indigo-600 hover:text-indigo-900 px-1', target: :_blank
+        | の注文一覧です。
+    .px-4.py-5.sm:p-0
+      .flex.flex-col.pt-4
+        .py-2.align-middle.inline-block.min-w-full.sm:px-6.lg:px-8
+          .shadow.border-b.border-gray-200.sm:rounded-lg
+            table.min-w-full.divide-y.divide-gray-200
+              thead.bg-gray-50
+                tr
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+                    | 取引ID 
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+                    | 買付先URL
+                  th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+                    | ステータス 
+              tbody.bg-white.divide-y.divide-gray-200
+                - @supplier.orders.each do |order|
+                  tr.bg-white
+                    td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
+                      = order.trade_number
+                    td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
+                      - if @supplier.optional_units.present?
+                        - order.actual_unit.supplier_urls.each do |supplier_url|
+                          = link_to supplier_url.url, supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900 mr-3', target: :_blank
+                        button.btn-xs.btn-secondary
+                          | 編集
+                      - else
+                        | 買付先候補を登録すると反映されます。
+                    td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
+                      = order.status_i18n
+
+.fixed.z-50.inset-0.overflow-y-auto.hidden(id="#{modal_spinner_id}" data-modal)
+  .flex.items-end.justify-center.min-h-screen.pt-4.px-4.pb-20.text-center.sm:block.sm:p-0
+    / .fixed.inset-0.transition-opacity(data-modal-close)
+    .fixed.inset-0.transition-opacity
+      .absolute.inset-0.bg-gray-600.opacity-75
+    span.inline-block.align-middle.h-screen
+    .inline-block.align-bottom.bg-white.rounded-lg.px-4.pt-5.pb-4.text-left.overflow-hidden.shadow-xl.transform.transition-all.sm:my-8.sm:align-middle.sm:max-w-2xl.sm:w-full.sm:p-6 aria-labelledby="modal-headline" aria-modal="true" role="dialog"
+      .sm:flex.sm:items-start
+      .h-full(id=(form_mdoal_id))
+        .h-full.bg-white.flex.items-center.justify-center.text-gray-400
+          i.fa.fa-spinner.fa-pulse.fa-3x

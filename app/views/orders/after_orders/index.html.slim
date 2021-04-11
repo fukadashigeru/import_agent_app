@@ -1,7 +1,8 @@
 = render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :ordered))
 .border-t-2.border-gray-100
 = render(::Orders::NavbarComponent.new(org: @org, active: :after_orders))
-.mx-auto.sm:px-6.lg:px-8
+
+- if @order.present?
   .overflow-x-auto(class="sm:-mx-6 lg:-mx-8")
   .align-middle.inline-block.min-w-full(class="sm:px-6 lg:px-8")
     .flex.justify-end.py-4
@@ -60,3 +61,9 @@
               td.px-6.py-4.whitespace-no-wrap.text-right.text-sm.leading-5.font-medium
                 a.text-indigo-600.hover:text-indigo-900 href="#"
                   i.fas.fa-edit
+
+- else
+  .max-w-3xl.mx-auto.bg-gray-200.overflow-hidden.rounded-lg.sm:my-24.h-96.text-gray-400.flex.flex-col.items-center.justify-center
+    | 発注済の注文はありません。
+    = link_to [@org, :place_orders, :import], class: 'btn btn-primary mt-3' do
+      | 注文入力

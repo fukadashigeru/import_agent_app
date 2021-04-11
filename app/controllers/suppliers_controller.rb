@@ -1,46 +1,62 @@
 class SuppliersController < ApplicationController
   before_action :set_org
-  before_action :set_supplier
-  before_action :set_order
+  before_action :set_suppliers, only: %i[index]
+  before_action :set_supplier, only: %i[show edit update]
+
+  def index
+  end
+
+  def show
+  end
 
   def edit
-    @form = Supplier::SupplierForm.new(
+    @supplier_form = Supplier::SupplierForm.new(
       ordering_org: @org,
-      supplier: @supplier,
-      order: @order
+      supplier: @supplier
     )
-    @optional_unit_forms = @form.optional_unit_forms_for_form
+    @optional_unit_forms = @supplier_form.forms
+    @redirect = params[:redirect]
+    @status = params[:status]
   end
 
   def update
-    @form = Supplier::SupplierForm.new(
+    @supplier_form = Supplier::SupplierForm.new(
       ordering_org: @org,
       supplier: @supplier,
-      order: @order,
       first_priority_attr: first_priority_attr,
-      actual_first_priority_attr: actual_first_priority_attr,
-      optional_unit_forms_attrs_arr: optional_unit_forms_attrs_arr
+      order_ids: order_ids,
+      forms_attrs_array: forms_attrs_array
     )
-    if @form.valid?
-      @form.upsert_or_destroy_units!
+    if @supplier_form.valid?
+      @supplier_form.upsert_or_destroy_units!
     else
       flash[:danger] = '処理が完了できませんでした。'
     end
-    redirect_to [@org, :orders, :before_orders]
+    case params[:redirect].to_sym
+    when :before_orders
+      redirect_to [@org, :orders, :before_orders]
+    when :suppliers_show
+      redirect_to [@org, @supplier]
+    end
   end
 
-  # private
+  private
 
   def set_org
     @org = Org.find(params[:org_id])
   end
 
-  def set_supplier
-    @supplier = @org.suppliers.find(params[:id])
+  def set_suppliers
+    @suppliers = @org.suppliers.page(params[:page]).per(30)
   end
 
-  def set_order
-    @order = @supplier.orders.find(params[:order_id])
+  def set_supplier
+    @supplier =
+      @org.suppliers.includes(
+        first_priority_unit: :supplier_urls,
+        optional_units: :supplier_urls,
+        orders: { actual_unit: :supplier_urls }
+      ).find(params[:id])
   end
 
   def first_priority_attr
@@ -57,11 +73,35 @@ class SuppliersController < ApplicationController
     ).fetch(:actual_first_priority, nil)
   end
 
-  def optional_unit_forms_attrs_arr
+  def forms_attrs_array
     normalize_params(
       params
       .permit(optional_unit_forms: {})
     ).fetch(:optional_unit_forms, {}).values
+  end
+
+  def order_ids
+    if normalize_params(params.permit(:order_ids)).present?
+      # 'all'
+      order_ids_all
+    else
+      # ['1','2','3']
+      order_ids_array
+    end
+  end
+
+  def order_ids_array
+    normalize_params(
+      params
+      .permit(order_ids: [])
+    ).fetch(:order_ids)
+  end
+
+  def order_ids_all
+    normalize_params(
+      params
+      .permit(:order_ids)
+    ).fetch(:order_ids)
   end
 
   def normalize_params(permitted_params)

@@ -18,7 +18,10 @@ class Order
                            .orders_to_order
                            .where(status: [status])
                            .order(created_at: order_by)
-                           .includes(:supplier, actual_unit: { actual_unit_urls: :supplier_url })
+                           .includes(
+                             supplier: { optional_units: :supplier_urls },
+                             actual_unit: :supplier_urls
+                           )
     end
 
     def orders_to_buy

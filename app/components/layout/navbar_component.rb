@@ -9,5 +9,9 @@ module Layout
       @switch_company = switch_company
       @company_detail = company_detail
     end
+
+    def import_pointer_events
+      'pointer-events-none' if current_page?([@org, :place_orders, :import])
+    end
   end
 end
