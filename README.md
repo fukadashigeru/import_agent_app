@@ -1,15 +1,11 @@
 # [WIP]仕様
 
-## [WIP]注文一覧画面
-こんな感じだよ
-<img width="1440" alt="スクリーンショット 2021-04-05 21 06 55" src="https://user-images.githubusercontent.com/45095615/113572285-e5186d00-9652-11eb-91fb-44900a723a0c.png">
-
 
 ## [WIP]注文一括インポート
 こんな感じだよ
-![0ff618247dd7e2778e52b87f158318ce](https://user-images.githubusercontent.com/45095615/113572315-f2355c00-9652-11eb-9575-8c21171866b4.gif)
+![注文インポート](https://user-images.githubusercontent.com/45095615/114292567-4fedfc00-9aca-11eb-9164-b1036e22ba4e.gif)
 
 
 ## [WIP]買付先登録
 こんな感じだよ
-![3dc4acde3c11165a7a376c468a22d975](https://user-images.githubusercontent.com/45095615/113572368-0aa57680-9653-11eb-82c8-67a199871354.gif)
+![買付先登録](https://user-images.githubusercontent.com/45095615/114292606-9cd1d280-9aca-11eb-8819-ec1bb9333e56.gif)
