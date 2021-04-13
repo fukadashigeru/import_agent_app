@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :user_registerers, only: %i[new create]
   resources :user_email_changers, only: %i[new create edit update]
   resource :password, only: %i[edit update]
-  resources :password_resets, only: %i[new create edit update destroy] 
+  resources :password_resets, only: %i[new create edit update destroy]
 
   resources :orgs, only: %i[index show] do
     namespace :orders do
