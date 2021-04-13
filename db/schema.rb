@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_114747) do
+ActiveRecord::Schema.define(version: 2021_04_13_125352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,30 @@ ActiveRecord::Schema.define(version: 2021_01_28_114747) do
     t.index ["ec_shop_id", "item_number"], name: "index_suppliers_on_ec_shop_id_and_item_number", unique: true
     t.index ["ec_shop_id"], name: "index_suppliers_on_ec_shop_id"
     t.index ["first_priority_unit_id"], name: "index_suppliers_on_first_priority_unit_id"
+  end
+
+  create_table "user_registerers", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "digest", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_user_registerers_on_email"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false, comment: "ユーザ名"
+    t.string "email", null: false, comment: "メールアドレス"
+    t.string "password_digest", comment: "パスワードのハッシュ値"
+    t.string "remember_digest", comment: "記憶トークンのハッシュ値"
+    t.string "activation_digest", comment: "アクティベートトークンのハッシュ値"
+    t.boolean "activated", default: false, null: false, comment: "メールアドレス確認済みかどうか"
+    t.datetime "activated_at", comment: "メールアドレス確認完了時刻"
+    t.datetime "agreed_at", comment: "招待承認時刻"
+    t.string "reset_digest", comment: "パスワードリセットトークンのハッシュ値"
+    t.datetime "reset_sent_at", comment: "パスワードリセットメールの送信日時"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "actual_unit_urls", "actual_units"
