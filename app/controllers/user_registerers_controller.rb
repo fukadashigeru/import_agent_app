@@ -1,12 +1,12 @@
 class UserRegisterersController < ApplicationController
   def new
     @user_registerer = UserRegisterer.new
-    authorize! @user_registerer
+    # authorize! @user_registerer
   end
 
   def create
     @user_registerer = UserRegisterer.new(user_registerer_params)
-    authorize! @user_registerer
+    # authorize! @user_registerer
 
     if @user_registerer.save
       @user_registerer.send_invitation_email

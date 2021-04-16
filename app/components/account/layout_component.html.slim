@@ -1,0 +1,12 @@
+.min-h-screen.flex.flex-col.justify-center.py-12.sm:px-6.lg:px-8
+  .sm:mx-auto.sm:w-full.sm:max-w-md
+    .flex.items-center.justify-center
+      = image_tag 'svg/sample_black.svg', class: 'lg:block h-12 w-auto'
+    h2.mt-6.text-center.text-3xl.font-extrabold.text-gray-900
+      = title
+    - if subtext
+      p.mt-2.text-center.text-sm.text-gray-600.max-w
+        = subtext
+  .mt-8.sm:mx-auto.sm:w-full.sm:max-w-md
+    .bg-white.py-8.px-4.shadow.sm:rounded-lg.sm:px-10
+      = content

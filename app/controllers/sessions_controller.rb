@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
-  # before_action :set_user, only: %i[create]
-  # before_action :user_authenticate, only: %i[create]
+  before_action :set_user, only: %i[create]
+  before_action :user_authenticate, only: %i[create]
   # before_action :authorize_resource
 
   def new
@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
     end
   end
 
-  def authorize_resource
-    authorize! nil
-  end
+  # def authorize_resource
+  #   authorize! nil
+  # end
 end
