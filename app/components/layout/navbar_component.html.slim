@@ -80,14 +80,23 @@ nav.bg-gray-800.shadow-sm
           #navbar-dropdown.hidden(
             data-dropdown-target="dropdownPlace"
           )
-            .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg
-              .py-1.rounded-md.bg-white.shadow-xs
-                = link_to [:orgs], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out #{'opacity-50 cursor-not-allowed pointer-events-none' if @switch_company}" do
-                  | 会社切替
-                / TODO:リンクを@orgに書き換える
-                - if @org
-                  = link_to [@org], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" do
-                    | 会社詳細
-                - else
-                  .block.px-4.py-2.text-sm.leading-5.text-gray-700.hover:bg-gray-100.focus:outline-none.focus:bg-gray-100.transition.duration-150.ease-in-out.opacity-50.cursor-not-allowed.pointer-events-none
-                    | 会社詳細
+            .origin-top-right.absolute.right-0.mt-2.w-48.rounded-md.shadow-lg.divide-y.divide-gray-200
+              div
+                .py-1.rounded-md.bg-white.shadow-xs
+                  = link_to [:orgs], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out #{'opacity-50 cursor-not-allowed pointer-events-none' if @switch_company}" do
+                    i.fas.fa-exchange-alt.mr-3.text-gray-400
+                    | 会社切替
+                  / TODO:リンクを@orgに書き換える
+                  - if @org
+                    = link_to [@org], class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" do
+                      i.fas.fa-building.mr-3.text-gray-400
+                      | 会社詳細
+                  - else
+                    .block.px-4.py-2.text-sm.leading-5.text-gray-700.hover:bg-gray-100.focus:outline-none.focus:bg-gray-100.transition.duration-150.ease-in-out.opacity-50.cursor-not-allowed.pointer-events-none
+                      i.fas.fa-building.mr-3.text-gray-400
+                      | 会社詳細
+              div
+                .py-1.rounded-md.bg-white.shadow-xs
+                  = link_to logout_url, method: :delete, class: "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" do
+                    i.fas.fa-sign-out-alt.mr-3.text-gray-400
+                    | ログアウト

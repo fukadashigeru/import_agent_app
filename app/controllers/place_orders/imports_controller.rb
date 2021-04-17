@@ -1,5 +1,6 @@
 module PlaceOrders
   class ImportsController < ApplicationController
+    before_action :logged_in_user
     before_action :set_org
 
     # rescue_from ActiveRecord::RecordInvalid do |e|
