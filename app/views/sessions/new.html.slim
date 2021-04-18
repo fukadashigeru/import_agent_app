@@ -11,12 +11,12 @@
         label.block.text-sm.font-medium.text-gray-700 for="email" 
           | Email address
         .mt-1
-          = f.text_field :email, { class: 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm', type: 'email' }
+          = render(Ui::InputComponent.new(form: f, name: :email, type: :email))
       div
         label.block.text-sm.font-medium.text-gray-700 for="password" 
           | Password
         .mt-1
-          = f.text_field :password, { class: 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm', type: 'password' }
+          = render(Ui::InputComponent.new(form: f, name: :password, type: :password))
       .flex.items-center.justify-between
         .flex.items-center
           = f.check_box :remember_me, class: 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
