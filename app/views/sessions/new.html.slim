@@ -8,15 +8,18 @@
   = form_with(url: login_path, scope: :session, local: true) do |f|
     .space-y-6
       div
-        label.block.text-sm.font-medium.text-gray-700 for="email" 
-          | Email address
-        .mt-1
-          = render(Ui::InputComponent.new(form: f, name: :email, type: :email))
+        = render(Ui::InputGroupComponent.new) do |component|
+          - component.with(:label) do
+            = render(Ui::LabelComponent.new(form: f, name: :email))
+              | Email address
+          - component.with(:input) do
+            = render(Ui::InputComponent.new(form: f, name: :email, type: :email))
       div
-        label.block.text-sm.font-medium.text-gray-700 for="password" 
-          | Password
-        .mt-1
-          = render(Ui::InputComponent.new(form: f, name: :password, type: :password))
+        = render(Ui::InputGroupComponent.new) do |component|
+          - component.with(:label) do
+            | Password
+          - component.with(:input) do
+            = render(Ui::InputComponent.new(form: f, name: :password, type: :password))
       .flex.items-center.justify-between
         .flex.items-center
           = f.check_box :remember_me, class: 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
