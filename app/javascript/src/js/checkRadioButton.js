@@ -8,19 +8,20 @@ document.addEventListener('change', (e) => {
 
   if (!checkedRadioButtonTagsBool) {
     const table = document.getElementById('supplier-forms-table');
-    const trs = table.querySelectorAll('tr');
+    if (table) {
+      const trs = table.querySelectorAll('tr');
 
-    Array.from(trs).some((tr) => {
-      const inputs = tr.querySelectorAll('[data-supplierform]');
-      const inputsBool = Array.from(inputs).some((element) => element.value !== '')
+      Array.from(trs).some((tr) => {
+        const inputs = tr.querySelectorAll('[data-supplierform]');
+        const inputsBool = Array.from(inputs).some((element) => element.value !== '')
 
-      if (inputsBool) {
-        tr.querySelector('[data-firstpriority]').checked = true;
-        return true;
-      }
-    })
-
-    changeBgColor()
+        if (inputsBool) {
+          tr.querySelector('[data-firstpriority]').checked = true;
+          return true;
+        }
+      })
+      changeBgColor()
+    }
   }
 })
 
@@ -33,7 +34,6 @@ document.addEventListener('change', (e) => {
 
 function changeBgColor() {
   const trs = document.querySelectorAll('[data-supplier-form-tr]')
-  console.log(trs)
   Array.from(trs).forEach((tr) => {
     if(tr.querySelector('[data-firstpriority]').checked) {
       tr.classList.add('bg-blue-100')
