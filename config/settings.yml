@@ -1,0 +1,6 @@
+application:
+  title: ImportAgent
+operating_company:
+  name: ImportAgent
+default_mail_from: '"ImportAgent事務局" <xxxxxxxxx@gmail.com>'
+default_mail_to: 'xxxxxxxxx@gmail.com'
