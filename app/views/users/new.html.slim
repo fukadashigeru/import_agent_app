@@ -1,0 +1,43 @@
+= render(::Account::LayoutComponent.new) do |fieldset|
+  - fieldset.with(:title)
+    | Create your account
+  = form_with(model: @user, url: user_path, local: true) do |f|
+    = hidden_field_tag :user_registerer_id, @user_registerer.to_param
+    = hidden_field_tag :token, params[:token]
+    div
+      = render(Ui::InputGroupComponent.new) do |component|
+        - component.with(:label) do
+          = render(Ui::LabelComponent.new(form: f, name: :name))
+        - component.with(:input) do
+          = render(Ui::InputComponent.new(form: f, name: :name))
+    .mt-6
+      = render(Ui::InputGroupComponent.new) do |component|
+        - component.with(:label) do
+          = render(Ui::LabelComponent.new(form: f, name: :password))
+        - component.with(:input) do
+          = render(Ui::InputComponent.new(form: f, name: :password, type: :password))
+    .mt-6
+      = render(Ui::InputGroupComponent.new) do |component|
+        - component.with(:label) do
+          = render(Ui::LabelComponent.new(form: f, name: :password_confirmation))
+        - component.with(:input) do
+          = render(Ui::InputComponent.new(form: f, name: :password_confirmation, type: :password))
+    .mt-4
+      / .btn-wrapper.w-full
+      /   button.btn.btn-primary.w-full(type="submit")
+      /     | 利用規約に同意して登録する
+      button.w-full.flex.justify-center.py-2.px-4.border.border-transparent.rounded-md.shadow-sm.text-sm.font-medium.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500 type="submit" 
+        | Create Account
+
+
+    / .space-y-6
+    /   div
+    /     = render(Ui::InputGroupComponent.new) do |component|
+    /       - component.with(:label) do
+    /         = render(Ui::LabelComponent.new(form: f, name: :email))
+    /           | Email address
+    /       - component.with(:input) do
+    /         = render(Ui::InputComponent.new(form: f, name: :email, type: :email))
+    /   div
+    /     button.w-full.flex.justify-center.py-2.px-4.border.border-transparent.rounded-md.shadow-sm.text-sm.font-medium.text-white.bg-indigo-600.hover:bg-indigo-700.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500 type="submit" 
+    /       | Create Account
