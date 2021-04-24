@@ -1,4 +1,4 @@
-= render(::Account::LayoutComponent.new) do |fieldset|
+= render(::UserAccount::LayoutComponent.new) do |fieldset|
   - fieldset.with(:title)
     | Create your account
   = form_with(model: @user, url: user_path, local: true) do |f|
