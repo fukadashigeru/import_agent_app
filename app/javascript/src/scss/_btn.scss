@@ -18,7 +18,7 @@
     @apply outline-none;
     // @apply ring-2;
     // @apply ring-offset-2;
-    // @apply ring-indigo-500;
+    // @apply ring-blue-600;
   }
 }
 
@@ -36,7 +36,7 @@
     @apply outline-none;
     // @apply ring-2;
     // @apply ring-offset-2;
-    // @apply ring-indigo-500;
+    // @apply ring-blue-600;
   }
 }
 
@@ -55,7 +55,7 @@
     @apply outline-none;
     // @apply ring-2;
     // @apply ring-offset-2;
-    // @apply ring-indigo-500;
+    // @apply ring-blue-600;
   }
 }
 
@@ -73,7 +73,7 @@
     @apply outline-none;
     // @apply ring-2;
     // @apply ring-offset-2;
-    // @apply ring-indigo-500;
+    // @apply ring-blue-600;
   }
 }
 
@@ -91,40 +91,40 @@
     @apply outline-none;
     // @apply ring-2;
     // @apply ring-offset-2;
-    // @apply ring-indigo-500;
+    // @apply ring-blue-600;
   }
 }
 
 .btn-primary {
   @apply border-transparent;
   @apply text-white;
-  @apply bg-indigo-600;
+  @apply bg-blue-700;
 
   &:hover {
-    @apply bg-indigo-500;
+    @apply bg-blue-600;
   }
   &:focus {
-    @apply border-indigo-700;
-    @apply shadow-outline-indigo-700;
+    @apply border-blue-800;
+    @apply shadow-outline-blue-800;
   }
   &:active {
-    @apply bg-indigo-700;
+    @apply bg-blue-800;
   }
 }
 .btn-secondary {
   @apply border-transparent;
-  @apply text-indigo-700;
-  @apply bg-indigo-100;
+  @apply text-blue-800;
+  @apply bg-blue-200;
 
   &:hover {
-    @apply bg-indigo-200;
+    @apply bg-blue-300;
   }
   &:focus {
-    @apply border-indigo-300;
-    @apply shadow-outline-indigo-700;
+    @apply border-blue-400;
+    @apply shadow-outline-blue-800;
   }
   &:active {
-    @apply bg-indigo-200;
+    @apply bg-blue-300;
   }
 }
 .btn-danger {
@@ -153,17 +153,17 @@
   }
 
   &:hover {
-    @apply text-indigo-500;
+    @apply text-blue-600;
     .svg-inline--fa {
-      @apply text-blue-400;
+      @apply text-blue-500;
     }
   }
   &:focus {
-    @apply border-blue-300;
-    @apply shadow-outline-blue-700;
+    @apply border-blue-400;
+    @apply shadow-outline-blue-800;
   }
   &:active {
-    @apply text-blue-600;
+    @apply text-blue-700;
     @apply bg-gray-50;
   }
 }

@@ -5,8 +5,8 @@
     - fieldset.with(:subtext)
       | 商品IDが同じ注文は次回からこれらの買付先が設定されます。
   .hidden.sm:block.absolute.top-0.right-0.pt-4.pr-4
-    / = link_to [@org, :orders, :before_orders], class: 'bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: {"turbolinks" => false}
-    button.bg-white.rounded-md.text-gray-400.hover:text-gray-500.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500(
+    / = link_to [@org, :orders, :before_orders], class: 'bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600', data: {"turbolinks" => false}
+    button.bg-white.rounded-md.text-gray-400.hover:text-gray-500.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600(
       type="button"
       data-modal-close
     )
@@ -44,23 +44,23 @@
                 span.relative.inline-flex.w-full
                   - optional_unit_form.supplier_forms.each_with_index do |supplier_url_form, index|
                     = ff.fields :supplier_url_form, model: supplier_url_form do |fff|
-                      = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}", data: { supplierform: 'foo' }
-                      button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-indigo-500.focus:border-indigo-500.mr-3(type="button" data-external-link)
+                      = fff.text_field :url, name: "optional_unit_forms[#{i}][urls][]", class: "w-full shadow-sm focus:ring-blue-600 focus:border-blue-600 block sm:text-sm border-gray-300 rounded-l-md", id: "text_field_#{i}_#{index}", data: { supplierform: 'foo' }
+                      button.-ml-px.relative.inline-flex.items-center.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500.hover:bg-gray-50.focus:z-10.focus:outline-none.focus:ring-1.focus:ring-blue-600.focus:border-blue-600.mr-3(type="button" data-external-link)
                         i.fas.fa-external-link-alt
                   - if optional_unit_form.supplier_forms.size <= 1
-                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
+                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
                       i.fas.fa-minus
-                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
                       i.fas.fa-plus
                   - elsif optional_unit_form.supplier_forms.size >= 3
-                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
                       i.fas.fa-minus
-                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
+                    button.hidden.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
                       i.fas.fa-plus
                   - else
-                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-remove-form-for-set-items) 
                       i.fas.fa-minus
-                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-indigo-500.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
+                    button.inline-flex.items-center.border.border-gray-300.shadow-sm.text-xs.font-medium.rounded.text-gray-700.bg-white.hover:bg-gray-50.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-600.rounded-full(class="p-1 my-2.5 mx-0.5" type="button" data-add-form-for-set-items) 
                       i.fas.fa-plus
   - case @redirect.to_sym
   - when :before_orders
@@ -90,7 +90,7 @@
   /         / 当該の注文(Order)
   /         tr
   /           td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center.cursor-not-allowed
-  /             input.h-4.w-4.text-indigo-600.focus:ring-indigo-500.border-gray-300.rounded.cursor-not-allowed.opacity-25 type="checkbox" disabled="disabled" checked="checked"
+  /             input.h-4.w-4.text-blue-700.focus:ring-blue-600.border-gray-300.rounded.cursor-not-allowed.opacity-25 type="checkbox" disabled="disabled" checked="checked"
   /             = hidden_field_tag "order_ids[]", @supplier_form.order.id
   /           td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
   /             = @supplier_form.order.trade_number
@@ -99,7 +99,7 @@
   /           - if order != @supplier_form.order
   /             tr
   /               td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
-  /                 = check_box_tag "order_ids[]", order.id, true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'
+  /                 = check_box_tag "order_ids[]", order.id, true, class: 'focus:ring-blue-600 h-4 w-4 text-blue-700 border-gray-300 rounded'
   /               td.px-3.py-3.whitespace-no-wrap.text-sm.leading-5.text-gray-500.text-center
   /                 = order.trade_number
   = render(Ui::ActionsComponent.new) do
