@@ -2,7 +2,7 @@ ruby:
   modal_spinner_id = "id-#{SecureRandom.uuid}"
   form_mdoal_id = "id-#{SecureRandom.uuid}"
 
-= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: nil))
+= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, tab: true, active: nil))
 .border-t-2.border-gray-100
 
 .m-auto.mt-16

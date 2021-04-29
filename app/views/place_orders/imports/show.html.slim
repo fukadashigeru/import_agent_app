@@ -1,7 +1,7 @@
 ruby:
   form = ::PlaceOrders::FormComponent.new(org: @org, form: @form)
 
-= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: :place_orders))
+= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, tab: true, active: :place_orders))
 = render(::PlaceOrders::NavbarComponent.new(org: @org, import: :active, before_orders: :pending, confirm: :pending))
 .m-auto.mt-16.w-1/2
   .flex.justify-end
