@@ -1,6 +1,10 @@
 = render(::UserAccount::LayoutComponent.new) do |fieldset|
   - fieldset.with(:title)
     | Reset password
+  - fieldset.with(:subtext)
+    | Or
+    = link_to [:login], class: 'ml-2 font-medium text-blue-700 hover:text-blue-600'
+      | Sign in to your account
   = form_with(url: password_resets_path, scope: :password_reset, local: true) do |f|
     .space-y-6
       div
