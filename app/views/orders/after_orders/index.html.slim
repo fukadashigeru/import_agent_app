@@ -1,4 +1,4 @@
-= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, current_user: @current_user, tab: true, active: :ordered))
+= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, active: :ordered))
 .border-t-2.border-gray-100
 = render(::Orders::NavbarComponent.new(org: @org, active: :after_orders))
 

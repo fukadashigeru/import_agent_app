@@ -7,7 +7,7 @@ nav.bg-blue-700.shadow-sm
         .hidden.md:block
           .ml-10.flex.items-baseline.space-x-4
             / TODO:タブの表示・非表示はあとで修正予定
-            - if @tab
+            - if @org
               - if @org.orders_to_order.before_order.present?
                 - button_style = @active == :place_orders ? 'bg-blue-800 text-white' : 'text-white hover:bg-blue-600 hover:bg-opacity-75' 
                 div(

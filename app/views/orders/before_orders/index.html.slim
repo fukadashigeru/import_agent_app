@@ -2,7 +2,7 @@ ruby:
   modal_spinner_id = "id-#{SecureRandom.uuid}"
   form_mdoal_id = "id-#{SecureRandom.uuid}"
 
-= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, tab: true, active: :place_orders))
+= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, active: :place_orders))
 = render(::PlaceOrders::NavbarComponent.new(org: @org, import: :done, before_orders: :active, confirm: :pending))
 
 - if @orders.present?
