@@ -1,0 +1,28 @@
+= render(::UserAccount::LayoutComponent.new) do |fieldset|
+  - fieldset.with(:title)
+    | Create your account
+  = form_with(model: @user, url: user_path, local: true) do |f|
+    = hidden_field_tag :user_registerer_id, @user_registerer.to_param
+    = hidden_field_tag :token, params[:token]
+    div
+      = render(Ui::InputGroupComponent.new) do |component|
+        - component.with(:label) do
+          = render(Ui::LabelComponent.new(form: f, name: :name))
+        - component.with(:input) do
+          = render(Ui::InputComponent.new(form: f, name: :name))
+    .mt-6
+      = render(Ui::InputGroupComponent.new) do |component|
+        - component.with(:label) do
+          = render(Ui::LabelComponent.new(form: f, name: :password))
+        - component.with(:input) do
+          = render(Ui::InputComponent.new(form: f, name: :password, type: :password))
+    .mt-6
+      = render(Ui::InputGroupComponent.new) do |component|
+        - component.with(:label) do
+          = render(Ui::LabelComponent.new(form: f, name: :password_confirmation))
+        - component.with(:input) do
+          = render(Ui::InputComponent.new(form: f, name: :password_confirmation, type: :password))
+    .mt-8
+      .btn-wrapper.w-full
+        button.btn.btn-primary.w-full(type="submit")
+          | Create Account

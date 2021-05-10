@@ -2,7 +2,7 @@ ruby:
   modal_spinner_id = "id-#{SecureRandom.uuid}"
   form_mdoal_id = "id-#{SecureRandom.uuid}"
 
-= render(::Layout::NavbarComponent.new(org: @org, tab: true, active: nil))
+= render(::Layout::NavbarComponent.new(org: @org, current_user: @current_user, active: nil))
 .border-t-2.border-gray-100
 
 .m-auto.mt-16
@@ -13,11 +13,11 @@ ruby:
       p.mt-1.max-w-2xl.text-sm.text-gray-500
         - if @supplier.optional_units.present?
           | 商品ID
-          = link_to @supplier.item_number,@supplier.item_number, class: 'text-indigo-600 hover:text-indigo-900 px-1', target: :_blank
+          = link_to @supplier.item_number,@supplier.item_number, class: 'text-blue-700 hover:text-blue-900 px-1', target: :_blank
           | の買付先候補一覧です。
         - else
           | 商品ID
-          = link_to @supplier.item_number,@supplier.item_number, class: 'text-indigo-600 hover:text-indigo-900 px-1', target: :_blank
+          = link_to @supplier.item_number,@supplier.item_number, class: 'text-blue-700 hover:text-blue-900 px-1', target: :_blank
           | の買付先候補を登録してください。
     .px-4.py-5.sm:p-0
       .flex.flex-col.pt-4
@@ -40,7 +40,7 @@ ruby:
                           i.fas.fa-check-circle.text-green-500.ml-3
                       td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
                         - supplier_urls.each do |supplier_url|
-                          = link_to supplier_url.url, supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900 mr-3', target: :_blank
+                          = link_to supplier_url.url, supplier_url.url, class: 'text-blue-700 hover:text-blue-900 mr-3', target: :_blank
             - else
               .bg-gray-100.overflow-hidden.rounded-lg.h-36.flex.items-center.justify-center.text-gray-400
                 | 買付先候補を登録してください。
@@ -71,7 +71,7 @@ ruby:
         | 注文一覧
       p.mt-1.max-w-2xl.text-sm.text-gray-500
         | 商品ID
-        = link_to @supplier.item_number,@supplier.item_number, class: 'text-indigo-600 hover:text-indigo-900 px-1', target: :_blank
+        = link_to @supplier.item_number,@supplier.item_number, class: 'text-blue-700 hover:text-blue-900 px-1', target: :_blank
         | の注文一覧です。
     .px-4.py-5.sm:p-0
       .flex.flex-col.pt-4
@@ -94,7 +94,7 @@ ruby:
                     td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
                       - if @supplier.optional_units.present?
                         - order.actual_unit.supplier_urls.each do |supplier_url|
-                          = link_to supplier_url.url, supplier_url.url, class: 'text-indigo-600 hover:text-indigo-900 mr-3', target: :_blank
+                          = link_to supplier_url.url, supplier_url.url, class: 'text-blue-700 hover:text-blue-900 mr-3', target: :_blank
                         button.btn-xs.btn-secondary
                           | 編集
                       - else

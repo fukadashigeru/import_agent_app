@@ -1,3 +1,4 @@
+require("@rails/ujs").start()
 require("turbolinks").start()
 
 import '@fortawesome/fontawesome-free/js/all'

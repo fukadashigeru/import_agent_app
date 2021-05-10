@@ -13,7 +13,7 @@ module PlaceOrders
       when :done
         'border-gray-700'
       when :active
-        'border-indigo-600'
+        'border-blue-700'
       end
     end
 
@@ -22,7 +22,7 @@ module PlaceOrders
       when :done
         'text-gray-700'
       when :active
-        'text-indigo-600'
+        'text-blue-700'
       end
     end
 
@@ -31,7 +31,7 @@ module PlaceOrders
       when :done
         'border-gray-700'
       when :active
-        'border-indigo-600'
+        'border-blue-700'
       when :pending
         if @org.orders_to_order.before_order.count.positive?
           'border-gray-700'
@@ -46,7 +46,7 @@ module PlaceOrders
       when :done
         'text-gray-700'
       when :active
-        'text-indigo-600'
+        'text-blue-700'
       when :pending
         if @org.orders_to_order.before_order.count.positive?
           'text-gray-700'
@@ -69,7 +69,7 @@ module PlaceOrders
       when :pending
         'border-gray-300'
       when :active
-        'border-indigo-600'
+        'border-blue-700'
       end
     end
 
@@ -78,7 +78,7 @@ module PlaceOrders
       when :pending
         'text-gray-300'
       when :active
-        'text-indigo-600'
+        'text-blue-700'
       end
     end
   end

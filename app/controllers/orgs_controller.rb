@@ -1,4 +1,5 @@
 class OrgsController < ApplicationController
+  before_action :logged_in_user
   before_action :set_org, only: %i[show]
 
   def index

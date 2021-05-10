@@ -1,0 +1,19 @@
+= render(::UserAccount::LayoutComponent.new) do |fieldset|
+  - fieldset.with(:title)
+    | Create your account
+  - fieldset.with(:subtext)
+    | Or
+    = link_to [:login], class: 'ml-2 font-medium text-blue-700 hover:text-blue-600'
+      | Sign in to your account
+  = form_with(model: @user_registerer, local: true) do |f|
+    .space-y-6
+      div
+        = render(Ui::InputGroupComponent.new) do |component|
+          - component.with(:label) do
+            = render(Ui::LabelComponent.new(form: f, name: :email))
+              | Email address
+          - component.with(:input) do
+            = render(Ui::InputComponent.new(form: f, name: :email, type: :email))
+      .btn-wrapper.w-full
+        button.btn.btn-primary.w-full(type="submit")
+          | Create Account

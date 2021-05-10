@@ -1,0 +1,9 @@
+<%= Settings.application.title %>へようこそ！
+
+本メールはユーザー登録リクエストを受けて送信されました。
+
+下記のリンクからユーザー登録フォームにお進みください。
+
+<%= new_user_url(user_registerer_id: @user_registerer.to_param, token: @token) %>
+
+このURLの有効期限は、<%= l @user_registerer.expired_at %>です。このメールに心当たりがない方は、お手数をおかけしますが破棄してください。

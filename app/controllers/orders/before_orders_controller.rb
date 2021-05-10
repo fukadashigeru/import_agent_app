@@ -1,5 +1,6 @@
 module Orders
   class BeforeOrdersController < ApplicationController
+    before_action :logged_in_user
     before_action :set_org
 
     def index

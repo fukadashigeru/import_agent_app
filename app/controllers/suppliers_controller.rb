@@ -1,4 +1,5 @@
 class SuppliersController < ApplicationController
+  before_action :logged_in_user
   before_action :set_org
   before_action :set_suppliers, only: %i[index]
   before_action :set_supplier, only: %i[show edit update]
